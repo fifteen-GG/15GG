@@ -27,6 +27,8 @@ const GameAnalysisContainer = styled.div`
   @media screen and (max-width: 360px) {
     width: 328px;
   }
+`;
+const GameAnalysisWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -276,7 +278,7 @@ export const GameAnalysis = () => {
     {} as teamDetail,
   ]);
   console.log(gameData);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
   console.log(time);
   const [winRate, setWinRate] = useState<number>(0.5);
@@ -344,7 +346,7 @@ export const GameAnalysis = () => {
       {isLoading ? (
         <LoadingPage />
       ) : (
-        <>
+        <GameAnalysisWrapper>
           <GameInfo status={state.status} mode={state.mode} date={state.date} />
           {state.status === gameState.none ? <EmptyCover /> : null}
           <TimeInfo>
@@ -360,8 +362,8 @@ export const GameAnalysis = () => {
             <TeamStatsLive Participants={liveData.player_data} />
           ) : (
             <TeamStats
-              redTeam={gameData[0].teamAvgData}
-              blueTeam={gameData[1].teamAvgData}
+              redTeam={gameData[0].team_avg_data}
+              blueTeam={gameData[1].team_avg_data}
             />
           )}
           {state.status === gameState.live ? (
@@ -372,7 +374,7 @@ export const GameAnalysis = () => {
               blueParticipants={gameData[1].participants}
             />
           )}
-        </>
+        </GameAnalysisWrapper>
       )}
     </GameAnalysisContainer>
   );

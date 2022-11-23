@@ -30,12 +30,11 @@ const TeamStatsLive = (props: propsType) => {
     {
       team: 'Red',
       avgGold:
-        (props.Participants[0].gold +
-          props.Participants[1].gold +
-          props.Participants[2].gold +
-          props.Participants[3].gold +
-          props.Participants[4].gold) /
-        5,
+        props.Participants[0].gold +
+        props.Participants[1].gold +
+        props.Participants[2].gold +
+        props.Participants[3].gold +
+        props.Participants[4].gold,
       avgLevel:
         (props.Participants[0].level +
           props.Participants[1].level +
@@ -53,12 +52,11 @@ const TeamStatsLive = (props: propsType) => {
     {
       team: 'Blue',
       avgGold:
-        (props.Participants[5].gold +
-          props.Participants[6].gold +
-          props.Participants[7].gold +
-          props.Participants[8].gold +
-          props.Participants[9].gold) /
-        5,
+        props.Participants[5].gold +
+        props.Participants[6].gold +
+        props.Participants[7].gold +
+        props.Participants[8].gold +
+        props.Participants[9].gold,
       avgLevel:
         (props.Participants[5].level +
           props.Participants[6].level +
@@ -80,12 +78,11 @@ const TeamStatsLive = (props: propsType) => {
       {
         team: 'Red',
         avgGold:
-          (props.Participants[0].gold +
-            props.Participants[1].gold +
-            props.Participants[2].gold +
-            props.Participants[3].gold +
-            props.Participants[4].gold) /
-          5,
+          props.Participants[0].gold +
+          props.Participants[1].gold +
+          props.Participants[2].gold +
+          props.Participants[3].gold +
+          props.Participants[4].gold,
         avgLevel:
           (props.Participants[0].level +
             props.Participants[1].level +
@@ -103,12 +100,11 @@ const TeamStatsLive = (props: propsType) => {
       {
         team: 'Blue',
         avgGold:
-          (props.Participants[5].gold +
-            props.Participants[6].gold +
-            props.Participants[7].gold +
-            props.Participants[8].gold +
-            props.Participants[9].gold) /
-          5,
+          props.Participants[5].gold +
+          props.Participants[6].gold +
+          props.Participants[7].gold +
+          props.Participants[8].gold +
+          props.Participants[9].gold,
         avgLevel:
           (props.Participants[5].level +
             props.Participants[6].level +

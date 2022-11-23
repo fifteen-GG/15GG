@@ -6,9 +6,11 @@ import {
   RadialLinearScale,
   PointElement,
   LineElement,
+  LineController,
   Filler,
   Tooltip,
   Legend,
+  registerables,
 } from 'chart.js';
 import * as Palette from '../../../assets/colorPalette';
 import { Chart } from 'react-chartjs-2';
@@ -25,6 +27,8 @@ import {
 } from '../styles/userStatInfo.s';
 
 ChartJS.register(
+  ...registerables,
+  LineController,
   ArcElement,
   RadialLinearScale,
   PointElement,

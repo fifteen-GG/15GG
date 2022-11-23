@@ -21,6 +21,7 @@ import {
   Participants,
 } from '../types/matchDetails';
 import LoadingPage from '../userInfo/components/LoadingPage';
+import webClient from '../../WebClient';
 
 const GameAnalysisContainer = styled.div`
   width: 100%;
@@ -45,239 +46,245 @@ const TimeInfo = styled.div`
 `;
 export const GameAnalysis = () => {
   const [liveData, setLiveData] = useState<SocketData>({
-    timestamp: 0,
-    player_data: [
+    match_data: [
       {
-        summonerName: '이름없음',
-        championName: '0',
-        rank: '0',
-        spells: {
-          spell1: 0,
-          spell2: 0,
-        },
-        perks: {
-          perk: 0,
-          perkStyl: 0,
-        },
-        isDead: false,
-        level: 0,
-        team: '',
-        champLevel: 0,
-        items: [],
-        kills: 0,
-        deaths: 0,
-        assists: 0,
-        gold: 0,
-      },
-      {
-        summonerName: '이름없음',
-        championName: '0',
-        rank: '0',
-        spells: {
-          spell1: 0,
-          spell2: 0,
-        },
-        perks: {
-          perk: 0,
-          perkStyl: 0,
-        },
-        isDead: false,
-        level: 0,
-        team: '',
-        champLevel: 0,
-        items: [],
-        kills: 0,
-        deaths: 0,
-        assists: 0,
-        gold: 0,
-      },
-      {
-        summonerName: '이름없음',
-        championName: '0',
-        rank: '0',
-        spells: {
-          spell1: 0,
-          spell2: 0,
-        },
-        perks: {
-          perk: 0,
-          perkStyl: 0,
-        },
-        isDead: false,
-        level: 0,
-        team: '',
-        champLevel: 0,
-        items: [],
-        kills: 0,
-        deaths: 0,
-        assists: 0,
-        gold: 0,
-      },
-      {
-        summonerName: '이름없음',
-        championName: '0',
-        rank: '0',
-        spells: {
-          spell1: 0,
-          spell2: 0,
-        },
-        perks: {
-          perk: 0,
-          perkStyl: 0,
-        },
-        isDead: false,
-        level: 0,
-        team: '',
-        champLevel: 0,
-        items: [],
-        kills: 0,
-        deaths: 0,
-        assists: 0,
-        gold: 0,
-      },
-      {
-        summonerName: '이름없음',
-        championName: '0',
-        rank: '0',
-        spells: {
-          spell1: 0,
-          spell2: 0,
-        },
-        perks: {
-          perk: 0,
-          perkStyl: 0,
-        },
-        isDead: false,
-        level: 0,
-        team: '',
-        champLevel: 0,
-        items: [],
-        kills: 0,
-        deaths: 0,
-        assists: 0,
-        gold: 0,
-      },
-      {
-        summonerName: '이름없음',
-        championName: '0',
-        rank: '0',
-        spells: {
-          spell1: 0,
-          spell2: 0,
-        },
-        perks: {
-          perk: 0,
-          perkStyl: 0,
-        },
-        isDead: false,
-        level: 0,
-        team: '',
-        champLevel: 0,
-        items: [],
-        kills: 0,
-        deaths: 0,
-        assists: 0,
-        gold: 0,
-      },
-      {
-        summonerName: '이름없음',
-        championName: '0',
-        rank: '0',
-        spells: {
-          spell1: 0,
-          spell2: 0,
-        },
-        perks: {
-          perk: 0,
-          perkStyl: 0,
-        },
-        isDead: false,
-        level: 0,
-        team: '',
-        champLevel: 0,
-        items: [],
-        kills: 0,
-        deaths: 0,
-        assists: 0,
-        gold: 0,
-      },
-      {
-        summonerName: '이름없음',
-        championName: '0',
-        rank: '0',
-        spells: {
-          spell1: 0,
-          spell2: 0,
-        },
-        perks: {
-          perk: 0,
-          perkStyl: 0,
-        },
-        isDead: false,
-        level: 0,
-        team: '',
-        champLevel: 0,
-        items: [],
-        kills: 0,
-        deaths: 0,
-        assists: 0,
-        gold: 0,
-      },
-      {
-        summonerName: '이름없음',
-        championName: '0',
-        rank: '0',
-        spells: {
-          spell1: 0,
-          spell2: 0,
-        },
-        perks: {
-          perk: 0,
-          perkStyl: 0,
-        },
-        isDead: false,
-        level: 0,
-        team: '',
-        champLevel: 0,
-        items: [],
-        kills: 0,
-        deaths: 0,
-        assists: 0,
-        gold: 0,
-      },
-      {
-        summonerName: '이름없음',
-        championName: '0',
-        rank: '0',
-        spells: {
-          spell1: 0,
-          spell2: 0,
-        },
-        perks: {
-          perk: 0,
-          perkStyl: 0,
-        },
-        isDead: false,
-        level: 0,
-        team: '',
-        champLevel: 0,
-        items: [],
-        kills: 0,
-        deaths: 0,
-        assists: 0,
-        gold: 0,
+        blue_team_win_rate: 0,
+        timestamp: 0,
+        player_data: [
+          {
+            summonerName: '이름없음0',
+            championName: '0',
+            rank: '0',
+            spells: {
+              spell1: 0,
+              spell2: 0,
+            },
+            perks: {
+              perk: 0,
+              perkStyl: 0,
+            },
+            isDead: false,
+            level: 0,
+            team: '',
+            champLevel: 0,
+            items: [],
+            kills: 0,
+            deaths: 0,
+            assists: 0,
+            // gold: 0,
+          },
+          {
+            summonerName: '이름없음1',
+            championName: '0',
+            rank: '0',
+            spells: {
+              spell1: 0,
+              spell2: 0,
+            },
+            perks: {
+              perk: 0,
+              perkStyl: 0,
+            },
+            isDead: false,
+            level: 0,
+            team: '',
+            champLevel: 0,
+            items: [],
+            kills: 0,
+            deaths: 0,
+            assists: 0,
+            // gold: 0,
+          },
+          {
+            summonerName: '이름없음2',
+            championName: '0',
+            rank: '0',
+            spells: {
+              spell1: 0,
+              spell2: 0,
+            },
+            perks: {
+              perk: 0,
+              perkStyl: 0,
+            },
+            isDead: false,
+            level: 0,
+            team: '',
+            champLevel: 0,
+            items: [],
+            kills: 0,
+            deaths: 0,
+            assists: 0,
+            // gold: 0,
+          },
+          {
+            summonerName: '이름없음3',
+            championName: '0',
+            rank: '0',
+            spells: {
+              spell1: 0,
+              spell2: 0,
+            },
+            perks: {
+              perk: 0,
+              perkStyl: 0,
+            },
+            isDead: false,
+            level: 0,
+            team: '',
+            champLevel: 0,
+            items: [],
+            kills: 0,
+            deaths: 0,
+            assists: 0,
+            // gold: 0,
+          },
+          {
+            summonerName: '이름없음4',
+            championName: '0',
+            rank: '0',
+            spells: {
+              spell1: 0,
+              spell2: 0,
+            },
+            perks: {
+              perk: 0,
+              perkStyl: 0,
+            },
+            isDead: false,
+            level: 0,
+            team: '',
+            champLevel: 0,
+            items: [],
+            kills: 0,
+            deaths: 0,
+            assists: 0,
+            // gold: 0,
+          },
+          {
+            summonerName: '이름없음5',
+            championName: '0',
+            rank: '0',
+            spells: {
+              spell1: 0,
+              spell2: 0,
+            },
+            perks: {
+              perk: 0,
+              perkStyl: 0,
+            },
+            isDead: false,
+            level: 0,
+            team: '',
+            champLevel: 0,
+            items: [],
+            kills: 0,
+            deaths: 0,
+            assists: 0,
+            // gold: 0,
+          },
+          {
+            summonerName: '이름없음6',
+            championName: '0',
+            rank: '0',
+            spells: {
+              spell1: 0,
+              spell2: 0,
+            },
+            perks: {
+              perk: 0,
+              perkStyl: 0,
+            },
+            isDead: false,
+            level: 0,
+            team: '',
+            champLevel: 0,
+            items: [],
+            kills: 0,
+            deaths: 0,
+            assists: 0,
+            // gold: 0,
+          },
+          {
+            summonerName: '이름없음7',
+            championName: '0',
+            rank: '0',
+            spells: {
+              spell1: 0,
+              spell2: 0,
+            },
+            perks: {
+              perk: 0,
+              perkStyl: 0,
+            },
+            isDead: false,
+            level: 0,
+            team: '',
+            champLevel: 0,
+            items: [],
+            kills: 0,
+            deaths: 0,
+            assists: 0,
+            // gold: 0,
+          },
+          {
+            summonerName: '이름없음8',
+            championName: '0',
+            rank: '0',
+            spells: {
+              spell1: 0,
+              spell2: 0,
+            },
+            perks: {
+              perk: 0,
+              perkStyl: 0,
+            },
+            isDead: false,
+            level: 0,
+            team: '',
+            champLevel: 0,
+            items: [],
+            kills: 0,
+            deaths: 0,
+            assists: 0,
+            // gold: 0,
+          },
+          {
+            summonerName: '이름없음9',
+            championName: '0',
+            rank: '0',
+            spells: {
+              spell1: 0,
+              spell2: 0,
+            },
+            perks: {
+              perk: 0,
+              perkStyl: 0,
+            },
+            isDead: false,
+            level: 0,
+            team: '',
+            champLevel: 0,
+            items: [],
+            kills: 0,
+            deaths: 0,
+            assists: 0,
+            // gold: 0,
+          },
+        ],
       },
     ],
+    match_id: '0',
   } as unknown as SocketData);
-  // const [liveData, setLiveData] = useState<SocketData>();
-  // const [liveData, setLiveData] = useState<any>();
   console.log(liveData);
-  console.log(liveData.player_data);
+  console.log(liveData.match_data);
+  console.log(liveData.match_data[0].timestamp);
+  console.log(liveData.match_data[0].player_data);
   const [gameData, setGameData] = useState([
     {} as teamDetail,
     {} as teamDetail,
   ]);
-  console.log(gameData);
+  // console.log(gameData);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
   console.log(time);
@@ -295,9 +302,8 @@ export const GameAnalysis = () => {
   const getGameData = async () => {
     setIsLoading(true);
     try {
-      const data = await axios.get(
-        `${process.env.REACT_APP_GG_API_ROOT}/riot/match/detail/${matchID}`,
-      );
+      const data = await webClient.get(`/riot/match/detail/${matchID}`);
+
       if (data.status === 200) {
         setGameData(data.data);
       }
@@ -332,12 +338,20 @@ export const GameAnalysis = () => {
   useEffect(() => {
     if (state.status === gameState.live) {
       if (parse) {
-        setTime(liveData.timestamp);
-        setWinRate(liveData.blue_team_win_rate);
-        setWinningRate([
-          ...winningRate,
-          Math.round(50 - 100 * liveData.blue_team_win_rate),
-        ]);
+        setTime(liveData.match_data[liveData.match_data.length - 1].timestamp);
+        setWinRate(
+          liveData.match_data[liveData.match_data.length - 1]
+            .blue_team_win_rate,
+        );
+        let rate: number[] = [];
+        liveData.match_data.map((value, index) => {
+          rate.push(
+            Math.round(
+              50 - 100 * liveData.match_data[index].blue_team_win_rate,
+            ),
+          );
+        });
+        setWinningRate(rate);
       }
     }
   }, [liveData]);
@@ -359,7 +373,11 @@ export const GameAnalysis = () => {
           <TimelineGraph winningRate={winningRate} time={time} />
           {state.status === gameState.end ? <GameSlider /> : null}
           {state.status === gameState.live ? (
-            <TeamStatsLive Participants={liveData.player_data} />
+            <TeamStatsLive
+              Participants={
+                liveData.match_data[liveData.match_data.length - 1].player_data
+              }
+            />
           ) : (
             <TeamStats
               redTeam={gameData[0].team_avg_data}
@@ -367,7 +385,11 @@ export const GameAnalysis = () => {
             />
           )}
           {state.status === gameState.live ? (
-            <TeamInfoLive Participants={liveData.player_data} />
+            <TeamInfoLive
+              Participants={
+                liveData.match_data[liveData.match_data.length - 1].player_data
+              }
+            />
           ) : (
             <TeamInfo
               redParticipants={gameData[0].participants}

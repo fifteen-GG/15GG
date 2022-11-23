@@ -15,7 +15,7 @@ services:
 
   gg_backend:
     build:
-      context: ./15gg_back
+      context: ./15GG_back
       args:
         - DB_HOST=${DB_HOST}
         - DB_PORT=${DB_PORT}
@@ -30,8 +30,8 @@ services:
 
   gg_frontend:
     build:
-      context: ./15gg_front
-      args:        
+      context: ./15GG_front
+      args:
         - REACT_APP_GG_API_ROOT=${REACT_APP_GG_API_ROOT}
         - REACT_APP_GG_WS_ROOT=${REACT_APP_GG_WS_ROOT}
         - REACT_APP_DDRAGON_API_ROOT=${REACT_APP_DDRAGON_API_ROOT}

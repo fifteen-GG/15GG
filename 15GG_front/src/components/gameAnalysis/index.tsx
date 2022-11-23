@@ -303,7 +303,6 @@ export const GameAnalysis = () => {
     setIsLoading(true);
     try {
       const data = await webClient.get(`/riot/match/detail/${matchID}`);
-
       if (data.status === 200) {
         setGameData(data.data);
       }

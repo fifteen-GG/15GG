@@ -24,7 +24,9 @@ export const Datacode = () => {
 
   const getNewCode = async () => {
     try {
-      const value = await webClient.get('/code');
+
+      const value = await webClient.get('/code',);
+
       console.log(value);
       if (value.status === 200) {
         setCode(value.data.value.split(''));
@@ -37,7 +39,8 @@ export const Datacode = () => {
   // for development environment
   const validateCode = async (code: string) => {
     try {
-      const value = await webClient.get(`/code/validate?value=${code}`);
+
+      const value = await webClient.get(`/code/validate?value=${code}`,);
 
       console.log(value);
     } catch (e) {

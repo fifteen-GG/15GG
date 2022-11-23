@@ -17,6 +17,7 @@ import LoadingPage from './components/LoadingPage';
 import ErrorPage from './components/ErrorPage';
 import { userInfoFormat } from './userInfo';
 import { useNavigate } from 'react-router-dom';
+import webClient from '../../WebClient';
 
 const UserInfoContainer = styled.div`
   width: 100%;
@@ -78,7 +79,6 @@ export const UserInfo = () => {
     setIsLoading(true);
     try {
       const value = await webClient.get(`/riot/user/${id}`);
-
       if (value.status === 200) {
         setSummonerInfo(userInfoFormat(value.data));
         console.log(value.data);
@@ -90,9 +90,7 @@ export const UserInfo = () => {
   };
   const getMatchData = async () => {
     try {
-      const match = await webClient.get(
-        `/riot/user/match_list/${id}?page=${pageNum}`,
-      );
+      const match = await webClient.get(`/riot/user/match_list/${id}?page=${pageNum}`);
 
       const fetchedGames: MatchInfoType[] = [...gamesData, ...match.data];
       setGamesData(fetchedGames);

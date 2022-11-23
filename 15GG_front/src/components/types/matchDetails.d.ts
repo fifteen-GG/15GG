@@ -61,6 +61,22 @@ export interface socketDetail {
   gold: number;
 }
 export interface SocketData {
+  match_data: matchData[];
+  match_id: string;
+}
+export type Participants = [
+  socketDetail,
+  socketDetail,
+  socketDetail,
+  socketDetail,
+  socketDetail,
+  socketDetail,
+  socketDetail,
+  socketDetail,
+  socketDetail,
+  socketDetail,
+];
+export interface matchData {
   blue_team_win_rate: number;
   timestamp: number;
   player_data: [
@@ -76,18 +92,6 @@ export interface SocketData {
     socketDetail,
   ];
 }
-export type Participants = [
-  socketDetail,
-  socketDetail,
-  socketDetail,
-  socketDetail,
-  socketDetail,
-  socketDetail,
-  socketDetail,
-  socketDetail,
-  socketDetail,
-  socketDetail,
-];
 interface item {
   itemID: number;
   count: number;

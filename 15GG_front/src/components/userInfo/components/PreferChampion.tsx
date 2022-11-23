@@ -18,11 +18,6 @@ interface propsType {
   champions: userChampion;
 }
 const PreferChampion = (props: propsType) => {
-  // const [userChampion, setUserChampion] = useState<userChampion>(
-  //   formatChampionsInfo(props.summonerInfo),
-  // );
-  // console.log(userChampion);
-  console.log(props.champions);
   return (
     <PreferChampionContainer>
       <PreferChampionWrapper>

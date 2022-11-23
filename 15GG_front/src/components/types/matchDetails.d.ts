@@ -23,7 +23,7 @@ export interface summonerDetail {
 
 export interface teamDetail {
   team: string;
-  teamAvgData: teamAvgData;
+  team_avg_data: teamAvgData;
   participants: [
     summonerDetail,
     summonerDetail,

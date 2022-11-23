@@ -21,6 +21,7 @@ import {
   Participants,
 } from '../types/matchDetails';
 import LoadingPage from '../userInfo/components/LoadingPage';
+import webClient from '../../WebClient';
 
 const GameAnalysisContainer = styled.div`
   width: 100%;
@@ -295,9 +296,7 @@ export const GameAnalysis = () => {
   const getGameData = async () => {
     setIsLoading(true);
     try {
-      const data = await axios.get(
-        `${process.env.REACT_APP_GG_API_ROOT}/riot/match/detail/${matchID}`,
-      );
+      const data = await webClient.get(`/riot/match/detail/${matchID}`);
       if (data.status === 200) {
         setGameData(data.data);
       }

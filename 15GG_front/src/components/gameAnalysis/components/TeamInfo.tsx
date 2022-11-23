@@ -57,13 +57,8 @@ const TeamInfo = (props: propsType) => {
               </UserInfoColumnWrapper>
             </TeamInfoHeader>
             <SummonerList>
-              {data.participants?.map(summoner => {
-                return (
-                  <Summoner
-                    key={summoner.summoner_name}
-                    summonerInfo={summoner}
-                  />
-                );
+              {data.participants?.map((summoner, index) => {
+                return <Summoner key={index} summonerInfo={summoner} />;
               })}
             </SummonerList>
           </TeamInfoWrapper>

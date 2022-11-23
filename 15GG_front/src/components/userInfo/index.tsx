@@ -151,7 +151,7 @@ export const UserInfo = () => {
             }
           >
             {gamesData.map((game: MatchInfoType, index) => {
-              return <MatchCard matchInfo={game} key={index}></MatchCard>;
+              return <MatchCard key={index} matchInfo={game} />;
             })}
           </InfiniteScroll>
         </>

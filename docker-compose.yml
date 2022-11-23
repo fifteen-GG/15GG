@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14.5-alpine
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_INITDB_ARGS: --encoding=UTF-8
+    ports:
+      - 5432:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  gg_backend:
+    build:
+      context: ./15gg_back
+      args:
+        - DB_HOST=${DB_HOST}
+        - DB_PORT=${DB_PORT}
+        - DB_USERNAME=${DB_USERNAME}
+        - DB_PASSWORD=${DB_PASSWORD}
+        - DB_NAME=${DB_NAME}
+        - RIOT_TOKEN=${RIOT_TOKEN}
+        - AMQP_HOST=${AMQP_HOST}
+    restart: always
+    ports:
+      - 8000:8000
+
+  gg_frontend:
+    build:
+      context: ./15gg_front
+      args:        
+        - REACT_APP_GG_API_ROOT=${REACT_APP_GG_API_ROOT}
+        - REACT_APP_GG_WS_ROOT=${REACT_APP_GG_WS_ROOT}
+        - REACT_APP_DDRAGON_API_ROOT=${REACT_APP_DDRAGON_API_ROOT}
+        - REACT_APP_OPGG_API_ROOT=${REACT_APP_OPGG_API_ROOT}
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - gg_backend
+
+  rabbitmq:
+    image: rabbitmq:3.11.2-alpine
+    ports:
+      - 5672:5672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+volumes:
+  db_data:
+  rabbitmq_data:

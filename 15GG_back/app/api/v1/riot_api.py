@@ -184,13 +184,26 @@ async def get_match_data_list(db: Session, response, puuid: str):
         participants_data = match_info['info']['participants']
         try:
             crud.match.create_match(db, {"match_id": match_id, "queue_mode": queue_mode,
-                                         "game_duration": game_duration, "created_at": created_at})
+                                         "game_duration": game_duration, "created_at": created_at, "status": 0})
         except:
             flag = True
             pass
         for participant in participants_data:
             summoner_id = participant['summonerId']
-            # tier_dict = await get_summoner_league_info(summoner_id)
+            tier_dict = await get_summoner_league_info(summoner_id)
+            if queue_mode == '5v5 Ranked Flex games':
+                try:
+                    tier = tier_dict['RANKED_FLEX_SR']['tier']
+                    rank = tier_dict['RANKED_FLEX_SR']['rank']
+                except:
+                    pass
+            else:
+                try:
+                    tier = tier_dict['RANKED_SOLO_5x5']['tier']
+                    rank = tier_dict['RANKED_SOLO_5x5']['rank']
+                except:
+                    pass
+
             participant_puuid = participant['puuid']
             team_id = participant['teamId']
             summoner_name = participant['summonerName']
@@ -232,8 +245,8 @@ async def get_match_data_list(db: Session, response, puuid: str):
             perks = {"perk": participant['perks']['styles'][0]['selections'][0]['perk'],
                      "perk_style": participant['perks']['styles'][1]['style']}
             result = {'match_id': match_id, "summoner_name": summoner_name,
-                      "tier": "Gold",
-                      "rank": "Gold",
+                      "tier": tier,
+                      "rank": rank,
                       "team_id": team_id,
                       'champion_name': champion_name,
                       "champion_level": champion_level,
@@ -394,7 +407,7 @@ async def get_match_info(summoner_name: str, page: str, db: Session = Depends(ge
         user_match_info = []
         participant_list = crud.participant.get_participant_list(
             db, page, summoner_name)
-        if len(participant_list) < 5:
+        if len(participant_list) == 0:
             raise Exception('There is no cached game.')
         for participant in participant_list:
             match_info = crud.match.get_match_info(db, participant.match_id)
@@ -403,7 +416,7 @@ async def get_match_info(summoner_name: str, page: str, db: Session = Depends(ge
                     (participant.kills+participant.assists) / participant.deaths, 2)
             except ZeroDivisionError:
                 kda = 'Perfect'
-            user_match_info.append({'match_id': participant.match_id,
+            user_match_info.append({'match_id': participant.match_id, 'status': match_info.status,
                                    'game_duration': match_info.game_duration, 'win': participant.win, 'created_at': match_info.created_at,
                                     'queue_mode': match_info.queue_mode, 'champion_name': participant.champion_name,
                                     'team_id': participant.team_id,
@@ -432,6 +445,7 @@ async def get_match_preview(match_id: str):
 async def get_match_detail(match_id: str, db: Session = Depends(get_db)):
     async with httpx.AsyncClient() as client:
         try:
+            match_info = crud.match.get_match_info(db, match_id)
             participants = crud.participant.get_participant_by_match_id(
                 db, match_id)
         except:
@@ -494,15 +508,15 @@ async def get_match_detail(match_id: str, db: Session = Depends(get_db)):
                 blue_avg['golds'] += gold_earned
                 blue_avg['kills'] += kills
                 blue_avg['level'] += champ_level
-                blue_participants.append({'summoner_name': summoner_name, 'champion_name': champion_name, 'rank': 'gold', 'champ_level': champ_level, 'spells': spells, 'perks': perks, 'items': items, 'gold_earned': gold_earned, 'kills': kills,
+                blue_participants.append({'summoner_name': summoner_name, 'champion_name': champion_name, 'rank': participant.rank, 'tier': participant.tier, 'champ_level': champ_level, 'spells': spells, 'perks': perks, 'items': items, 'gold_earned': gold_earned, 'kills': kills,
                                           'deaths': deaths, 'assists': assists, 'total_damage_dealt_to_champions': total_damage_dealt_to_champions, 'total_damage_taken': total_damage_taken, 'win': win})
             else:
                 red_avg['golds'] += gold_earned
                 red_avg['kills'] += kills
                 red_avg['level'] += champ_level
-                red_participants.append({'summoner_name': summoner_name, 'champion_name': champion_name, 'rank': 'gold', 'champ_level': champ_level, 'spells': spells, 'perks': perks, 'items': items, 'gold_earned': gold_earned, 'kills': kills,
+                red_participants.append({'summoner_name': summoner_name, 'champion_name': champion_name, 'rank': participant.rank, 'tier': participant.tier, 'champ_level': champ_level, 'spells': spells, 'perks': perks, 'items': items, 'gold_earned': gold_earned, 'kills': kills,
                                          'deaths': deaths, 'assists': assists, 'total_damage_dealt_to_champions': total_damage_dealt_to_champions, 'total_damage_taken': total_damage_taken, 'win': win})
-        return [{'team': 'red', 'win': red_participants[0]['win'], 'team_avg_data': {'golds': red_avg['golds']/5, 'kills': red_avg['kills']/5, 'level': red_avg['level']/5}, 'participants': red_participants}, {'team': 'blue', 'win': blue_participants[0]['win'], 'team_avg_data': {'golds': blue_avg['golds']/5, 'kills': blue_avg['kills']/5, 'level': blue_avg['level']/5}, 'participants': blue_participants}]
+        return [{'match_id': match_info.id, 'status': match_info.status}, {'team': 'red', 'win': red_participants[0]['win'], 'team_avg_data': {'golds': red_avg['golds'], 'kills': red_avg['kills'], 'level': red_avg['level']/5}, 'participants': red_participants}, {'team': 'blue', 'win': blue_participants[0]['win'], 'team_avg_data': {'golds': blue_avg['golds'], 'kills': blue_avg['kills'], 'level': blue_avg['level']/5}, 'participants': blue_participants}]
 
 
 @ router.post('/update/cache/{summoner_name}')

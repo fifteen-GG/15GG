@@ -26,6 +26,7 @@ interface propsType {
   ];
 }
 const TeamInfoLive = (props: propsType) => {
+  console.log(props);
   const [teamData, setTeamData] = useState([
     {
       team: 'RED TEAM',

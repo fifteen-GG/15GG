@@ -10,6 +10,7 @@ export const MatchInfoWrapper = styled.div`
     props.win ? Palette.GG_MATCHCARD_BLUE : Palette.GG_MATCHCARD_RED};
   border-radius: 10px;
   padding: 10px 10px 8px 14px;
+  cursor: pointer;
 `;
 
 export const AnalysisStatus = styled.div`

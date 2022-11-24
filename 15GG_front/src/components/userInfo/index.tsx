@@ -4,6 +4,8 @@ import type { MatchInfoType } from '../types/matchInfo';
 import type { SummonerInfoType } from '../types/summonerInfo';
 import styled from 'styled-components';
 import axios from 'axios';
+import webClient from '../../WebClient';
+
 //import components
 import UserRank from './components/UserRank';
 import UserGraph from './components/UserGraph';
@@ -15,7 +17,6 @@ import LoadingPage from './components/LoadingPage';
 import ErrorPage from './components/ErrorPage';
 import { userInfoFormat } from './userInfo';
 import { useNavigate } from 'react-router-dom';
-import webClient from '../../WebClient';
 
 const UserInfoContainer = styled.div`
   width: 100%;
@@ -88,7 +89,10 @@ export const UserInfo = () => {
   };
   const getMatchData = async () => {
     try {
-      const match = await webClient.get(`/riot/user/match_list/${id}?page=${pageNum}`);
+      const match = await webClient.get(
+        `/riot/user/match_list/${id}?page=${pageNum}`,
+      );
+
       const fetchedGames: MatchInfoType[] = [...gamesData, ...match.data];
       setGamesData(fetchedGames);
       setPageNum(pageNum + 1);
@@ -148,7 +152,12 @@ export const UserInfo = () => {
             }
           >
             {gamesData.map((game: MatchInfoType, index) => {
-              return <MatchCard key={index} matchInfo={game} />;
+              return (
+                <MatchCard
+                  matchInfo={game}
+                  key={game.champion_name}
+                ></MatchCard>
+              );
             })}
           </InfiniteScroll>
         </>

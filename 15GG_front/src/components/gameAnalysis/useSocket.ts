@@ -17,7 +17,7 @@ export const useSocket = (
   }, []);
 
   const connectStart = () => {
-    const ws = new WebSocket(`${process.env.REACT_APP_GG_WS_ROOT}`);
+    const ws = new WebSocket(`${process.env.REACT_APP_GG_WS_ROOT}/test`);
     ws.onmessage = e => {
       e.preventDefault();
       const data = e.data;

@@ -23,6 +23,7 @@ export interface summonerDetail {
 
 export interface teamDetail {
   team: string;
+  win: boolean;
   team_avg_data: teamAvgData;
   participants: [
     summonerDetail,
@@ -61,20 +62,8 @@ export interface socketDetail {
   gold: number;
 }
 export interface SocketData {
-  blue_team_win_rate: number;
-  timestamp: number;
-  player_data: [
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-  ];
+  match_data: matchData[];
+  match_id: string;
 }
 export type Participants = [
   socketDetail,
@@ -88,6 +77,22 @@ export type Participants = [
   socketDetail,
   socketDetail,
 ];
+export interface matchData {
+  timestamp: number;
+  player_data: [
+    socketDetail,
+    socketDetail,
+    socketDetail,
+    socketDetail,
+    socketDetail,
+    socketDetail,
+    socketDetail,
+    socketDetail,
+    socketDetail,
+    socketDetail,
+  ];
+  blue_team_win_rate: number;
+}
 interface item {
   itemID: number;
   count: number;

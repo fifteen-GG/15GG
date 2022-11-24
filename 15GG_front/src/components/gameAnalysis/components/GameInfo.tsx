@@ -22,7 +22,7 @@ const GameInfo = (props: propsType) => {
     } else if (queueMode === queue_mode.blind) {
       return '일반게임';
     } else if (queueMode === queue_mode.aram) {
-      return '칼바람나락';
+      return '무작위 총력전';
     } else if (queueMode === queue_mode.urf) {
       return 'U.R.F.';
     } else {

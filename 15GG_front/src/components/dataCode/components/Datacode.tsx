@@ -11,8 +11,10 @@ import {
   RefreshButton,
 } from '../styles/datacode.s';
 import { useSocket, SocketStatus } from '../useSocket';
+import { useNavigate } from 'react-router-dom';
 
 export const Datacode = () => {
+  const navigate = useNavigate();
   const [code, setCode] = useState<string[]>(['0', '0', '0', '0', '0', '0']);
   const [codeExpired, setCodeExpired] = useState<number>(0);
   const [refresh, setRefresh] = useState<number>(0);
@@ -25,8 +27,7 @@ export const Datacode = () => {
 
   const getNewCode = async () => {
     try {
-
-      const value = await webClient.get('/code',);
+      const value = await webClient.get('/code');
 
       console.log(value);
       if (value.status === 200) {
@@ -49,13 +50,13 @@ export const Datacode = () => {
 
   useEffect(() => {
     console.log(responseMessage);
+    if (responseMessage) navigate(`/live?match%ID=${responseMessage}`);
   }, [responseMessage, code]);
 
   // for development environment
   const validateCode = async (code: string) => {
     try {
-
-      const value = await webClient.get(`/code/validate?value=${code}`,);
+      const value = await webClient.get(`/code/validate?value=${code}`);
 
       console.log(value);
     } catch (e) {

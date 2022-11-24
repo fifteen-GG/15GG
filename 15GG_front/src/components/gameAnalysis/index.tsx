@@ -12,11 +12,14 @@ import * as Palette from '../../assets/colorPalette';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { useSocket, SocketStatus } from './useSocket';
-import { gameState } from '../types/enum';
+import { gameState, queue_mode } from '../types/enum';
 import axios from 'axios';
+import sample_live_result from '../../assets/sample_live_result.json';
+
 import {
   teamDetail,
   SocketData,
+  matchData,
   socketDetail,
   Participants,
 } from '../types/matchDetails';
@@ -52,9 +55,8 @@ export const GameAnalysis = () => {
         timestamp: 0,
         player_data: [
           {
-            summonerName: '이름없음0',
+            summonerName: '이름없음',
             championName: '0',
-            rank: '0',
             spells: {
               spell1: 0,
               spell2: 0,
@@ -71,12 +73,11 @@ export const GameAnalysis = () => {
             kills: 0,
             deaths: 0,
             assists: 0,
-            // gold: 0,
+            gold: 0,
           },
           {
-            summonerName: '이름없음1',
+            summonerName: '이름없음',
             championName: '0',
-            rank: '0',
             spells: {
               spell1: 0,
               spell2: 0,
@@ -93,12 +94,11 @@ export const GameAnalysis = () => {
             kills: 0,
             deaths: 0,
             assists: 0,
-            // gold: 0,
+            gold: 0,
           },
           {
-            summonerName: '이름없음2',
+            summonerName: '이름없음',
             championName: '0',
-            rank: '0',
             spells: {
               spell1: 0,
               spell2: 0,
@@ -115,12 +115,11 @@ export const GameAnalysis = () => {
             kills: 0,
             deaths: 0,
             assists: 0,
-            // gold: 0,
+            gold: 0,
           },
           {
-            summonerName: '이름없음3',
+            summonerName: '이름없음',
             championName: '0',
-            rank: '0',
             spells: {
               spell1: 0,
               spell2: 0,
@@ -137,12 +136,11 @@ export const GameAnalysis = () => {
             kills: 0,
             deaths: 0,
             assists: 0,
-            // gold: 0,
+            gold: 0,
           },
           {
-            summonerName: '이름없음4',
+            summonerName: '이름없음',
             championName: '0',
-            rank: '0',
             spells: {
               spell1: 0,
               spell2: 0,
@@ -159,12 +157,11 @@ export const GameAnalysis = () => {
             kills: 0,
             deaths: 0,
             assists: 0,
-            // gold: 0,
+            gold: 0,
           },
           {
-            summonerName: '이름없음5',
+            summonerName: '이름없음',
             championName: '0',
-            rank: '0',
             spells: {
               spell1: 0,
               spell2: 0,
@@ -181,12 +178,11 @@ export const GameAnalysis = () => {
             kills: 0,
             deaths: 0,
             assists: 0,
-            // gold: 0,
+            gold: 0,
           },
           {
-            summonerName: '이름없음6',
+            summonerName: '이름없음',
             championName: '0',
-            rank: '0',
             spells: {
               spell1: 0,
               spell2: 0,
@@ -203,12 +199,11 @@ export const GameAnalysis = () => {
             kills: 0,
             deaths: 0,
             assists: 0,
-            // gold: 0,
+            gold: 0,
           },
           {
-            summonerName: '이름없음7',
+            summonerName: '이름없음',
             championName: '0',
-            rank: '0',
             spells: {
               spell1: 0,
               spell2: 0,
@@ -225,12 +220,11 @@ export const GameAnalysis = () => {
             kills: 0,
             deaths: 0,
             assists: 0,
-            // gold: 0,
+            gold: 0,
           },
           {
-            summonerName: '이름없음8',
+            summonerName: '이름없음',
             championName: '0',
-            rank: '0',
             spells: {
               spell1: 0,
               spell2: 0,
@@ -247,12 +241,11 @@ export const GameAnalysis = () => {
             kills: 0,
             deaths: 0,
             assists: 0,
-            // gold: 0,
+            gold: 0,
           },
           {
-            summonerName: '이름없음9',
+            summonerName: '이름없음',
             championName: '0',
-            rank: '0',
             spells: {
               spell1: 0,
               spell2: 0,
@@ -269,17 +262,16 @@ export const GameAnalysis = () => {
             kills: 0,
             deaths: 0,
             assists: 0,
-            // gold: 0,
+            gold: 0,
           },
         ],
       },
     ],
     match_id: '0',
   } as unknown as SocketData);
-  console.log(liveData);
+  const [endData, setEndData] = useState<matchData[]>([]);
   console.log(liveData.match_data);
-  console.log(liveData.match_data[0].timestamp);
-  console.log(liveData.match_data[0].player_data);
+  console.log(liveData.match_data[liveData.match_data.length - 1].timestamp);
   const [gameData, setGameData] = useState([
     {} as teamDetail,
     {} as teamDetail,
@@ -287,11 +279,15 @@ export const GameAnalysis = () => {
   // console.log(gameData);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
+  const [status, setStatus] = useState<gameState>(gameState.live);
+  const [mode, setMode] = useState<queue_mode>(queue_mode.solo);
+  const [date, setDate] = useState<string>('2022년 11월 23일');
   console.log(time);
+  const [length, setLength] = useState<number>(liveData.match_data.length - 1);
+  console.log(liveData.match_data.length - 1);
+  console.log(length);
   const [winRate, setWinRate] = useState<number>(0.5);
-  console.log(winRate);
   const [winningRate, setWinningRate] = useState<number[]>([0]);
-  console.log(winningRate);
   const [parse, setParse] = useState<number>(0);
   console.log(parse);
   const params = new URLSearchParams(window.location.search);
@@ -324,34 +320,50 @@ export const GameAnalysis = () => {
       console.log('onConnectionOpened');
     }
   });
-
+  console.log(sample_live_result);
   useEffect(() => {
-    if (state.status === gameState.live) {
+    if (responseMessage === 'Game ended' || status === gameState.end) {
+      setStatus(gameState.end);
+      console.log(sample_live_result);
+      // setEndData(sample_live_result);
+      // console.log(data);
+    }
+    if (status === gameState.live) {
       if (parse) {
         let data = JSON.parse(responseMessage);
         setLiveData(data);
+        console.log(data);
       }
     }
   }, [parse, responseMessage]);
-  // console.log(liveData);
   useEffect(() => {
-    if (state.status === gameState.live) {
+    if (status === gameState.live) {
       if (parse) {
+        setLength(liveData.match_data.length - 1);
         setTime(liveData.match_data[liveData.match_data.length - 1].timestamp);
         setWinRate(
           liveData.match_data[liveData.match_data.length - 1]
             .blue_team_win_rate,
         );
-        let rate: number[] = [];
+        let rate: number[] = [0];
         liveData.match_data.map((value, index) => {
           rate.push(
-            Math.round(
+            Math.floor(
               50 - 100 * liveData.match_data[index].blue_team_win_rate,
             ),
           );
         });
         setWinningRate(rate);
       }
+    }
+    if (status === gameState.end) {
+      setTime(endData[length].timestamp);
+      setWinRate(endData[length].blue_team_win_rate);
+      let rate: number[] = [0];
+      for (let i = 0; i <= length; i++) {
+        rate.push(Math.floor(50 - 100 * endData[i].blue_team_win_rate));
+      }
+      setWinningRate(rate);
     }
   }, [liveData]);
   return (
@@ -360,37 +372,39 @@ export const GameAnalysis = () => {
         <LoadingPage />
       ) : (
         <GameAnalysisWrapper>
-          <GameInfo status={state.status} mode={state.mode} date={state.date} />
-          {state.status === gameState.none ? <EmptyCover /> : null}
+          <GameInfo status={status} mode={mode} date={date} />
+          {status === gameState.none ? <EmptyCover /> : null}
           <TimeInfo>
-            경과시간 {Math.trunc(time / 60)}:
-            {Math.trunc(time % 60) < 10
-              ? '0' + Math.trunc(time % 60)
-              : Math.trunc(time % 60)}
+            경과시간 {Math.floor(time / 60)}:
+            {Math.floor(time % 60) < 10
+              ? '0' + Math.floor(time % 60)
+              : Math.floor(time % 60)}
           </TimeInfo>
           <TimelineBarGraph winRate={winRate} />
-          <TimelineGraph winningRate={winningRate} time={time} />
-          {state.status === gameState.end ? <GameSlider /> : null}
-          {state.status === gameState.live ? (
+          <TimelineGraph winningRate={winningRate} length={length} />
+          {status === gameState.end ? <GameSlider /> : null}
+          {status === gameState.live ? (
             <TeamStatsLive
-              Participants={
-                liveData.match_data[liveData.match_data.length - 1].player_data
-              }
+              Participants={liveData.match_data[length].player_data}
             />
+          ) : status === gameState.end ? (
+            <TeamStatsLive Participants={endData[length].player_data} />
           ) : (
             <TeamStats
               redTeam={gameData[0].team_avg_data}
               blueTeam={gameData[1].team_avg_data}
             />
           )}
-          {state.status === gameState.live ? (
+          {status === gameState.live ? (
             <TeamInfoLive
-              Participants={
-                liveData.match_data[liveData.match_data.length - 1].player_data
-              }
+              Participants={liveData.match_data[length].player_data}
             />
+          ) : status === gameState.end ? (
+            <TeamInfoLive Participants={endData[length].player_data} />
           ) : (
             <TeamInfo
+              redWin={gameData[0].win}
+              blueWin={gameData[1].win}
               redParticipants={gameData[0].participants}
               blueParticipants={gameData[1].participants}
             />

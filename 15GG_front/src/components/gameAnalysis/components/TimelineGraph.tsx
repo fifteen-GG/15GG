@@ -26,24 +26,7 @@ ChartJS.register(
   Legend,
 );
 
-const labels = [
-  ' ',
-  ' ',
-  ' ',
-  '1',
-  ' ',
-  ' ',
-  ' ',
-  ' ',
-  ' ',
-  ' ',
-  ' ',
-  '2',
-  ' ',
-  ' ',
-  ' ',
-  ' ',
-];
+const labels = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
 
 const options = {
   responsive: true,
@@ -76,7 +59,7 @@ const options = {
   },
 };
 export const data = {
-  labels,
+  // labels,
   datasets: [
     {
       fill: {
@@ -134,7 +117,7 @@ const createGradient = (
 };
 interface propsType {
   winningRate: number[];
-  time: number;
+  length: number;
 }
 const TimelineGraph = (props: propsType) => {
   const chartRef = useRef<ChartJS>(null);
@@ -144,18 +127,32 @@ const TimelineGraph = (props: propsType) => {
   // const [winningRate, setWinningRate] = useState<number[]>([]);
   // console.log(Math.round(50 - 100 * props.winRate));
   const [cntLabel, setCntLabel] = useState<string[]>(labels);
-  const [timeCount, setTimeCount] = useState<number>(3);
+  const [timeCount, setTimeCount] = useState<number>(1);
   const [count, setCount] = useState<number>(0);
   useEffect(() => {
     console.log(props.winningRate);
     setCount(data => data + 1);
-    console.log(Math.floor(props.time / 60));
-    if (count >= 15) {
-      if (Math.floor((props.time + 8) / 60) === timeCount) {
-        setCntLabel([...cntLabel, timeCount as unknown as string]);
-        setTimeCount(timeCount + 1);
-      } else setCntLabel([...cntLabel, '' as unknown as string]);
+    // if (count >= 15) {
+    //   if (Math.floor(props.time / 60) === timeCount) {
+    //     setCntLabel([...cntLabel, timeCount as unknown as string]);
+    //     setTimeCount(timeCount + 1);
+    //     console.log(timeCount);
+    //     console.log(cntLabel);
+    //   } else setCntLabel([...cntLabel, '']);
+    // }
+    if (props.length + 1 >= 15) {
+      let label: string[] = [...labels];
+      for (let i = 15; i <= props.length + 1; i++) {
+        // if (i === 60 * timeCount){
+        //   label = [...label, timeCount as unknown as string];
+        //   setTimeCount
+        // }
+        label = [...label, ''];
+      }
+      setCntLabel(label);
+      console.log(cntLabel);
     }
+    console.log(props.length);
     const chart = chartRef.current;
     if (!chart) {
       return;

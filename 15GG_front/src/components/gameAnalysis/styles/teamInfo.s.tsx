@@ -24,12 +24,17 @@ export const TeamInfoHeader = styled.div`
   flex-direction: column;
   height: 44px;
 `;
-export const TeamName = styled.div<TeamStatProps>`
+export const TeamNameWrapper = styled.div`
   display: flex;
-  background-color: ${Palette.GG_BLACK_70};
   height: 28px;
   border-radius: 4px 4px 0 0;
   padding-left: 8px;
+  padding-right: 8px;
+  background-color: ${Palette.GG_BLACK_70};
+  justify-content: space-between;
+`;
+export const TeamName = styled.div<TeamStatProps>`
+  display: flex;
   color: ${props =>
     props.team === TeamNameEnum.RED ? Palette.GG_RED : Palette.GG_BLUE};
   font-size: 12px;

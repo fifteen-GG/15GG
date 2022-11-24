@@ -66,21 +66,14 @@ const MatchCard = (props: propsType) => {
   };
   ///status, win, reated_at, game_duration, queue_mode
   return (
-    <MatchCardContainer
-      onClick={() =>
-        navigate(`/live?match%ID=${props.matchInfo.match_id}`, {
-          state: {
-            status: 'live',
-            mode: props.matchInfo.queue_mode,
-            date: props.matchInfo.created_at,
-          },
-        })
-      }
-    >
+    <MatchCardContainer>
       <AnalysisStatus status={props.matchInfo.status}>
         {formatAnalysisStatus(props.matchInfo.status)}
       </AnalysisStatus>
-      <MatchInfoWrapper win={props.matchInfo.win}>
+      <MatchInfoWrapper
+        onClick={() => navigate(`/live?match%ID=${props.matchInfo.match_id}`)}
+        win={props.matchInfo.win}
+      >
         <MatchMainInfo>
           <MatchResult>{props.matchInfo.win ? '승리' : '패배'}</MatchResult>
           <MatchDate>
@@ -149,7 +142,7 @@ const MatchCard = (props: propsType) => {
           <ItemWrapper>
             {props.matchInfo.items.map((item: number, index: number) => {
               return item === 0 ? (
-                <ItemBox />
+                <ItemBox key={index} />
               ) : (
                 <ItemImg
                   className={'item' + index}

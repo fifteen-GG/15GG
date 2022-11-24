@@ -95,7 +95,7 @@ const Summoner = (props: propsType) => {
         <ItemWrapper>
           {props.summonerInfo.items.map((item: number, index) => {
             return item === 0 ? (
-              <ItemBox />
+              <ItemBox key={index} />
             ) : (
               <ItemImg
                 className={'item' + index}
@@ -107,12 +107,6 @@ const Summoner = (props: propsType) => {
             );
           })}
         </ItemWrapper>
-        {/* props.summonerInfo.totalDamageDealtToChampions > 1000
-          ? `${
-              (props.summonerInfo.totalDamageDealtToChampions / 1000).toString()
-                .toLocaleString
-            }`
-          :  */}
         {props.summonerInfo.total_damage_dealt_to_champions.toLocaleString()} ·{' '}
         {parseInt((props.summonerInfo.gold_earned / 1000).toString())}K
       </ItemInterface>

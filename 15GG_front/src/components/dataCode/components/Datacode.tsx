@@ -10,6 +10,7 @@ import {
   FooterContent,
   RefreshButton,
 } from '../styles/datacode.s';
+import { useSocket, SocketStatus } from '../useSocket';
 
 export const Datacode = () => {
   const [code, setCode] = useState<string[]>(['0', '0', '0', '0', '0', '0']);
@@ -30,11 +31,25 @@ export const Datacode = () => {
       console.log(value);
       if (value.status === 200) {
         setCode(value.data.value.split(''));
+        // 소켓 열기
       }
     } catch (e) {
       console.log(e);
     }
   };
+  const { responseMessage } = useSocket(state => {
+    if (state === SocketStatus.onNewChatReceived) {
+      console.log('onNewMessageReceived');
+    } else if (state === SocketStatus.onConnectionFailed) {
+      console.error('onConnectionFailed');
+    } else if (state === SocketStatus.onConnectionOpened) {
+      console.log('onConnectionOpened');
+    }
+  }, code.join(''));
+
+  useEffect(() => {
+    console.log(responseMessage);
+  }, [responseMessage, code]);
 
   // for development environment
   const validateCode = async (code: string) => {

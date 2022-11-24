@@ -142,7 +142,7 @@ const MatchCard = (props: propsType) => {
           <ItemWrapper>
             {props.matchInfo.items.map((item: number, index: number) => {
               return item === 0 ? (
-                <ItemBox />
+                <ItemBox key={index} />
               ) : (
                 <ItemImg
                   className={'item' + index}

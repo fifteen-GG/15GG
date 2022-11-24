@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 from http.client import HTTPException
-from app.api.v1.riot_api import get_match_data, get_match_data_list
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session

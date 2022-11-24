@@ -1,3 +1,4 @@
+from http.client import HTTPException
 from app.crud.base import CRUDBase
 from app.models.match import Match
 from app.schemas.match import MatchCreate, MatchUpdate
@@ -27,6 +28,20 @@ class CrudMatch(CRUDBase[Match, MatchCreate, MatchUpdate]):
             db.rollback()
             raise Exception
         return
+
+    def get_analyzing_match(self, db: Session):
+        analyzing_match_list = db.query(self.model).filter(
+            self.model.status == 1).all()
+        return analyzing_match_list
+
+    def update_match_status(self, db: Session, match_id: str, status: int):
+        current_status = db.query(self.model).filter(
+            self.model.id == match_id).one().status
+        if status - current_status != 1:
+            raise Exception
+        db.query(self.model).filter(self.model.id ==
+                                    match_id).update({'status': status}, synchronize_session=False)
+        db.commit()
 
 
 match = CrudMatch(Match)

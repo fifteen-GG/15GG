@@ -536,7 +536,8 @@ async def get_match_detail(match_id: str, db: Session = Depends(get_db)):
                 red_avg['level'] += champ_level
                 red_participants.append({'summoner_name': summoner_name, 'champion_name': champion_name, 'rank': participant.rank, 'tier': participant.tier, 'champ_level': champ_level, 'spells': spells, 'perks': perks, 'items': items, 'gold_earned': gold_earned, 'kills': kills,
                                          'deaths': deaths, 'assists': assists, 'total_damage_dealt_to_champions': total_damage_dealt_to_champions, 'total_damage_taken': total_damage_taken, 'win': win})
-        return [{'match_id': match_info.id, 'status': match_info.status}, {'team': 'red', 'win': red_participants[0]['win'], 'team_avg_data': {'golds': red_avg['golds'], 'kills': red_avg['kills'], 'level': red_avg['level']/5}, 'participants': red_participants}, {'team': 'blue', 'win': blue_participants[0]['win'], 'team_avg_data': {'golds': blue_avg['golds'], 'kills': blue_avg['kills'], 'level': blue_avg['level']/5}, 'participants': blue_participants}]
+
+        return [{'match_id': match_info.id, 'queue_mode': match_info.queue_mode, 'status': match_info.status, 'created_at': match_info.created_at}, {'team': 'red', 'win': red_participants[0]['win'], 'team_avg_data': {'golds': red_avg['golds'], 'kills': red_avg['kills'], 'level': red_avg['level']/5}, 'participants': red_participants}, {'team': 'blue', 'win': blue_participants[0]['win'], 'team_avg_data': {'golds': blue_avg['golds'], 'kills': blue_avg['kills'], 'level': blue_avg['level']/5}, 'participants': blue_participants}]
 
 
 @ router.post('/update/cache/{summoner_name}')

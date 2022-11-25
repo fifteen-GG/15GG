@@ -198,7 +198,7 @@ export const GameAnalysis = () => {
   ]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
-  const [status, setStatus] = useState<gameState>(gameState.live);
+  const [status, setStatus] = useState<gameState>(0);
   const [mode, setMode] = useState<queue_mode>(queue_mode.solo);
   const [date, setDate] = useState<string>('');
   const [length, setLength] = useState<number>(0);
@@ -214,7 +214,7 @@ export const GameAnalysis = () => {
       const data = await webClient.get(`/riot/match/detail/${matchID}`);
       if (data.status === 200) {
         setGameData(data.data);
-        // setStatus(data.data[0].status);
+        setStatus(data.data[0].status);
         setMode(data.data[0].queue_mode);
         setDate(data.data[0].created_at);
       }

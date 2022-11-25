@@ -5,13 +5,14 @@ import styled from 'styled-components';
 import logo from '../../assets/gg_logo_temp.svg';
 import bgVideo from '../../assets/gg_bg_worlds_22.mp4';
 import * as Palette from '../../assets/colorPalette';
+import webClient from '../../WebClient';
+import { useEffect, useState } from 'react';
 
 const LandingContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   background-position: center;
   background-size: cover;
 `;
@@ -84,10 +85,29 @@ const CodeButton = styled.div`
   align-items: center;
   cursor: pointer;
 `;
-
+interface matchData {
+  game_duration: number;
+  queue_mode: string;
+  status: number;
+  id: string;
+  created_at: string;
+}
 export const Landing = () => {
-  const matchId = [1, 2, 3, 4, 5];
+  const [matchList, setMatchList] = useState([{} as matchData]);
   const navigate = useNavigate();
+  const getGameData = async () => {
+    try {
+      const data = await webClient.get(`/match/analyzing`);
+      if (data.status === 200) {
+        setMatchList(data.data);
+      }
+    } catch (e: any) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    getGameData();
+  }, []);
   return (
     <LandingContainer>
       <BackgroundVideo src={bgVideo} loop autoPlay muted />
@@ -101,8 +121,8 @@ export const Landing = () => {
             <GamesTitle>실시간 분석 중</GamesTitle>
             <CodeButton onClick={() => navigate('/code')}>코드 생성</CodeButton>
           </GamesTitleWrapper>
-          {matchId.map((data, index) => {
-            return <LiveGame key={data} />;
+          {matchList.map((data, index) => {
+            return <LiveGame key={index} gameData={data} />;
           })}
         </GamesWrapper>
       </LandingWrapper>

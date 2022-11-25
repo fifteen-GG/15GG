@@ -22,8 +22,12 @@ async def block_io(websocket: WebSocket):
 
 async def on_message(message: aio_pika.IncomingMessage, websocket: WebSocket):
     async with message.process():
-        await websocket.send_json(json.loads(
-            message.body.decode('UTF-8').replace("'", "\"")))
+        if message.body == b'Game ended':
+            await websocket.send_text('Game ended')
+            await websocket.close()
+        else:
+            await websocket.send_json(json.loads(
+                message.body.decode('UTF-8').replace("'", "\"")))
 
 
 def format_live_match_data(raw_data):
@@ -52,8 +56,11 @@ async def analyze(
     try:
         new_data: dict = await websocket.receive_json()
     except:
+        response = aio_pika.Message(b'Game ended', content_encoding='UTF-8')
+        await exchange.publish(message=response, routing_key=match_id)
         with open('./result.json', 'w', encoding='utf-8') as file:
             json.dump(result, file, indent="\t")
+        raise WebSocketDisconnect
     formatted_data = np.array(
         list(format_live_match_data(new_data).values())).astype(np.float64).reshape(1, 25)
 

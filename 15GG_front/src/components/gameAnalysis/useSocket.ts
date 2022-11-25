@@ -8,7 +8,7 @@ export enum SocketStatus {
 
 export const useSocket = (
   onConnectionStateChanged: (state: SocketStatus) => void,
-  matchID: string | null,
+  matchID: any,
 ) => {
   const [responseMessage, setResponseMessage] = useState('');
 

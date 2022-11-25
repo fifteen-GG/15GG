@@ -8,11 +8,12 @@ async def nashor_client():
     with open('../app/assets/sample_live_result.json', encoding='UTF-8') as f:
         data = json.load(f)
         async with websockets.connect(uri) as websocket:
-            index = 0, 0
+            index = 0
             await websocket.send('KR-0000000000')
             while True:
                 index += 1
                 await asyncio.sleep(1)
+                print(index)
                 try:
                     # if int(data[index]['timestamp']) == timestamp:
                     await websocket.send(json.dumps(

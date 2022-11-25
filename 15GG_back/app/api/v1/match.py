@@ -9,7 +9,13 @@ from app.api.deps import get_db
 
 import httpx
 
+from pydantic import BaseModel
 router = APIRouter()
+
+
+class UpdateStatusValue(BaseModel):
+    match_id: str
+    status: int
 
 
 @router.get('/analyzing')
@@ -20,5 +26,5 @@ def get_analyzing_match(*, db: Session = Depends(get_db)):
 
 
 @router.post('/update/status')
-def update_match_status(*, db: Session = Depends(get_db), match_id: str, status: int):
-    crud.match.update_match_status(db, match_id, status)
+def update_match_status(*, db: Session = Depends(get_db), value: UpdateStatusValue):
+    crud.match.update_match_status(db, value.match_id, value.status)

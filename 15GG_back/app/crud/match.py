@@ -20,11 +20,14 @@ class CrudMatch(CRUDBase[Match, MatchCreate, MatchUpdate]):
             id=match_info['match_id'],
             queue_mode=match_info['queue_mode'],
             game_duration=match_info['game_duration'],
-            created_at=match_info['created_at'])
+            created_at=match_info['created_at'],
+            status=match_info['status']
+        ),
         try:
-            db.add(match_data)
+            db.add(match_data[0])
             db.commit()
         except Exception as e:
+            print(e)
             db.rollback()
             raise Exception
         return

@@ -8,6 +8,7 @@ export enum SocketStatus {
 
 export const useSocket = (
   onConnectionStateChanged: (state: SocketStatus) => void,
+  matchID: string | null,
 ) => {
   const [responseMessage, setResponseMessage] = useState('');
 
@@ -17,7 +18,9 @@ export const useSocket = (
   }, []);
 
   const connectStart = () => {
-    const ws = new WebSocket(`${process.env.REACT_APP_GG_WS_ROOT}/test`);
+    const ws = new WebSocket(
+      `${process.env.REACT_APP_GG_WS_ROOT}/match/${matchID}`,
+    );
     ws.onmessage = e => {
       e.preventDefault();
       const data = e.data;

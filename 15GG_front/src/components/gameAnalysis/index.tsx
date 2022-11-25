@@ -12,7 +12,6 @@ import EmptyCover from './components/EmptyCover';
 import styled from 'styled-components';
 import * as Palette from '../../assets/colorPalette';
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router';
 import { useSocket, SocketStatus } from './useSocket';
 import { gameState, queue_mode } from '../types/enum';
 import axios from 'axios';
@@ -199,7 +198,7 @@ export const GameAnalysis = () => {
   ]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
-  const [status, setStatus] = useState<gameState>(gameState.end);
+  const [status, setStatus] = useState<gameState>(gameState.live);
   const [mode, setMode] = useState<queue_mode>(queue_mode.solo);
   const [date, setDate] = useState<string>('');
   const [length, setLength] = useState<number>(0);
@@ -247,7 +246,7 @@ export const GameAnalysis = () => {
     } else if (state === SocketStatus.onConnectionOpened) {
       console.log('onConnectionOpened');
     }
-  });
+  }, matchID);
   useEffect(() => {
     if (responseMessage === 'Game ended') {
       getGameData();

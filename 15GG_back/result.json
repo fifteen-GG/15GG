@@ -1,0 +1,565 @@
+{
+	"match_id": "KR-0000000000",
+	"match_data": [
+		{
+			"timestamp": 6.367329120635986,
+			"player_data": [
+				{
+					"summonerName": "Grand Dia",
+					"championName": "\ub2e4\ub9ac\uc6b0\uc2a4",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uae40\ucd24\ub791",
+					"championName": "\ud5e4\uce74\ub9bc",
+					"isDead": false,
+					"level": 1,
+					"items": [
+						{
+							"itemID": 1102,
+							"count": 1
+						},
+						{
+							"itemID": 2003,
+							"count": 1
+						}
+					],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 500
+				},
+				{
+					"summonerName": "ad 70",
+					"championName": "\ud0a4\uc544\ub098",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc2a4 \ud06c",
+					"championName": "\ucf00\uc774\ud2c0\ub9b0",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc9dc\uc7a5\uc774\uc591",
+					"championName": "\uc81c\ub77c\uc2a4",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\ubd80\ud328 \uac80\uc0ac \uc6b0\ubcd1\uc6b0",
+					"championName": "\uce74\uc774\uc0ac",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc0ac\uc774\ubc84\uace0\uc544\uc6d0\uc7a5\ub2d8",
+					"championName": "\uadf8\ub808\uc774\ube0c\uc988",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "I8\ud559\ubc88\uc0c8\ub0b4\uae30",
+					"championName": "\uc560\ub2c8\ube44\uc544",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc815\uc7ad\uc601",
+					"championName": "\uc544\uce7c\ub9ac",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "ZzuF",
+					"championName": "\uc4f0\ub808\uc26c",
+					"isDead": false,
+					"level": 1,
+					"items": [
+						{
+							"itemID": 2419,
+							"count": 1
+						}
+					],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				}
+			],
+			"blue_team_win_rate": 0.5053236484527588
+		},
+		{
+			"timestamp": 7.233966827392578,
+			"player_data": [
+				{
+					"summonerName": "Grand Dia",
+					"championName": "\ub2e4\ub9ac\uc6b0\uc2a4",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uae40\ucd24\ub791",
+					"championName": "\ud5e4\uce74\ub9bc",
+					"isDead": false,
+					"level": 1,
+					"items": [
+						{
+							"itemID": 1102,
+							"count": 1
+						},
+						{
+							"itemID": 2003,
+							"count": 1
+						}
+					],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 500
+				},
+				{
+					"summonerName": "ad 70",
+					"championName": "\ud0a4\uc544\ub098",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc2a4 \ud06c",
+					"championName": "\ucf00\uc774\ud2c0\ub9b0",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc9dc\uc7a5\uc774\uc591",
+					"championName": "\uc81c\ub77c\uc2a4",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\ubd80\ud328 \uac80\uc0ac \uc6b0\ubcd1\uc6b0",
+					"championName": "\uce74\uc774\uc0ac",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc0ac\uc774\ubc84\uace0\uc544\uc6d0\uc7a5\ub2d8",
+					"championName": "\uadf8\ub808\uc774\ube0c\uc988",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "I8\ud559\ubc88\uc0c8\ub0b4\uae30",
+					"championName": "\uc560\ub2c8\ube44\uc544",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc815\uc7ad\uc601",
+					"championName": "\uc544\uce7c\ub9ac",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "ZzuF",
+					"championName": "\uc4f0\ub808\uc26c",
+					"isDead": false,
+					"level": 1,
+					"items": [
+						{
+							"itemID": 2419,
+							"count": 1
+						}
+					],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				}
+			],
+			"blue_team_win_rate": 0.5053236484527588
+		},
+		{
+			"timestamp": 8.101497650146484,
+			"player_data": [
+				{
+					"summonerName": "Grand Dia",
+					"championName": "\ub2e4\ub9ac\uc6b0\uc2a4",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uae40\ucd24\ub791",
+					"championName": "\ud5e4\uce74\ub9bc",
+					"isDead": false,
+					"level": 1,
+					"items": [
+						{
+							"itemID": 1102,
+							"count": 1
+						},
+						{
+							"itemID": 2003,
+							"count": 1
+						}
+					],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 500
+				},
+				{
+					"summonerName": "ad 70",
+					"championName": "\ud0a4\uc544\ub098",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc2a4 \ud06c",
+					"championName": "\ucf00\uc774\ud2c0\ub9b0",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc9dc\uc7a5\uc774\uc591",
+					"championName": "\uc81c\ub77c\uc2a4",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\ubd80\ud328 \uac80\uc0ac \uc6b0\ubcd1\uc6b0",
+					"championName": "\uce74\uc774\uc0ac",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc0ac\uc774\ubc84\uace0\uc544\uc6d0\uc7a5\ub2d8",
+					"championName": "\uadf8\ub808\uc774\ube0c\uc988",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "I8\ud559\ubc88\uc0c8\ub0b4\uae30",
+					"championName": "\uc560\ub2c8\ube44\uc544",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc815\uc7ad\uc601",
+					"championName": "\uc544\uce7c\ub9ac",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "ZzuF",
+					"championName": "\uc4f0\ub808\uc26c",
+					"isDead": false,
+					"level": 1,
+					"items": [
+						{
+							"itemID": 2419,
+							"count": 1
+						}
+					],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				}
+			],
+			"blue_team_win_rate": 0.5053236484527588
+		},
+		{
+			"timestamp": 8.968021392822266,
+			"player_data": [
+				{
+					"summonerName": "Grand Dia",
+					"championName": "\ub2e4\ub9ac\uc6b0\uc2a4",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uae40\ucd24\ub791",
+					"championName": "\ud5e4\uce74\ub9bc",
+					"isDead": false,
+					"level": 1,
+					"items": [
+						{
+							"itemID": 1102,
+							"count": 1
+						},
+						{
+							"itemID": 2003,
+							"count": 1
+						}
+					],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 500
+				},
+				{
+					"summonerName": "ad 70",
+					"championName": "\ud0a4\uc544\ub098",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc2a4 \ud06c",
+					"championName": "\ucf00\uc774\ud2c0\ub9b0",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc9dc\uc7a5\uc774\uc591",
+					"championName": "\uc81c\ub77c\uc2a4",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "ORDER",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\ubd80\ud328 \uac80\uc0ac \uc6b0\ubcd1\uc6b0",
+					"championName": "\uce74\uc774\uc0ac",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc0ac\uc774\ubc84\uace0\uc544\uc6d0\uc7a5\ub2d8",
+					"championName": "\uadf8\ub808\uc774\ube0c\uc988",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "I8\ud559\ubc88\uc0c8\ub0b4\uae30",
+					"championName": "\uc560\ub2c8\ube44\uc544",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "\uc815\uc7ad\uc601",
+					"championName": "\uc544\uce7c\ub9ac",
+					"isDead": false,
+					"level": 1,
+					"items": [],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				},
+				{
+					"summonerName": "ZzuF",
+					"championName": "\uc4f0\ub808\uc26c",
+					"isDead": false,
+					"level": 1,
+					"items": [
+						{
+							"itemID": 2419,
+							"count": 1
+						}
+					],
+					"team": "CHAOS",
+					"kills": 0,
+					"deaths": 0,
+					"assists": 0,
+					"gold": 0
+				}
+			],
+			"blue_team_win_rate": 0.5053236484527588
+		}
+	]
+}

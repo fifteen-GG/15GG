@@ -85,7 +85,7 @@ async def analyze(
         except Exception as e:
             print(e)
         os.remove(f'./{match_id}.json')
-        
+
         response = aio_pika.Message(b'Game ended', content_encoding='UTF-8')
         await exchange.publish(message=response, routing_key=match_id)
         raise WebSocketDisconnect

@@ -49,7 +49,11 @@ async def analyze(
         websocket: WebSocket, exchange: aio_pika.Exchange,
         match_id: str, result: dict,
         gg_model, windowed_data):
-    new_data: dict = await websocket.receive_json()
+    try:
+        new_data: dict = await websocket.receive_json()
+    except:
+        with open('./result.json', 'w', encoding='utf-8') as file:
+            json.dump(result, file, indent="\t")
     formatted_data = np.array(
         list(format_live_match_data(new_data).values())).astype(np.float64).reshape(1, 25)
 
@@ -121,6 +125,7 @@ async def analyze_game(websocket: WebSocket):
                 task.cancel()
             for task in done:
                 task.result()
+
     except WebSocketDisconnect:
         # TODO send result file to storage
         if websocket.client_state != WebSocketState.DISCONNECTED:

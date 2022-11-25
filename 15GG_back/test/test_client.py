@@ -16,11 +16,13 @@ async def nashor_client():
                 print(index)
                 try:
                     # if int(data[index]['timestamp']) == timestamp:
+                    if (index == 5):
+                        raise IndexError
                     await websocket.send(json.dumps(
                         {**data[index]}, ensure_ascii=False))
                     # res = await websocket.recv()
                     # print(res[20:40])
                 except IndexError:
-                    await websocket('Game ended')
+                    await websocket.send('Game ended')
 
 asyncio.get_event_loop().run_until_complete(nashor_client())

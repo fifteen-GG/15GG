@@ -13,16 +13,16 @@ import Summoner from './Summoner';
 import type { summonerDetail } from '../../types/matchDetails';
 
 interface propsType {
-  redWin: boolean;
-  redParticipants: [
+  blueWin: boolean;
+  blueParticipants: [
     summonerDetail,
     summonerDetail,
     summonerDetail,
     summonerDetail,
     summonerDetail,
   ];
-  blueWin: boolean;
-  blueParticipants: [
+  redWin: boolean;
+  redParticipants: [
     summonerDetail,
     summonerDetail,
     summonerDetail,
@@ -33,27 +33,27 @@ interface propsType {
 const TeamInfo = (props: propsType) => {
   const [teamData, setTeamData] = useState([
     {
-      team: 'RED TEAM',
-      win: props.redWin,
-      participants: props.redParticipants,
-    },
-    {
       team: 'BLUE TEAM',
       win: props.blueWin,
       participants: props.blueParticipants,
+    },
+    {
+      team: 'RED TEAM',
+      win: props.redWin,
+      participants: props.redParticipants,
     },
   ]);
   const fetchPropsData = () => {
     setTeamData([
       {
-        team: 'RED TEAM',
-        win: props.redWin,
-        participants: props.redParticipants,
-      },
-      {
         team: 'BLUE TEAM',
         win: props.blueWin,
         participants: props.blueParticipants,
+      },
+      {
+        team: 'RED TEAM',
+        win: props.redWin,
+        participants: props.redParticipants,
       },
     ]);
   };

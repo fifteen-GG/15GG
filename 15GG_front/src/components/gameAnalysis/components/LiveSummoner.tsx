@@ -1,5 +1,6 @@
 import {
   SummonerContainer,
+  IsDeadCover,
   SummonerInterface,
   ChampionBox,
   ChampionImg,
@@ -48,6 +49,7 @@ const LiveSummoner = (props: propsType) => {
 
   return (
     <SummonerContainer>
+      {props.livesummonerInfo.isDead ? <IsDeadCover /> : null}
       <SummonerInterface>
         {props.livesummonerInfo.championName === '0' ? (
           <ChampionBox />

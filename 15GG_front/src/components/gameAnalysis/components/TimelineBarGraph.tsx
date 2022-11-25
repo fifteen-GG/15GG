@@ -75,8 +75,7 @@ interface propsType {
 
 const TimelineBarGraph = (props: propsType) => {
   const chartRef = useRef<ChartJS>(null);
-  const [blueWinningRate, setBlueWinningRate] = useState<number>(0);
-  console.log(50 - 100 * props.winRate);
+  const [blueWinningRate, setBlueWinningRate] = useState<number>(0.5);
   const [chartData, setChartData] = useState<ChartData<'bar'>>({
     datasets: [],
   });
@@ -94,16 +93,16 @@ const TimelineBarGraph = (props: propsType) => {
       datasets: [
         {
           label: 'Dataset 1',
-          data: [100 - props.winRate * 100],
-          borderColor: `${Palette.GG_TIMELINE_BARGRAPH_RED}`,
-          backgroundColor: `${Palette.GG_TIMELINE_BARGRAPH_RED}`,
+          data: [props.winRate * 100],
+          borderColor: `${Palette.GG_TIMELINE_BARGRAPH_BORDER_BLUE}`,
+          backgroundColor: `${Palette.GG_TIMELINE_BARGRAPH_BLUE}`,
           borderWidth: 0,
         },
         {
           label: 'Dataset 2',
-          data: [100],
-          borderColor: `${Palette.GG_TIMELINE_BARGRAPH_BORDER_BLUE}`,
-          backgroundColor: `${Palette.GG_TIMELINE_BARGRAPH_BLUE}`,
+          data: [100 - props.winRate * 100],
+          borderColor: `${Palette.GG_TIMELINE_BARGRAPH_RED}`,
+          backgroundColor: `${Palette.GG_TIMELINE_BARGRAPH_RED}`,
           borderWidth: 0,
         },
       ],
@@ -124,9 +123,9 @@ const TimelineBarGraph = (props: propsType) => {
         />
       </GraphWrapper>
       <RateWrapper>
-        <WinningRate>{100 - Math.floor(blueWinningRate * 100)}%</WinningRate>
-        <GraphTitle>승률</GraphTitle>
         <WinningRate>{Math.floor(blueWinningRate * 100)}%</WinningRate>
+        <GraphTitle>승률</GraphTitle>
+        <WinningRate>{100 - Math.floor(blueWinningRate * 100)}%</WinningRate>
       </RateWrapper>
     </TimelineBarContainer>
   );

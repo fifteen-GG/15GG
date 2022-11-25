@@ -34,9 +34,9 @@ enum queue_mode {
   urf = 'Pick URF games',
 }
 export enum gameState {
-  live = 'live',
-  end = 'complete',
-  none = 'incomplete',
+  none,
+  live,
+  end,
 }
 interface propsType {
   matchInfo: MatchInfoType;
@@ -59,7 +59,7 @@ const MatchCard = (props: propsType) => {
     }
   };
 
-  const formatAnalysisStatus = (status: string) => {
+  const formatAnalysisStatus = (status: gameState) => {
     if (status === gameState.live) return '실시간 분석';
     else if (status === gameState.end) return '분석완료';
     else return '미분석';

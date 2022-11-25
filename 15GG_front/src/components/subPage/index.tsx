@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { DataCode } from '../dataCode';
 import { GameAnalysis } from '../gameAnalysis';
 import { UserInfo } from '../userInfo';
-import logo from '../../assets/gg_logo_temp.svg';
+import logo from '../../assets/gg_logo_full_v2.svg';
 import styled from 'styled-components';
 import { PageEnum } from '../types/enum';
 

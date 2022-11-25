@@ -541,7 +541,7 @@ async def get_match_detail(match_id: str, db: Session = Depends(get_db)):
         return [{'match_id': match_info.id, 'queue_mode': match_info.queue_mode, 'status': match_info.status, 'created_at': match_info.created_at}, {'team': 'red', 'win': red_participants[0]['win'], 'team_avg_data': {'golds': red_avg['golds'], 'kills': red_avg['kills'], 'level': red_avg['level']/5}, 'participants': red_participants}, {'team': 'blue', 'win': blue_participants[0]['win'], 'team_avg_data': {'golds': blue_avg['golds'], 'kills': blue_avg['kills'], 'level': blue_avg['level']/5}, 'participants': blue_participants}]
 
 
-@ router.post('/update/cache/{summoner_name}')
+@ router.get('/update/cache/{summoner_name}')
 async def update_cache(summoner_name: str, db: Session = Depends(get_db)):
     # 유저 업데이트하고 매치 업데이트하기
     summoner_info = await get_summoner_riot(summoner_name, db, 'u')

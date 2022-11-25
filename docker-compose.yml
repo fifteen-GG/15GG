@@ -48,6 +48,7 @@ services:
       - 5672:5672
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+    restart: always
 volumes:
   db_data:
   rabbitmq_data:

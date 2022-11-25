@@ -80,7 +80,7 @@ export const formatChampName = (name: string) => {
   if (name === '말파이트') return 'Malphite';
   if (name === '모데카이저') return 'Mordekaiser';
   if (name === '모르가나') return 'Morgana';
-  if (name === '문도 박사') return 'Drmundo';
+  if (name === '문도 박사') return 'DrMundo';
   if (name === '미스 포츈') return 'Missfortune';
   if (name === '바드') return 'Bard';
   if (name === '바루스') return 'Varus';

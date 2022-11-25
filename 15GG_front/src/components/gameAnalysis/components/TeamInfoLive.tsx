@@ -1,6 +1,7 @@
 import {
   TeamInfoContainer,
   TeamInfoWrapper,
+  TeamNameWrapper,
   TeamInfoHeader,
   TeamName,
   UserInfoColumnWrapper,
@@ -29,16 +30,6 @@ const TeamInfoLive = (props: propsType) => {
   console.log(props);
   const [teamData, setTeamData] = useState([
     {
-      team: 'RED TEAM',
-      participants: [
-        props.Participants[0],
-        props.Participants[1],
-        props.Participants[2],
-        props.Participants[3],
-        props.Participants[4],
-      ],
-    },
-    {
       team: 'BLUE TEAM',
       participants: [
         props.Participants[5],
@@ -48,20 +39,20 @@ const TeamInfoLive = (props: propsType) => {
         props.Participants[9],
       ],
     },
+    {
+      team: 'RED TEAM',
+      participants: [
+        props.Participants[0],
+        props.Participants[1],
+        props.Participants[2],
+        props.Participants[3],
+        props.Participants[4],
+      ],
+    },
   ]);
   console.log(teamData);
   const fetchPropsData = () => {
     setTeamData([
-      {
-        team: 'RED TEAM',
-        participants: [
-          props.Participants[0],
-          props.Participants[1],
-          props.Participants[2],
-          props.Participants[3],
-          props.Participants[4],
-        ],
-      },
       {
         team: 'BLUE TEAM',
         participants: [
@@ -70,6 +61,16 @@ const TeamInfoLive = (props: propsType) => {
           props.Participants[7],
           props.Participants[8],
           props.Participants[9],
+        ],
+      },
+      {
+        team: 'RED TEAM',
+        participants: [
+          props.Participants[0],
+          props.Participants[1],
+          props.Participants[2],
+          props.Participants[3],
+          props.Participants[4],
         ],
       },
     ]);
@@ -84,7 +85,9 @@ const TeamInfoLive = (props: propsType) => {
         return (
           <TeamInfoWrapper key={data.team}>
             <TeamInfoHeader>
-              <TeamName team={index}>{data.team}</TeamName>
+              <TeamNameWrapper>
+                <TeamName team={index}>{data.team}</TeamName>
+              </TeamNameWrapper>
               <UserInfoColumnWrapper>
                 <UserInfoColumn>SUMMONER</UserInfoColumn>
                 <UserInfoColumn>ITEMS</UserInfoColumn>

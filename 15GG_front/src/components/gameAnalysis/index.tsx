@@ -57,14 +57,6 @@ export const GameAnalysis = () => {
           {
             summonerName: '이름없음',
             championName: '0',
-            spells: {
-              spell1: 0,
-              spell2: 0,
-            },
-            perks: {
-              perk: 0,
-              perkStyl: 0,
-            },
             isDead: false,
             level: 0,
             team: '',
@@ -78,14 +70,6 @@ export const GameAnalysis = () => {
           {
             summonerName: '이름없음',
             championName: '0',
-            spells: {
-              spell1: 0,
-              spell2: 0,
-            },
-            perks: {
-              perk: 0,
-              perkStyl: 0,
-            },
             isDead: false,
             level: 0,
             team: '',
@@ -99,14 +83,6 @@ export const GameAnalysis = () => {
           {
             summonerName: '이름없음',
             championName: '0',
-            spells: {
-              spell1: 0,
-              spell2: 0,
-            },
-            perks: {
-              perk: 0,
-              perkStyl: 0,
-            },
             isDead: false,
             level: 0,
             team: '',
@@ -120,14 +96,6 @@ export const GameAnalysis = () => {
           {
             summonerName: '이름없음',
             championName: '0',
-            spells: {
-              spell1: 0,
-              spell2: 0,
-            },
-            perks: {
-              perk: 0,
-              perkStyl: 0,
-            },
             isDead: false,
             level: 0,
             team: '',
@@ -141,14 +109,6 @@ export const GameAnalysis = () => {
           {
             summonerName: '이름없음',
             championName: '0',
-            spells: {
-              spell1: 0,
-              spell2: 0,
-            },
-            perks: {
-              perk: 0,
-              perkStyl: 0,
-            },
             isDead: false,
             level: 0,
             team: '',
@@ -162,14 +122,6 @@ export const GameAnalysis = () => {
           {
             summonerName: '이름없음',
             championName: '0',
-            spells: {
-              spell1: 0,
-              spell2: 0,
-            },
-            perks: {
-              perk: 0,
-              perkStyl: 0,
-            },
             isDead: false,
             level: 0,
             team: '',
@@ -183,14 +135,6 @@ export const GameAnalysis = () => {
           {
             summonerName: '이름없음',
             championName: '0',
-            spells: {
-              spell1: 0,
-              spell2: 0,
-            },
-            perks: {
-              perk: 0,
-              perkStyl: 0,
-            },
             isDead: false,
             level: 0,
             team: '',
@@ -204,14 +148,6 @@ export const GameAnalysis = () => {
           {
             summonerName: '이름없음',
             championName: '0',
-            spells: {
-              spell1: 0,
-              spell2: 0,
-            },
-            perks: {
-              perk: 0,
-              perkStyl: 0,
-            },
             isDead: false,
             level: 0,
             team: '',
@@ -225,14 +161,6 @@ export const GameAnalysis = () => {
           {
             summonerName: '이름없음',
             championName: '0',
-            spells: {
-              spell1: 0,
-              spell2: 0,
-            },
-            perks: {
-              perk: 0,
-              perkStyl: 0,
-            },
             isDead: false,
             level: 0,
             team: '',
@@ -246,14 +174,6 @@ export const GameAnalysis = () => {
           {
             summonerName: '이름없음',
             championName: '0',
-            spells: {
-              spell1: 0,
-              spell2: 0,
-            },
-            perks: {
-              perk: 0,
-              perkStyl: 0,
-            },
             isDead: false,
             level: 0,
             team: '',
@@ -271,6 +191,7 @@ export const GameAnalysis = () => {
   } as unknown as SocketData);
   const [endData, setEndData] = useState<matchData[]>([]);
   console.log(liveData.match_data);
+  console.log(sample_live_result);
   console.log(liveData.match_data[liveData.match_data.length - 1].timestamp);
   const [gameData, setGameData] = useState([
     {} as teamDetail,
@@ -279,7 +200,7 @@ export const GameAnalysis = () => {
   // console.log(gameData);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
-  const [status, setStatus] = useState<gameState>(gameState.live);
+  const [status, setStatus] = useState<gameState>(gameState.none);
   const [mode, setMode] = useState<queue_mode>(queue_mode.solo);
   const [date, setDate] = useState<string>('2022년 11월 23일');
   console.log(time);
@@ -320,12 +241,11 @@ export const GameAnalysis = () => {
       console.log('onConnectionOpened');
     }
   });
-  console.log(sample_live_result);
   useEffect(() => {
     if (responseMessage === 'Game ended' || status === gameState.end) {
-      setStatus(gameState.end);
+      setStatus(gameState.none);
+      // let data: matchData[] = sample_live_result;
       console.log(sample_live_result);
-      // setEndData(sample_live_result);
       // console.log(data);
     }
     if (status === gameState.live) {
@@ -349,7 +269,7 @@ export const GameAnalysis = () => {
         liveData.match_data.map((value, index) => {
           rate.push(
             Math.floor(
-              50 - 100 * liveData.match_data[index].blue_team_win_rate,
+              100 * liveData.match_data[index].blue_team_win_rate - 50,
             ),
           );
         });
@@ -391,8 +311,8 @@ export const GameAnalysis = () => {
             <TeamStatsLive Participants={endData[length].player_data} />
           ) : (
             <TeamStats
-              redTeam={gameData[0].team_avg_data}
               blueTeam={gameData[1].team_avg_data}
+              redTeam={gameData[0].team_avg_data}
             />
           )}
           {status === gameState.live ? (
@@ -403,10 +323,10 @@ export const GameAnalysis = () => {
             <TeamInfoLive Participants={endData[length].player_data} />
           ) : (
             <TeamInfo
-              redWin={gameData[0].win}
               blueWin={gameData[1].win}
-              redParticipants={gameData[0].participants}
+              redWin={gameData[0].win}
               blueParticipants={gameData[1].participants}
+              redParticipants={gameData[0].participants}
             />
           )}
         </GameAnalysisWrapper>

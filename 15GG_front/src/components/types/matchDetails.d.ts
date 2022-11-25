@@ -42,15 +42,6 @@ export interface teamAvgData {
 export interface socketDetail {
   summonerName: string;
   championName: string;
-  rank: string;
-  spells: {
-    spell1: string;
-    spell2: string;
-  };
-  perks: {
-    perk: number;
-    perkStyle: number;
-  };
   isDead: boolean;
   level: number;
   team: string;
@@ -64,6 +55,9 @@ export interface socketDetail {
 export interface SocketData {
   match_data: matchData[];
   match_id: string;
+}
+export interface SocketData {
+  match_data: matchData[];
 }
 export type Participants = [
   socketDetail,

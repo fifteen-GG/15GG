@@ -4,13 +4,22 @@ import * as Palette from '../../../assets/colorPalette';
 export const SummonerContainer = styled.div`
   display: flex;
   height: 38px;
-  padding: 0px 4px 0px 8px;
   justify-content: space-between;
+`;
+export const IsDeadCover = styled.div`
+  width: 100%;
+  padding-right: 4px;
+  display: flex;
+  height: 38px;
+  position: absolute;
+  z-index: 2;
+  background-color: ${Palette.GG_BLACK_100 + `BF`};
 `;
 export const SummonerInterface = styled.div`
   display: flex;
   height: 22px;
   margin-top: 7px;
+  margin-left: 8px;
 `;
 export const ChampionBox = styled.div`
   height: 22px;
@@ -86,6 +95,7 @@ export const ItemInterface = styled.div`
   width: 117px;
   height: 26px;
   margin-top: 6px;
+  margin-right: 4px;
   align-items: flex-start;
 `;
 export const GoldWrapper = styled.div`
@@ -103,11 +113,11 @@ export const ItemWrapper = styled.div`
   &.item {
     position: absolute;
     align-items: flex-start
-    z-index: 2;
+    z-index: 1;
   }
 `;
 export const ItemImg = styled.img`
-  z-index: 2;
+  z-index: 1;
   height: 15px;
   width: 15px;
   margin-right: 2px;

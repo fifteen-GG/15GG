@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { SearchBox } from './components/SearchBox';
 import { LiveGame } from './components/LiveGame';
 import styled from 'styled-components';
-import logo from '../../assets/gg_logo_temp.svg';
+import logo from '../../assets/gg_logo_full_v2.svg';
 import bgVideo from '../../assets/gg_bg_worlds_22.mp4';
 import * as Palette from '../../assets/colorPalette';
 

@@ -64,8 +64,8 @@ export const data = {
     {
       fill: {
         target: 'origin',
-        above: `${Palette.GG_TIMELINE_RED}`,
-        below: `${Palette.GG_TIMELINE_BLUE}`,
+        above: `${Palette.GG_TIMELINE_BLUE}`,
+        below: `${Palette.GG_TIMELINE_RED}`,
       },
       data: [0],
       // borderColor: createGradient(chart.ctx, chart.chartArea),
@@ -83,8 +83,8 @@ const createGradient = (
   area: ChartArea,
   graphType: string,
 ) => {
-  const graphRed = `${Palette.GG_TIMELINE_RED}`;
   const graphBlue = `${Palette.GG_TIMELINE_BLUE}`;
+  const graphRed = `${Palette.GG_TIMELINE_RED}`;
   const graphNeutral = `${Palette.GG_GRFTITLE}`;
   let gradient;
 
@@ -92,20 +92,20 @@ const createGradient = (
   area.bottom = 45;
 
   const lineGradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
-  const redTeamGradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
   const blueTeamGradient = ctx.createLinearGradient(
     0,
     area.bottom,
     0,
     area.top,
   );
+  const redTeamGradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
 
-  lineGradient.addColorStop(0, graphBlue);
-  lineGradient.addColorStop(1, graphRed);
-  redTeamGradient.addColorStop(0, graphNeutral);
-  redTeamGradient.addColorStop(1, graphRed);
-  blueTeamGradient.addColorStop(0, graphBlue);
-  blueTeamGradient.addColorStop(1, graphNeutral);
+  lineGradient.addColorStop(1, graphBlue);
+  lineGradient.addColorStop(0, graphRed);
+  blueTeamGradient.addColorStop(1, graphBlue);
+  blueTeamGradient.addColorStop(0, graphNeutral);
+  redTeamGradient.addColorStop(1, graphNeutral);
+  redTeamGradient.addColorStop(0, graphRed);
 
   graphType === 'line'
     ? (gradient = lineGradient)
@@ -166,8 +166,8 @@ const TimelineGraph = (props: propsType) => {
         borderColor: createGradient(chart.ctx, chart.chartArea, 'line'),
         fill: {
           target: 'origin',
-          above: createGradient(chart.ctx, chart.chartArea, 'red'),
-          below: createGradient(chart.ctx, chart.chartArea, 'blue'),
+          above: createGradient(chart.ctx, chart.chartArea, 'blue'),
+          below: createGradient(chart.ctx, chart.chartArea, 'red'),
         },
       })),
     };

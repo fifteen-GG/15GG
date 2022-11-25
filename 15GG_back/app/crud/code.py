@@ -1,4 +1,5 @@
 from datetime import datetime
+from multiprocessing.sharedctypes import Value
 
 from sqlalchemy.orm import Session
 
@@ -30,11 +31,13 @@ class CRUDCode(CRUDBase[Code, CodeCreate, CodeUpdate]):
 
     def code_update(self, db: Session, code: str, match_id: str):
         try:
-            db.query(self.model).filter(self.model.value == code).update(
-                {'match_id': match_id}, synchronize_session=False)
-            db.commit()
+            db.query(self.model).filter(self.model.value == code).one()
         except Exception as e:
             db.rollback()
+            raise ValueError
+        db.query(self.model).filter(self.model.value == code).update(
+            {'match_id': match_id}, synchronize_session=False)
+        db.commit()
 
 
 code = CRUDCode(Code)

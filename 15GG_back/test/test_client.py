@@ -16,8 +16,6 @@ async def nashor_client():
                 print(index)
                 try:
                     # if int(data[index]['timestamp']) == timestamp:
-                    if (index == 5):
-                        raise IndexError
                     await websocket.send(json.dumps(
                         {**data[index]}, ensure_ascii=False))
                     # res = await websocket.recv()

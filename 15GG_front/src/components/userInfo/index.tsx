@@ -66,8 +66,6 @@ export const UserInfo = () => {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('ID');
   useEffect(() => {
-    // getMatchData();
-    // getUserData();
     init();
   }, []);
   const init = async () => {
@@ -102,7 +100,7 @@ export const UserInfo = () => {
     }
   };
   const pageReLoad = () => {
-    webClient.post(`/riot/update/cache/${id}`);
+    webClient.get(`/riot/update/cache/${id}`);
     window.location.replace(`/user?ID=${id}`);
   };
   if (httpStatusCode === 404) return <ErrorPage />;

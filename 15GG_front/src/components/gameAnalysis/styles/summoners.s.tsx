@@ -4,13 +4,13 @@ import * as Palette from '../../../assets/colorPalette';
 export const SummonerContainer = styled.div`
   display: flex;
   height: 38px;
-  padding: 0px 4px 0px 8px;
   justify-content: space-between;
 `;
 export const SummonerInterface = styled.div`
   display: flex;
   height: 22px;
   margin-top: 7px;
+  margin-left: 8px;
 `;
 export const ChampionImg = styled.img`
   height: 22px;
@@ -80,18 +80,18 @@ export const SummonerName = styled.div`
 `;
 export const SummonerTier = styled.div`
   display: flex;
-  background-color: ${(props: { rank: string }) =>
-    props.rank.slice(0, 1).toUpperCase() === 'D'
+  background-color: ${(props: { tier: string }) =>
+    props.tier.slice(0, 1).toUpperCase() === 'D'
       ? Palette.GG_DIAMOND
-      : props.rank.slice(0, 1).toUpperCase() === 'P'
+      : props.tier.slice(0, 1).toUpperCase() === 'P'
       ? Palette.GG_PLATINUM
-      : props.rank.slice(0, 1).toUpperCase() === 'G'
+      : props.tier.slice(0, 1).toUpperCase() === 'G'
       ? Palette.GG_GOLD
-      : props.rank.slice(0, 1).toUpperCase() === 'S'
+      : props.tier.slice(0, 1).toUpperCase() === 'S'
       ? Palette.GG_SILVER
-      : props.rank.slice(0, 1).toUpperCase() === 'B'
+      : props.tier.slice(0, 1).toUpperCase() === 'B'
       ? Palette.GG_BRONZE
-      : props.rank.slice(0, 1).toUpperCase() === 'I'
+      : props.tier.slice(0, 1).toUpperCase() === 'I'
       ? Palette.GG_SILVER
       : Palette.GG_PURPLE};
   height: 10px;
@@ -128,6 +128,7 @@ export const ItemInterface = styled.div`
   width: 117px;
   height: 26px;
   margin-top: 6px;
+  margin-right: 4px;
   align-items: flex-end;
   font-size: 10px;
   font-weight: bold;

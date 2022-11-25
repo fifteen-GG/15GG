@@ -9,23 +9,23 @@ import {
   Icon,
 } from '../styles/teamStats.s';
 import type { teamAvgData } from '../../types/matchDetails';
-import type { socketDetail } from '../../types/matchDetails';
+import type { socketDetail, item } from '../../types/matchDetails';
 import { pngType } from '../styles/teamStats.s';
 interface propsType {
-  Participants: [
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-  ];
+  Participants: {
+    summonerName: string;
+    championName: string;
+    isDead: boolean;
+    level: number;
+    items: item[];
+    team: string;
+    kills: number;
+    deaths: number;
+    assists: number;
+    gold: number;
+  }[];
 }
-const TeamStatsLive = (props: propsType) => {
+const TeamStatsEnd = (props: propsType) => {
   const [teamStatsData, setTeamStatsData] = useState([
     {
       team: 'Blue',
@@ -151,4 +151,4 @@ const TeamStatsLive = (props: propsType) => {
   );
 };
 
-export default TeamStatsLive;
+export default TeamStatsEnd;

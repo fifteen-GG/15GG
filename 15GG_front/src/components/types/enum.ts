@@ -1,13 +1,13 @@
 export enum gameState {
-  live = 'live',
-  end = 'complete',
-  none = 'incomplete',
+  none,
+  live,
+  end,
 }
 export enum queue_mode {
   solo = '5v5 Ranked Solo games',
   blind = '5v5 Blind Pick games',
-  aram = '5v5 ARAM games',
   flex = '5v5 Ranked Flex games',
+  aram = '5v5 ARAM games',
   urf = 'Pick URF games',
 }
 export enum PageEnum {

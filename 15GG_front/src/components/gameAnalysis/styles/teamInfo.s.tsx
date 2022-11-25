@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import * as Palette from '../../../assets/colorPalette';
 
 enum TeamNameEnum {
-  RED,
   BLUE,
+  RED,
 }
 interface TeamStatProps {
   team: TeamNameEnum;
@@ -16,13 +16,13 @@ export const TeamInfoContainer = styled.div`
 export const TeamInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 234px;
+  height: 238px;
   margin-bottom: 12px;
 `;
 export const TeamInfoHeader = styled.div`
   display: flex;
   flex-direction: column;
-  height: 44px;
+  height: 48px;
 `;
 export const TeamNameWrapper = styled.div`
   display: flex;
@@ -43,7 +43,7 @@ export const TeamName = styled.div<TeamStatProps>`
 `;
 export const UserInfoColumnWrapper = styled.div`
   display: flex;
-  padding: 0 8px 0 8px;
+  padding: 2px 8px 2px 8px;
   height: 16px;
   align-items: center;
   justify-content: space-between;

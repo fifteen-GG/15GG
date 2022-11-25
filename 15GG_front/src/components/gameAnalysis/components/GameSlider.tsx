@@ -8,12 +8,15 @@ import { GameSliderContainer } from '../styles/gameslider.s';
 //   const remainingSeconds = seconds % 60;
 //   return `${minutes}:${remainingSeconds}`;
 // };
-
-const GameSlider = () => {
+interface propsType {
+  indexSlider: (values: number) => void;
+  length: number;
+}
+const GameSlider = (props: propsType) => {
   const [values, setValues] = useState([0]);
-  const STEP = 10;
+  const STEP = 1;
   const MIN = 0;
-  const MAX = 1500;
+  const MAX = Math.trunc(props.length);
   return (
     <GameSliderContainer>
       <Range
@@ -24,6 +27,7 @@ const GameSlider = () => {
         onChange={values => {
           setValues(values);
           console.log(values);
+          props.indexSlider(values[0]);
         }}
         renderTrack={({ props, children }) => (
           <div

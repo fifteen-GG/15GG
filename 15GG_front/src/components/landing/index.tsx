@@ -93,7 +93,7 @@ interface matchData {
   created_at: string;
 }
 export const Landing = () => {
-  const [matchList, setMatchList] = useState([{} as matchData]);
+  const [matchList, setMatchList] = useState([]);
   const navigate = useNavigate();
   const getGameData = async () => {
     try {

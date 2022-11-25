@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import type { ChartData, ChartArea } from 'chart.js';
 import * as Palette from '../../../assets/colorPalette';
-import LoadingPage from '../../userInfo/components/LoadingPage';
 import { TimelineGraphContainer } from '../styles/timelineGraph.s';
 import {
   Chart as ChartJS,
@@ -171,9 +170,7 @@ const TimelineGraph = (props: propsType) => {
 
   return (
     <>
-      {isLoading ? (
-        <LoadingPage />
-      ) : (
+      {isLoading ? null : (
         <TimelineGraphContainer>
           <Chart
             type="line"

@@ -12,8 +12,30 @@ from starlette.websockets import WebSocketDisconnect, WebSocketState
 from app import crud
 from app.database.session import SessionLocal
 from app.core import settings
+import os
+import boto3
+from app.core.config import settings
+import time
 
 router = APIRouter()
+
+
+def s3_connection():
+    try:
+        s3 = boto3.client(
+            service_name="s3",
+            region_name="ap-northeast-2",
+            aws_access_key_id=settings.AWS_ACCESS_KEY,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        )
+    except Exception as e:
+        print(e)
+    else:
+        print("s3 bucket connected!")
+        return s3
+
+
+s3 = s3_connection()
 
 
 async def block_io(websocket: WebSocket):
@@ -56,10 +78,16 @@ async def analyze(
     try:
         new_data: dict = await websocket.receive_json()
     except:
+        with open(f'./{match_id}.json', 'w', encoding='utf-8') as file:
+            json.dump(result, file, indent="\t")
+        try:
+            s3.upload_file(f"./{match_id}.json", "15gg", f"{match_id}.json")
+        except Exception as e:
+            print(e)
+        os.remove(f'./{match_id}.json')
+        
         response = aio_pika.Message(b'Game ended', content_encoding='UTF-8')
         await exchange.publish(message=response, routing_key=match_id)
-        with open('./result.json', 'w', encoding='utf-8') as file:
-            json.dump(result, file, indent="\t")
         raise WebSocketDisconnect
     formatted_data = np.array(
         list(format_live_match_data(new_data).values())).astype(np.float64).reshape(1, 25)

@@ -23,6 +23,8 @@ class Settings(BaseSettings):
     SQLALCHEMY_DATABASE_URI: str = DB_URI
     AMQP_HOST: str = env.get('AMQP_HOST')
     RIOT_TOKEN: str = env.get('RIOT_TOKEN')
+    AWS_ACCESS_KEY: str = env.get('AWS_ACCESS_KEY')
+    AWS_SECRET_ACCESS_KEY: str = env.get('AWS_SECRET_ACCESS_KEY')
 
     class Config:
         env_file = '.env'

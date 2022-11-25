@@ -49,5 +49,5 @@ async def code_update(*, db: Session = Depends(get_db), code: str, match_id: str
             crud.match.get_match_info(db, match_id)
         except:
             response = await get_match_data(match_id, client)
-            await create_match_data_list(db, [response], None)
+            await create_match_data_list(db, response, None)
         crud.code.code_update(db, code, match_id)

@@ -29,7 +29,7 @@ const GameInfo = (props: propsType) => {
       return '사용자설정';
     }
   };
-  const formatAnalysisStatus = (status: string) => {
+  const formatAnalysisStatus = (status: gameState) => {
     if (status === gameState.live) return '실시간';
     else if (status === gameState.end) return '분석완료';
     else return '미분석';

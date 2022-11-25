@@ -4,6 +4,7 @@ import * as Palette from '../../../assets/colorPalette';
 export const SummonerContainer = styled.div`
   display: flex;
   height: 38px;
+  position: relative;
   justify-content: space-between;
 `;
 export const IsDeadCover = styled.div`
@@ -13,7 +14,7 @@ export const IsDeadCover = styled.div`
   height: 38px;
   position: absolute;
   z-index: 2;
-  background-color: ${Palette.GG_BLACK_100 + `BF`};
+  background-color: ${'#251E1E' + `BF`};
 `;
 export const SummonerInterface = styled.div`
   display: flex;

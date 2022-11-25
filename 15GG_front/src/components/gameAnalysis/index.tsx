@@ -1,8 +1,10 @@
 import GameInfo from './components/GameInfo';
 import TeamStats from './components/TeamStats';
 import TeamStatsLive from './components/TeamStatsLive';
+import TeamStatsEnd from './components/TeamStatsEnd';
 import TeamInfo from './components/TeamInfo';
 import TeamInfoLive from './components/TeamInfoLive';
+import TeamInfoEnd from './components/TeamInfoEnd';
 import TimelineGraph from './components/TimelineGraph';
 import TimelineBarGraph from './components/TimelineBarGraph';
 import GameSlider from './components/GameSlider';
@@ -14,13 +16,14 @@ import { useLocation } from 'react-router';
 import { useSocket, SocketStatus } from './useSocket';
 import { gameState, queue_mode } from '../types/enum';
 import axios from 'axios';
-import sample_live_result from '../../assets/sample_live_result.json';
+import endResultData from '../../assets/sample_live_result.json';
 
 import {
   teamDetail,
   SocketData,
   matchData,
-  socketDetail,
+  endData,
+  matchDetail,
   Participants,
 } from '../types/matchDetails';
 import LoadingPage from '../userInfo/components/LoadingPage';
@@ -189,32 +192,22 @@ export const GameAnalysis = () => {
     ],
     match_id: '0',
   } as unknown as SocketData);
-  const [endData, setEndData] = useState<matchData[]>([]);
-  console.log(liveData.match_data);
-  console.log(sample_live_result);
-  console.log(liveData.match_data[liveData.match_data.length - 1].timestamp);
+  const [endData, setEndData] = useState<endData[]>([]);
   const [gameData, setGameData] = useState([
     {} as teamDetail,
     {} as teamDetail,
   ]);
-  // console.log(gameData);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
-  const [status, setStatus] = useState<gameState>(gameState.none);
+  const [status, setStatus] = useState<gameState>(gameState.end);
   const [mode, setMode] = useState<queue_mode>(queue_mode.solo);
-  const [date, setDate] = useState<string>('2022년 11월 23일');
-  console.log(time);
-  const [length, setLength] = useState<number>(liveData.match_data.length - 1);
-  console.log(liveData.match_data.length - 1);
-  console.log(length);
+  const [date, setDate] = useState<string>('');
+  const [length, setLength] = useState<number>(0);
   const [winRate, setWinRate] = useState<number>(0.5);
   const [winningRate, setWinningRate] = useState<number[]>([0]);
   const [parse, setParse] = useState<number>(0);
-  console.log(parse);
   const params = new URLSearchParams(window.location.search);
   const matchID = params.get('match%ID');
-  console.log(matchID);
-  const { state } = useLocation();
   //for incomplete game data
   const getGameData = async () => {
     setIsLoading(true);
@@ -222,6 +215,9 @@ export const GameAnalysis = () => {
       const data = await webClient.get(`/riot/match/detail/${matchID}`);
       if (data.status === 200) {
         setGameData(data.data);
+        // setStatus(data.data[0].status);
+        setMode(data.data[0].queue_mode);
+        setDate(data.data[0].created_at);
       }
       if (data.data) setIsLoading(false);
     } catch (e: any) {
@@ -230,7 +226,18 @@ export const GameAnalysis = () => {
   };
   useEffect(() => {
     getGameData();
+    if (status === gameState.end) {
+      let endResult: endData[] = [...endData, ...endResultData];
+      setEndData(endResult);
+    }
   }, []);
+  useEffect(() => {
+    let rate: number[] = [0];
+    for (let i = 0; i <= endData.length - 1; i++) {
+      rate.push(Math.floor(50 - 100 * endData[i].blue_team_win_rate));
+    }
+    setWinningRate(rate);
+  }, [, endData]);
 
   const { responseMessage } = useSocket(state => {
     if (state === SocketStatus.onNewChatReceived) {
@@ -242,24 +249,31 @@ export const GameAnalysis = () => {
     }
   });
   useEffect(() => {
-    if (responseMessage === 'Game ended' || status === gameState.end) {
-      setStatus(gameState.none);
-      // let data: matchData[] = sample_live_result;
-      console.log(sample_live_result);
-      // console.log(data);
+    if (responseMessage === 'Game ended') {
+      getGameData();
     }
+  }, [responseMessage]);
+  // useEffect(() => {
+  //   if (status === gameState.end) {
+  //     let rate: number[] = [0];
+  //     for (let i = 0; i <= endData.length - 1; i++) {
+  //       rate.push(Math.floor(50 - 100 * endData[i].blue_team_win_rate));
+  //     }
+  //     setWinningRate(rate);
+  //     console.log(winningRate);
+  //   }
+  // }, [, setStatus, status]);
+  useEffect(() => {
     if (status === gameState.live) {
       if (parse) {
         let data = JSON.parse(responseMessage);
         setLiveData(data);
-        console.log(data);
       }
     }
   }, [parse, responseMessage]);
   useEffect(() => {
     if (status === gameState.live) {
       if (parse) {
-        setLength(liveData.match_data.length - 1);
         setTime(liveData.match_data[liveData.match_data.length - 1].timestamp);
         setWinRate(
           liveData.match_data[liveData.match_data.length - 1]
@@ -276,16 +290,20 @@ export const GameAnalysis = () => {
         setWinningRate(rate);
       }
     }
-    if (status === gameState.end) {
-      setTime(endData[length].timestamp);
-      setWinRate(endData[length].blue_team_win_rate);
-      let rate: number[] = [0];
-      for (let i = 0; i <= length; i++) {
-        rate.push(Math.floor(50 - 100 * endData[i].blue_team_win_rate));
-      }
-      setWinningRate(rate);
-    }
   }, [liveData]);
+
+  useEffect(() => {
+    if (status === gameState.end) {
+      if (endData.length !== 0) {
+        setTime(endData[length].timestamp);
+        setWinRate(endData[length].blue_team_win_rate);
+      }
+    }
+  }, [endData, length]);
+
+  const indexSlider = (values: number) => {
+    setLength(values);
+  };
   return (
     <GameAnalysisContainer>
       {isLoading ? (
@@ -301,32 +319,48 @@ export const GameAnalysis = () => {
               : Math.floor(time % 60)}
           </TimeInfo>
           <TimelineBarGraph winRate={winRate} />
-          <TimelineGraph winningRate={winningRate} length={length} />
-          {status === gameState.end ? <GameSlider /> : null}
+          {status === gameState.end ? (
+            <TimelineGraph
+              winningRate={winningRate}
+              length={endData.length - 1}
+            />
+          ) : (
+            <TimelineGraph
+              winningRate={winningRate}
+              length={liveData.match_data.length - 1}
+            />
+          )}
+          {status === gameState.end ? (
+            <GameSlider indexSlider={indexSlider} length={endData.length - 1} />
+          ) : null}
           {status === gameState.live ? (
             <TeamStatsLive
-              Participants={liveData.match_data[length].player_data}
+              Participants={
+                liveData.match_data[liveData.match_data.length - 1].player_data
+              }
             />
           ) : status === gameState.end ? (
-            <TeamStatsLive Participants={endData[length].player_data} />
+            <TeamStatsEnd Participants={endData[length].player_data} />
           ) : (
             <TeamStats
-              blueTeam={gameData[1].team_avg_data}
-              redTeam={gameData[0].team_avg_data}
+              blueTeam={gameData[2].team_avg_data}
+              redTeam={gameData[1].team_avg_data}
             />
           )}
           {status === gameState.live ? (
             <TeamInfoLive
-              Participants={liveData.match_data[length].player_data}
+              Participants={
+                liveData.match_data[liveData.match_data.length - 1].player_data
+              }
             />
           ) : status === gameState.end ? (
-            <TeamInfoLive Participants={endData[length].player_data} />
+            <TeamInfoEnd Participants={endData[length].player_data} />
           ) : (
             <TeamInfo
-              blueWin={gameData[1].win}
-              redWin={gameData[0].win}
-              blueParticipants={gameData[1].participants}
-              redParticipants={gameData[0].participants}
+              blueWin={gameData[2].win}
+              redWin={gameData[1].win}
+              blueParticipants={gameData[2].participants}
+              redParticipants={gameData[1].participants}
             />
           )}
         </GameAnalysisWrapper>

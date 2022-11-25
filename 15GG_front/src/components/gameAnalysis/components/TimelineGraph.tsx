@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import type { ChartData, ChartArea } from 'chart.js';
 import * as Palette from '../../../assets/colorPalette';
+import LoadingPage from '../../userInfo/components/LoadingPage';
 import { TimelineGraphContainer } from '../styles/timelineGraph.s';
 import {
   Chart as ChartJS,
@@ -121,38 +122,32 @@ interface propsType {
 }
 const TimelineGraph = (props: propsType) => {
   const chartRef = useRef<ChartJS>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [chartData, setChartData] = useState<ChartData<'line'>>({
     datasets: [],
   });
-  // const [winningRate, setWinningRate] = useState<number[]>([]);
-  // console.log(Math.round(50 - 100 * props.winRate));
   const [cntLabel, setCntLabel] = useState<string[]>(labels);
-  const [timeCount, setTimeCount] = useState<number>(1);
-  const [count, setCount] = useState<number>(0);
+  console.log(cntLabel);
+  // const [count, setCount] = useState<number>(0);
   useEffect(() => {
-    console.log(props.winningRate);
-    setCount(data => data + 1);
-    // if (count >= 15) {
-    //   if (Math.floor(props.time / 60) === timeCount) {
-    //     setCntLabel([...cntLabel, timeCount as unknown as string]);
-    //     setTimeCount(timeCount + 1);
-    //     console.log(timeCount);
-    //     console.log(cntLabel);
-    //   } else setCntLabel([...cntLabel, '']);
-    // }
+    console.log(props.length);
     if (props.length + 1 >= 15) {
       let label: string[] = [...labels];
-      for (let i = 15; i <= props.length + 1; i++) {
-        // if (i === 60 * timeCount){
-        //   label = [...label, timeCount as unknown as string];
-        //   setTimeCount
-        // }
-        label = [...label, ''];
-      }
-      setCntLabel(label);
-      console.log(cntLabel);
+      // for (let i = 15; i <= props.length; i++) {
+      //   // if (i === 60 * timeCount){
+      //   //   label = [...label, timeCount as unknown as string];
+      //   //   setTimeCount
+      //   // }
+      //   label = label.concat('');
+      // }
+      let arr = [''];
+      props.winningRate.map(data => {
+        arr.push('');
+      });
+      setCntLabel(arr);
     }
-    console.log(props.length);
+    setIsLoading(false);
+    console.log(isLoading);
     const chart = chartRef.current;
     if (!chart) {
       return;
@@ -171,21 +166,26 @@ const TimelineGraph = (props: propsType) => {
         },
       })),
     };
-    console.log(count);
     setChartData(chartData);
-  }, [props.winningRate, setCount]);
+  }, [props]);
 
   return (
-    <TimelineGraphContainer>
-      <Chart
-        type="line"
-        ref={chartRef}
-        options={options}
-        data={chartData}
-        // height={84}
-        width={360}
-      />
-    </TimelineGraphContainer>
+    <>
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
+        <TimelineGraphContainer>
+          <Chart
+            type="line"
+            ref={chartRef}
+            options={options}
+            data={chartData}
+            // height={84}
+            width={360}
+          />
+        </TimelineGraphContainer>
+      )}
+    </>
   );
 };
 

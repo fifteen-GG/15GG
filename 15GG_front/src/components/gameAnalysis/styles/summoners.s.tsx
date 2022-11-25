@@ -80,18 +80,18 @@ export const SummonerName = styled.div`
 `;
 export const SummonerTier = styled.div`
   display: flex;
-  background-color: ${(props: { rank: string }) =>
-    props.rank.slice(0, 1).toUpperCase() === 'D'
+  background-color: ${(props: { tier: string }) =>
+    props.tier.slice(0, 1).toUpperCase() === 'D'
       ? Palette.GG_DIAMOND
-      : props.rank.slice(0, 1).toUpperCase() === 'P'
+      : props.tier.slice(0, 1).toUpperCase() === 'P'
       ? Palette.GG_PLATINUM
-      : props.rank.slice(0, 1).toUpperCase() === 'G'
+      : props.tier.slice(0, 1).toUpperCase() === 'G'
       ? Palette.GG_GOLD
-      : props.rank.slice(0, 1).toUpperCase() === 'S'
+      : props.tier.slice(0, 1).toUpperCase() === 'S'
       ? Palette.GG_SILVER
-      : props.rank.slice(0, 1).toUpperCase() === 'B'
+      : props.tier.slice(0, 1).toUpperCase() === 'B'
       ? Palette.GG_BRONZE
-      : props.rank.slice(0, 1).toUpperCase() === 'I'
+      : props.tier.slice(0, 1).toUpperCase() === 'I'
       ? Palette.GG_SILVER
       : Palette.GG_PURPLE};
   height: 10px;

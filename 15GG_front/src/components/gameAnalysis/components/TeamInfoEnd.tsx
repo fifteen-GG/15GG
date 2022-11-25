@@ -10,23 +10,23 @@ import {
 } from '../styles/teamInfo.s';
 import { useEffect, useState } from 'react';
 import LiveSummoner from './LiveSummoner';
-import type { socketDetail } from '../../types/matchDetails';
+import type { socketDetail, item } from '../../types/matchDetails';
 
 interface propsType {
-  Participants: [
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-  ];
+  Participants: {
+    summonerName: string;
+    championName: string;
+    isDead: boolean;
+    level: number;
+    items: item[];
+    team: string;
+    kills: number;
+    deaths: number;
+    assists: number;
+    gold: number;
+  }[];
 }
-const TeamInfoLive = (props: propsType) => {
+const TeamInfoEnd = (props: propsType) => {
   const [teamData, setTeamData] = useState([
     {
       team: 'BLUE TEAM',
@@ -49,6 +49,7 @@ const TeamInfoLive = (props: propsType) => {
       ],
     },
   ]);
+
   const fetchPropsData = () => {
     setTeamData([
       {
@@ -74,6 +75,7 @@ const TeamInfoLive = (props: propsType) => {
     ]);
   };
   useEffect(() => {
+    console.log(props.Participants);
     fetchPropsData();
   }, [, props.Participants]);
   return (
@@ -107,4 +109,4 @@ const TeamInfoLive = (props: propsType) => {
   );
 };
 
-export default TeamInfoLive;
+export default TeamInfoEnd;

@@ -76,7 +76,6 @@ interface propsType {
 const TimelineBarGraph = (props: propsType) => {
   const chartRef = useRef<ChartJS>(null);
   const [blueWinningRate, setBlueWinningRate] = useState<number>(0.5);
-  console.log(50 - 100 * props.winRate);
   const [chartData, setChartData] = useState<ChartData<'bar'>>({
     datasets: [],
   });

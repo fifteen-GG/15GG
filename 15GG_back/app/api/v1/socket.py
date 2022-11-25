@@ -4,6 +4,8 @@ import random
 import functools
 import aio_pika
 import aio_pika.abc
+import torch
+import numpy as np
 from fastapi import APIRouter, WebSocket
 from starlette.websockets import WebSocketDisconnect, WebSocketState
 
@@ -24,12 +26,50 @@ async def on_message(message: aio_pika.IncomingMessage, websocket: WebSocket):
             message.body.decode('UTF-8').replace("'", "\"")))
 
 
+def format_live_match_data(raw_data):
+    match_data = {}
+
+    lanes = {
+        'top': 0,
+        'jungle': 1,
+        'middle': 2,
+        'bottom': 3,
+        'utility': 4
+    }
+    columns = ['level', 'kills', 'deaths', 'assists', 'gold']
+
+    for lane in lanes:
+        for column in columns:
+            match_data[f'{lane}_{column}_diff'] = raw_data['player_data'][lanes[lane]
+                                                                          ][column] - raw_data['player_data'][lanes[lane] + 5][column]
+    return match_data
+
+
 async def analyze(
         websocket: WebSocket, exchange: aio_pika.Exchange,
-        match_id: str, result: dict):
+        match_id: str, result: dict,
+        gg_model, windowed_data):
     new_data: dict = await websocket.receive_json()
-    # TODO: Caculate win rate from AI model
-    new_data['blue_team_win_rate'] = round(random.uniform(0, 1), 3)
+    formatted_data = np.array(
+        list(format_live_match_data(new_data).values())).astype(np.float64).reshape(1, 25)
+
+    if not windowed_data:
+        windowed_data = np.repeat(
+            formatted_data,
+            40,
+            axis=0)
+    elif len(result['match_data']) % 8 == 0:
+        windowed_data = np.concatenate(
+            (windowed_data[1:, :], formatted_data), axis=0)
+
+    windowed_data[:, 0::5] /= 5
+    windowed_data[:, 1::5] /= 10
+    windowed_data[:, 2::5] /= 10
+    windowed_data[:, 3::5] /= 10
+    windowed_data[:, 4::5] /= 5000
+
+    new_data['blue_team_win_rate'] = gg_model(
+        torch.FloatTensor(windowed_data.reshape(1, 40, 25)))[:, 1].item()
     result['match_data'].append(new_data)
     response = bytes(json.dumps(result, ensure_ascii=False), 'UTF-8')
     response = aio_pika.Message(
@@ -68,10 +108,11 @@ async def analyze_game(websocket: WebSocket):
         channel = await connection.channel()
         exchange = await channel.declare_exchange(
             name='game_logs', type='direct')
-        print(f'Exchange {match_id} declared')
+        gg_model = torch.jit.load('./app/assets/gg_model_v1.pt')
+        windowed_data = None
         while True:
             producer_task = asyncio.create_task(
-                analyze(websocket, exchange, match_id, result))
+                analyze(websocket, exchange, match_id, result, gg_model, windowed_data))
             done, pending = await asyncio.wait(
                 {producer_task},
                 return_when=asyncio.FIRST_COMPLETED,
@@ -81,6 +122,7 @@ async def analyze_game(websocket: WebSocket):
             for task in done:
                 task.result()
     except WebSocketDisconnect:
+        # TODO send result file to storage
         if websocket.client_state != WebSocketState.DISCONNECTED:
             await websocket.close()
 

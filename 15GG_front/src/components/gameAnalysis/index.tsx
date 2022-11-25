@@ -207,6 +207,7 @@ export const GameAnalysis = () => {
   const [parse, setParse] = useState<number>(0);
   const params = new URLSearchParams(window.location.search);
   const matchID = params.get('match%ID');
+  const [matchId, setMatchId] = useState<string>('');
   //for incomplete game data
   const getGameData = async () => {
     setIsLoading(true);
@@ -214,6 +215,7 @@ export const GameAnalysis = () => {
       const data = await webClient.get(`/riot/match/detail/${matchID}`);
       if (data.status === 200) {
         setGameData(data.data);
+        if (matchID !== null) setMatchId(matchID);
         setStatus(data.data[0].status);
         setMode(data.data[0].queue_mode);
         setDate(data.data[0].created_at);
@@ -246,7 +248,7 @@ export const GameAnalysis = () => {
     } else if (state === SocketStatus.onConnectionOpened) {
       console.log('onConnectionOpened');
     }
-  }, matchID);
+  }, matchId.replace('_', '-'));
   useEffect(() => {
     if (responseMessage === 'Game ended') {
       getGameData();

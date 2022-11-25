@@ -288,7 +288,7 @@ async def create_match_data_list(db: Session, match_info, puuid: str):
 async def get_match_list(puuid: str, page: str, db: Session):
     async with httpx.AsyncClient() as client:
         url = RIOT_API_ROOT_ASIA + '/match/v5/matches/by-puuid/' + \
-            puuid+'/ids?start=' + str((int(page) - 1) * 5) + '&count=1'
+            puuid+'/ids?start=' + str((int(page) - 1) * 1) + '&count=1'
         match_list = await client.get(url, headers=HEADER)
         match_list = match_list.json()
         if (len(match_list) == 0):
@@ -426,6 +426,7 @@ async def get_match_info(summoner_name: str, page: str, db: Session = Depends(ge
         user_match_info = []
         participant_list = crud.participant.get_participant_list(
             db, page, summoner_name)
+        print(participant_list)
         if len(participant_list) == 0:
             raise Exception('There is no cached game.')
         for participant in participant_list:

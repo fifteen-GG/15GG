@@ -390,7 +390,10 @@ async def get_summoner_riot(summoner_name, db: Session, mode: str):
     match_average_data = response[1]
     set_dictionary(return_summoner_info, match_average_data,
                    avg_key_list, key_list)
-    crud.summoner.create_summoner(db, return_summoner_info)
+    try:
+        crud.summoner.create_summoner(db, return_summoner_info)
+    except Exception as e:
+        print(e)
     crud.rank.create_update_rank(db, return_summoner_info, mode)
     if mode == 'u':
         crud.champion.remove_champion(db, return_summoner_info['id'])
@@ -548,23 +551,25 @@ async def update_cache(summoner_name: str, db: Session = Depends(get_db)):
     puuid = summoner_info['puuid']
     cached_recent_match = db.query(Participant).filter(
         func.replace(func.lower(Participant.summoner_name), " ", "") == summoner_name.lower().replace(" ", "")).order_by(Participant.match_id.desc()).first()
+    print(cached_recent_match.match_id)
     async with httpx.AsyncClient() as client:
         target_match_list = []
         url = RIOT_API_ROOT_ASIA + '/match/v5/matches/by-puuid/' + \
             puuid+'/ids?start=0&count=100'
         match_list_all = await client.get(url, headers=HEADER)
         match_list_all = match_list_all.json()
-
         for match in match_list_all:
             if match == cached_recent_match.match_id:
                 break
             else:
+
                 target_match_list.append(match)
         if (len(target_match_list) == 0):
-            return 'there is no target'
+            return 'There is no target'
         request_list = [get_match_data(match_id, client)
                         for match_id in target_match_list]
-        response = await asyncio.gather(*request_list)
-        return_match_data = await create_match_data_list(db, response, puuid)
-
-    return 'updated'
+        response_list = await asyncio.gather(*request_list)
+        create_match_request = [create_match_data_list(
+            db, response, puuid) for response in response_list]
+        await asyncio.gather(*create_match_request)
+    return 'Updated'

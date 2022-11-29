@@ -100,8 +100,10 @@ export const UserInfo = () => {
     }
   };
   const pageReLoad = () => {
-    webClient.get(`/riot/update/cache/${id}`);
-    window.location.replace(`/user?ID=${id}`);
+    webClient.get(`/riot/update/cache/${id}`).then(response => {
+      if (response.data == 'Updated') window.location.replace(`/user?ID=${id}`);
+    });
+    // window.location.replace(`/user?ID=${id}`);
   };
   if (httpStatusCode === 404) return <ErrorPage />;
   // else if (httpStatusCode !== 200 && isLoading) return <ErrorPage />;

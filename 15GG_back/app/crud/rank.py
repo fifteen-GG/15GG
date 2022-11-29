@@ -26,7 +26,7 @@ class CRUDRank(CRUDBase[Rank, RankCreate, RankUpdate]):
             else:
                 if mode == 'u':
                     db.query(self.model).filter(self.model.summoner_id ==
-                                                summoner_info['id'] and self.model.is_flex == True)
+                                                summoner_info['id'] and self.model.is_flex == True).update({self.model.tier: flex.tier, self.model.rank: flex.rank, self.model.lp: flex.lp, self.model.wins: flex.wins, self.model.losses: flex.losses}, synchronize_session=False)
         if summoner_info['solo'] != None:
             solo_info = summoner_info['solo']
             solo = Rank(summoner_id=summoner_info['id'], tier=solo_info['tier'], rank=solo_info['rank'],
@@ -40,7 +40,7 @@ class CRUDRank(CRUDBase[Rank, RankCreate, RankUpdate]):
             else:
                 if mode == 'u':
                     db.query(self.model).filter(self.model.summoner_id ==
-                                                summoner_info['id'] and self.model.is_flex == False)
+                                                summoner_info['id'] and self.model.is_flex == False).update({self.model.tier: solo.tier, self.model.rank: solo.rank, self.model.lp: solo.lp, self.model.wins: solo.wins, self.model.losses: solo.losses}, synchronize_session=False)
         return {'flex': flex, 'solo': solo}
 
     def update_rank(self, db: Session):

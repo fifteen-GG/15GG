@@ -3,7 +3,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import type { MatchInfoType } from '../types/matchInfo';
 import type { SummonerInfoType } from '../types/summonerInfo';
 import styled from 'styled-components';
-import axios from 'axios';
 import webClient from '../../WebClient';
 
 //import components
@@ -16,7 +15,6 @@ import PreferChampion from './components/PreferChampion';
 import LoadingPage from './components/LoadingPage';
 import ErrorPage from './components/ErrorPage';
 import { userInfoFormat } from './userInfo';
-import { useNavigate } from 'react-router-dom';
 
 const UserInfoContainer = styled.div`
   width: 100%;
@@ -32,7 +30,6 @@ const Loader = styled.div`
 `;
 
 export const UserInfo = () => {
-  const navigate = useNavigate();
   const [gamesData, setGamesData] = useState<MatchInfoType[]>([]);
   const [summonerInfo, setSummonerInfo] = useState<SummonerInfoType>({
     prefer_position: {
@@ -59,7 +56,6 @@ export const UserInfo = () => {
       },
     ],
   } as SummonerInfoType); /*저번 회의때 얘기했던 부분이 여기 초기화를 해두고 champions를 앞에서부터 한개씩 갈아끼우는 느낌으로*/
-  console.log(summonerInfo);
   const [pageNum, setPageNum] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [httpStatusCode, setHttpStatusCode] = useState<number>(200);
@@ -78,7 +74,6 @@ export const UserInfo = () => {
       const value = await webClient.get(`/riot/user/${id}`);
       if (value.status === 200) {
         setSummonerInfo(userInfoFormat(value.data));
-        console.log(value.data);
       }
       if (value.data) setIsLoading(false);
     } catch (e: any) {
@@ -96,12 +91,12 @@ export const UserInfo = () => {
       setPageNum(pageNum + 1);
     } catch (e: any) {
       setHttpStatusCode(e.response.status);
-      console.log(httpStatusCode);
     }
   };
   const pageReLoad = () => {
     webClient.get(`/riot/update/cache/${id}`).then(response => {
-      if (response.data == 'Updated') window.location.replace(`/user?ID=${id}`);
+      if (response.data === 'Updated')
+        window.location.replace(`/user?ID=${id}`);
     });
     // window.location.replace(`/user?ID=${id}`);
   };

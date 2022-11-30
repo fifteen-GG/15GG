@@ -50,8 +50,6 @@ export const LiveGame = (props: propsType) => {
   };
   useEffect(() => {
     if (props.gameData.id !== undefined) getGameData();
-    console.log(props.gameData.id);
-    console.log(gameData);
   }, [props.gameData]);
   return (
     <LiveGameContainer>

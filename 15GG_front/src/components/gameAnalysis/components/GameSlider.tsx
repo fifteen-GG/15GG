@@ -26,7 +26,6 @@ const GameSlider = (props: propsType) => {
         max={MAX}
         onChange={values => {
           setValues(values);
-          console.log(values);
           props.indexSlider(values[0]);
         }}
         renderTrack={({ props, children }) => (

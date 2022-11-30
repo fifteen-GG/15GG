@@ -7,7 +7,6 @@ import {
   Level,
   PageReLoad,
 } from '../styles/userId.s';
-import axios from 'axios';
 
 interface propsType {
   pageReLoad: () => void;

@@ -57,6 +57,9 @@ const options = {
       max: 50,
     },
   },
+  animation: {
+    duration: 0,
+  },
 };
 export const data = {
   // labels,
@@ -126,10 +129,8 @@ const TimelineGraph = (props: propsType) => {
     datasets: [],
   });
   const [cntLabel, setCntLabel] = useState<string[]>(labels);
-  console.log(cntLabel);
   // const [count, setCount] = useState<number>(0);
   useEffect(() => {
-    console.log(props.length);
     if (props.length + 1 >= 15) {
       let label: string[] = [...labels];
       // for (let i = 15; i <= props.length; i++) {
@@ -146,7 +147,6 @@ const TimelineGraph = (props: propsType) => {
       setCntLabel(arr);
     }
     setIsLoading(false);
-    console.log(isLoading);
     const chart = chartRef.current;
     if (!chart) {
       return;

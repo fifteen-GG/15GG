@@ -41,7 +41,7 @@ class CrudMatch(CRUDBase[Match, MatchCreate, MatchUpdate]):
         current_status = db.query(self.model).filter(
             self.model.id == match_id).one().status
         if status - current_status != 1:
-            raise Exception
+            raise HTTPException(status_code=404, detail="Unable to update")
         db.query(self.model).filter(self.model.id ==
                                     match_id).update({'status': status}, synchronize_session=False)
         db.commit()

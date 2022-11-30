@@ -57,7 +57,6 @@ const TeamInfo = (props: propsType) => {
       },
     ]);
   };
-  console.log(teamData);
   useEffect(() => {
     if (teamData[0].participants === undefined) {
       fetchPropsData();

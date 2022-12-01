@@ -31,21 +31,21 @@ const TeamInfoLive = (props: propsType) => {
     {
       team: 'BLUE TEAM',
       participants: [
-        props.Participants[5],
-        props.Participants[6],
-        props.Participants[7],
-        props.Participants[8],
-        props.Participants[9],
-      ],
-    },
-    {
-      team: 'RED TEAM',
-      participants: [
         props.Participants[0],
         props.Participants[1],
         props.Participants[2],
         props.Participants[3],
         props.Participants[4],
+      ],
+    },
+    {
+      team: 'RED TEAM',
+      participants: [
+        props.Participants[5],
+        props.Participants[6],
+        props.Participants[7],
+        props.Participants[8],
+        props.Participants[9],
       ],
     },
   ]);
@@ -54,21 +54,21 @@ const TeamInfoLive = (props: propsType) => {
       {
         team: 'BLUE TEAM',
         participants: [
-          props.Participants[5],
-          props.Participants[6],
-          props.Participants[7],
-          props.Participants[8],
-          props.Participants[9],
-        ],
-      },
-      {
-        team: 'RED TEAM',
-        participants: [
           props.Participants[0],
           props.Participants[1],
           props.Participants[2],
           props.Participants[3],
           props.Participants[4],
+        ],
+      },
+      {
+        team: 'RED TEAM',
+        participants: [
+          props.Participants[5],
+          props.Participants[6],
+          props.Participants[7],
+          props.Participants[8],
+          props.Participants[9],
         ],
       },
     ]);

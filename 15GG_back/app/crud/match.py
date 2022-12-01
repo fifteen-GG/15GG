@@ -15,7 +15,7 @@ class CrudMatch(CRUDBase[Match, MatchCreate, MatchUpdate]):
             match_info = db.query(self.model).filter(
                 self.model.id == match_id).one()
             return match_info
-        except:
+        except Exception as e:
             raise Exception
 
     def create_match(self, db: Session, match_info):

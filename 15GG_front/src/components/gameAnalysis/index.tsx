@@ -593,14 +593,15 @@ export const GameAnalysis = () => {
     const getGameData = async () => {
       setIsLoading(true);
       try {
-        const data = await webClient.get(`/riot/match/detail/${matchID}`);
-        if (data.status === 200) {
-          setGameData(data.data);
-          setStatus(data.data[0].status);
-          setMode(data.data[0].queue_mode);
-          setDate(data.data[0].created_at);
-          setIsLoading(false);
-        }
+        await webClient.get(`/riot/match/detail/${matchID}`).then(response => {
+          if (response.status === 200) {
+            setGameData(response.data);
+            setStatus(response.data[0].status);
+            setMode(response.data[0].queue_mode);
+            setDate(response.data[0].created_at);
+            setIsLoading(false);
+          }
+        });
       } catch (e: any) {
         console.log(e);
       }

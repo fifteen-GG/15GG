@@ -79,6 +79,9 @@ const options = {
       max: 50,
     },
   },
+  animation: {
+    duration: 0,
+  },
 };
 
 export const data = {

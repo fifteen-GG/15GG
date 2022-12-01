@@ -1,7 +1,7 @@
+from curses.ascii import HT
 from datetime import datetime, timedelta
-from http.client import HTTPException
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app import schemas, crud
@@ -26,5 +26,9 @@ def get_analyzing_match(*, db: Session = Depends(get_db)):
 
 
 @router.post('/update/status')
-def update_match_status(*, db: Session = Depends(get_db), value: UpdateStatusValue):
-    crud.match.update_match_status(db, value.match_id, value.status)
+async def update_match_status(*, db: Session = Depends(get_db), value: UpdateStatusValue):
+    try:
+        await crud.match.update_match_status(db, value.match_id, value.status)
+    except ValueError as error:
+        raise HTTPException(status_code=404,
+                            detail=str(error))

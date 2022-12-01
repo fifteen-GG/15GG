@@ -66,6 +66,9 @@ export const options = {
       text: 'Chart.js Horizontal Bar Chart',
     },
   },
+  animation: {
+    duration: 1000,
+  },
 };
 const labels = [''];
 const data = {

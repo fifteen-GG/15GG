@@ -75,7 +75,6 @@ const TeamInfoEnd = (props: propsType) => {
     ]);
   };
   useEffect(() => {
-    console.log(props.Participants);
     fetchPropsData();
   }, [, props.Participants]);
   return (

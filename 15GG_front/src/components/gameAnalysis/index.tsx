@@ -191,7 +191,386 @@ export const GameAnalysis = () => {
     ],
     match_id: '0',
   } as unknown as SocketData);
-  const [endData, setEndData] = useState<endData[]>([]);
+  const [endData, setEndData] = useState<endData[]>([
+    {
+      blue_team_win_rate: 0,
+      timestamp: 0,
+      player_data: [
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+      ],
+    },
+    {
+      blue_team_win_rate: 0,
+      timestamp: 0,
+      player_data: [
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+      ],
+    },
+    {
+      blue_team_win_rate: 0,
+      timestamp: 0,
+      player_data: [
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+        {
+          summonerName: '이름없음',
+          championName: '0',
+          isDead: false,
+          level: 0,
+          team: '',
+          items: [],
+          kills: 0,
+          deaths: 0,
+          assists: 0,
+          gold: 0,
+        },
+      ],
+    },
+  ]);
   const [gameData, setGameData] = useState([
     {} as teamDetail,
     {} as teamDetail,
@@ -206,43 +585,44 @@ export const GameAnalysis = () => {
   const [winRate, setWinRate] = useState<number>(0.5);
   const [winningRate, setWinningRate] = useState<number[]>([0]);
   const [parse, setParse] = useState<number>(0);
+  const [flag, setFlag] = useState<boolean>(false);
   const params = new URLSearchParams(window.location.search);
   const matchID = params.get('match%ID');
   //for incomplete game data
-  const getGameData = async () => {
-    setIsLoading(true);
-    try {
-      const data = await webClient.get(`/riot/match/detail/${matchID}`);
-      if (data.status === 200) {
-        setGameData(data.data);
-        // setStatus(data.data[0].status);
-        setMode(data.data[0].queue_mode);
-        setDate(data.data[0].created_at);
-      }
-      if (data.data) setIsLoading(false);
-    } catch (e: any) {
-      console.log(e);
-    }
-  };
   useEffect(() => {
+    const getGameData = async () => {
+      setIsLoading(true);
+      try {
+        const data = await webClient.get(`/riot/match/detail/${matchID}`);
+        if (data.status === 200) {
+          setGameData(data.data);
+          setStatus(data.data[0].status);
+          setMode(data.data[0].queue_mode);
+          setDate(data.data[0].created_at);
+          setIsLoading(false);
+        }
+      } catch (e: any) {
+        console.log(e);
+      }
+    };
+
     getGameData();
-    if (status === gameState.end) {
-      let endResult: endData[] = [...endData, ...endResultData];
+  }, []);
+
+  useEffect(() => {
+    if (status === gameState.end && flag === false) {
+      //result 파일 가져오기
+      let endResult: endData[] = [...endResultData];
       setEndData(endResult);
     }
-  }, []);
-  useEffect(() => {
-    let rate: number[] = [0];
-    for (let i = 0; i <= endData.length - 1; i++) {
-      rate.push(Math.floor(50 - 100 * endData[i].blue_team_win_rate));
-    }
+
     setWinningRate(rate);
     let string: number[] = [0];
     for (let i = 0; i <= endData.length - 1; i++) {
       string.push(endData[i].timestamp);
     }
     setTimeString(string);
-  }, [, endData]);
+  }, [status]);
 
   const { responseMessage } = useSocket(state => {
     if (state === SocketStatus.onNewChatReceived) {
@@ -253,11 +633,6 @@ export const GameAnalysis = () => {
       console.log('onConnectionOpened');
     }
   }, matchID?.replace('_', '-'));
-  useEffect(() => {
-    if (responseMessage === 'Game ended') {
-      getGameData();
-    }
-  }, [responseMessage]);
   // useEffect(() => {
   //   if (status === gameState.end) {
   //     let rate: number[] = [0];
@@ -271,8 +646,24 @@ export const GameAnalysis = () => {
   useEffect(() => {
     if (status === gameState.live) {
       if (parse) {
-        let data = JSON.parse(responseMessage);
-        setLiveData(data);
+        try {
+          let data = JSON.parse(responseMessage);
+          setLiveData(data);
+        } catch (e) {
+          console.log(liveData.match_data);
+          setEndData(liveData.match_data);
+          webClient
+            .post('/match/update/status', {
+              match_id: matchID,
+              status: 2,
+            })
+            .then(response => {
+              if (response.status === 200) {
+                setFlag(true);
+                setStatus(2);
+              }
+            });
+        }
       }
     }
   }, [parse, responseMessage]);
@@ -309,7 +700,17 @@ export const GameAnalysis = () => {
         setWinRate(endData[length].blue_team_win_rate);
       }
     }
-  }, [endData, length]);
+  }, [length]);
+
+  useEffect(() => {
+    if (status === gameState.end) {
+      let rate: number[] = [0];
+      for (let i = 0; i <= endData.length - 1; i++) {
+        rate.push(Math.floor(50 - 100 * endData[i].blue_team_win_rate));
+      }
+      setWinningRate(rate);
+    }
+  }, [endData]);
 
   const indexSlider = (values: number) => {
     setLength(values);

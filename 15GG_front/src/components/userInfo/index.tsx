@@ -3,7 +3,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import type { MatchInfoType } from '../types/matchInfo';
 import type { SummonerInfoType } from '../types/summonerInfo';
 import styled from 'styled-components';
-import axios from 'axios';
 import webClient from '../../WebClient';
 
 //import components
@@ -16,7 +15,6 @@ import PreferChampion from './components/PreferChampion';
 import LoadingPage from './components/LoadingPage';
 import ErrorPage from './components/ErrorPage';
 import { userInfoFormat } from './userInfo';
-import { useNavigate } from 'react-router-dom';
 
 const UserInfoContainer = styled.div`
   width: 100%;
@@ -32,7 +30,6 @@ const Loader = styled.div`
 `;
 
 export const UserInfo = () => {
-  const navigate = useNavigate();
   const [gamesData, setGamesData] = useState<MatchInfoType[]>([]);
   const [summonerInfo, setSummonerInfo] = useState<SummonerInfoType>({
     prefer_position: {
@@ -79,7 +76,6 @@ export const UserInfo = () => {
       const value = await webClient.get(`/riot/user/${id}`);
       if (value.status === 200) {
         setSummonerInfo(userInfoFormat(value.data));
-        console.log(value.data);
       }
       if (value.data) setIsLoading(false);
     } catch (e: any) {

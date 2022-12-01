@@ -429,7 +429,6 @@ async def get_match_info(summoner_name: str, page: str, db: Session = Depends(ge
         user_match_info = []
         participant_list = crud.participant.get_participant_list(
             db, page, summoner_name)
-        print(participant_list)
         if len(participant_list) == 0:
             raise Exception('There is no cached game.')
         for participant in participant_list:
@@ -551,7 +550,6 @@ async def update_cache(summoner_name: str, db: Session = Depends(get_db)):
     puuid = summoner_info['puuid']
     cached_recent_match = db.query(Participant).filter(
         func.replace(func.lower(Participant.summoner_name), " ", "") == summoner_name.lower().replace(" ", "")).order_by(Participant.match_id.desc()).first()
-    print(cached_recent_match.match_id)
     async with httpx.AsyncClient() as client:
         target_match_list = []
         url = RIOT_API_ROOT_ASIA + '/match/v5/matches/by-puuid/' + \
@@ -562,7 +560,6 @@ async def update_cache(summoner_name: str, db: Session = Depends(get_db)):
             if match == cached_recent_match.match_id:
                 break
             else:
-
                 target_match_list.append(match)
         if (len(target_match_list) == 0):
             return 'There is no target'

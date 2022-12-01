@@ -615,13 +615,6 @@ export const GameAnalysis = () => {
       let endResult: endData[] = [...endResultData];
       setEndData(endResult);
     }
-
-    setWinningRate(rate);
-    let string: number[] = [0];
-    for (let i = 0; i <= endData.length - 1; i++) {
-      string.push(endData[i].timestamp);
-    }
-    setTimeString(string);
   }, [status]);
 
   const { responseMessage } = useSocket(state => {
@@ -709,6 +702,11 @@ export const GameAnalysis = () => {
         rate.push(Math.floor(50 - 100 * endData[i].blue_team_win_rate));
       }
       setWinningRate(rate);
+      let string: number[] = [0];
+      for (let i = 0; i <= endData.length - 1; i++) {
+        string.push(endData[i].timestamp);
+      }
+      setTimeString(string);
     }
   }, [endData]);
 

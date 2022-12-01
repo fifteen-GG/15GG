@@ -17,11 +17,9 @@ import * as Palette from '../../../assets/colorPalette';
 export const TimelineGraphContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 86px;
+  height: 100px;
   width: calc(100%);
-  /* padding-left: 8px;
-  padding-right: 8px; */
-  margin: 12px 0 12px 0;
+  margin: 12px 0 0 0;
 `;
 
 // export const WinningRate = styled.div`

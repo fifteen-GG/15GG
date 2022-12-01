@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import type { ChartData, ChartArea } from 'chart.js';
+import type { ChartData, ChartArea, ChartOptions } from 'chart.js';
 import * as Palette from '../../../assets/colorPalette';
 import { TimelineGraphContainer } from '../styles/timelineGraph.s';
 import {
@@ -26,9 +26,29 @@ ChartJS.register(
   Legend,
 );
 
-const labels = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
+const labels = [
+  '0',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+];
 
 const options = {
+  animation: {
+    duration: 0,
+  },
   responsive: true,
   maintainAspectRatio: false,
   events: [],
@@ -38,17 +58,19 @@ const options = {
       position: 'top' as const,
     },
   },
+  showXLabels: 10,
   scales: {
     x: {
       display: true,
       stacked: true,
-      // grid: {
-      //   color: (context: any) => {
-      //     if (context.tick.value % 1 === 0) {
-      //       return '#ffffff';
-      //     } else return 'rgba(255, 255, 255, 0.0)';
-      //   },
-      // },
+      ticks: {
+        autoSkip: false,
+        maxRotation: 0,
+        minRotation: 0,
+      },
+      grid: {
+        color: 'rgba(255, 255, 255, 0.0)',
+      },
     },
     y: {
       display: false,
@@ -61,6 +83,7 @@ const options = {
     duration: 0,
   },
 };
+
 export const data = {
   // labels,
   datasets: [
@@ -91,7 +114,7 @@ const createGradient = (
   const graphNeutral = `${Palette.GG_GRFTITLE}`;
   let gradient;
 
-  area.top = 8;
+  area.top = 5;
   area.bottom = 45;
 
   const lineGradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
@@ -121,6 +144,7 @@ const createGradient = (
 interface propsType {
   winningRate: number[];
   length: number;
+  time: number[];
 }
 const TimelineGraph = (props: propsType) => {
   const chartRef = useRef<ChartJS>(null);
@@ -129,22 +153,18 @@ const TimelineGraph = (props: propsType) => {
     datasets: [],
   });
   const [cntLabel, setCntLabel] = useState<string[]>(labels);
-  // const [count, setCount] = useState<number>(0);
   useEffect(() => {
     if (props.length + 1 >= 15) {
-      let label: string[] = [...labels];
-      // for (let i = 15; i <= props.length; i++) {
-      //   // if (i === 60 * timeCount){
-      //   //   label = [...label, timeCount as unknown as string];
-      //   //   setTimeCount
-      //   // }
-      //   label = label.concat('');
-      // }
-      let arr = [''];
-      props.winningRate.map(data => {
-        arr.push('');
+      let arr = ['0'];
+      let tc = 1;
+      props.winningRate.map((data, index) => {
+        if (Math.trunc(props.time[index] / 60) === tc) {
+          arr.push(tc as unknown as string);
+          tc += 1;
+        } else arr.push('');
       });
       setCntLabel(arr);
+      console.log(cntLabel);
     }
     setIsLoading(false);
     const chart = chartRef.current;
@@ -177,7 +197,6 @@ const TimelineGraph = (props: propsType) => {
             ref={chartRef}
             options={options}
             data={chartData}
-            // height={84}
             width={360}
           />
         </TimelineGraphContainer>

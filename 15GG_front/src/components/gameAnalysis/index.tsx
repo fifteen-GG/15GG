@@ -577,7 +577,8 @@ export const GameAnalysis = () => {
   ]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
-  const [status, setStatus] = useState<gameState>(0);
+  const [timeString, setTimeString] = useState<number[]>([0]);
+  const [status, setStatus] = useState<gameState>(2);
   const [mode, setMode] = useState<queue_mode>(queue_mode.solo);
   const [date, setDate] = useState<string>('');
   const [length, setLength] = useState<number>(0);
@@ -614,6 +615,13 @@ export const GameAnalysis = () => {
       let endResult: endData[] = [...endResultData];
       setEndData(endResult);
     }
+
+    setWinningRate(rate);
+    let string: number[] = [0];
+    for (let i = 0; i <= endData.length - 1; i++) {
+      string.push(endData[i].timestamp);
+    }
+    setTimeString(string);
   }, [status]);
 
   const { responseMessage } = useSocket(state => {
@@ -676,6 +684,11 @@ export const GameAnalysis = () => {
           );
         });
         setWinningRate(rate);
+        let string: number[] = [0];
+        liveData.match_data.map((value, index) => {
+          string.push(liveData.match_data[index].timestamp);
+        });
+        setTimeString(string);
       }
     }
   }, [liveData]);
@@ -721,11 +734,13 @@ export const GameAnalysis = () => {
             <TimelineGraph
               winningRate={winningRate}
               length={endData.length - 1}
+              time={timeString}
             />
           ) : (
             <TimelineGraph
               winningRate={winningRate}
               length={liveData.match_data.length - 1}
+              time={timeString}
             />
           )}
           {status === gameState.end ? (

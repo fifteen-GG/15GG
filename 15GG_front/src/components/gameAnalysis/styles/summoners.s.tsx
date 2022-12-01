@@ -85,7 +85,7 @@ export const SummonerTier = styled.div`
       ? Palette.GG_DIAMOND
       : props.tier.slice(0, 1).toUpperCase() === 'P'
       ? Palette.GG_PLATINUM
-      : props.tier.slice(0, 1).toUpperCase() === 'G'
+      : props.tier.slice(0, 2).toUpperCase() === 'GO'
       ? Palette.GG_GOLD
       : props.tier.slice(0, 1).toUpperCase() === 'S'
       ? Palette.GG_SILVER

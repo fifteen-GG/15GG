@@ -7,6 +7,7 @@ import {
   ChampionInfo,
   ChampionAltInfo,
   ChampionInfoText,
+  ChampionBox,
   ChampionImg,
   ChampionInfoContent,
   ChampionInfoSubTitle,
@@ -30,7 +31,13 @@ const PreferChampion = (props: propsType) => {
               props.champions?.map((champion, index: number) => {
                 return (
                   <ChampionInfoWrapper key={index}>
-                    <ChampionImg src={props.champions[index]?.champion_name} />
+                    {props.champions[index]?.champion_name === '0' ? (
+                      <ChampionBox />
+                    ) : (
+                      <ChampionImg
+                        src={props.champions[index]?.champion_name}
+                      />
+                    )}
                     <ChampionInfoText>
                       <ChampionInfoTitle>
                         {props.champions[index]?.counts}

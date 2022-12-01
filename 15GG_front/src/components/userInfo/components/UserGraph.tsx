@@ -12,7 +12,6 @@ import {
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker';
-import { SummonerInfoType } from '../../types/summonerInfo';
 
 import {
   UserGraphContainer,

@@ -28,6 +28,9 @@ ChartJS.register(
   Legend,
 );
 export const options = {
+  animation: {
+    duration: 1000,
+  },
   indexAxis: 'y' as const,
   maintainAspectRatio: false,
   events: [],

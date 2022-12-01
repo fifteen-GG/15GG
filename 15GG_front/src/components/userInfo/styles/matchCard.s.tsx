@@ -135,7 +135,6 @@ export const ItemImg = styled.img`
   width: 15px;
   height: 15px;
   border-radius: 2px;
-  onerror: none;
   margin-left: 2px;
   &.item0 {
     order: 0;
@@ -173,7 +172,6 @@ export const ItemBox = styled.div`
   height: 15px;
   border-radius: 2px;
   background: ${Palette.GG_EMPTY_ITEM_BOX};
-  onerror: none;
   margin-left: 2px;
   order: 6;
   @media screen and (min-width: 651px) {

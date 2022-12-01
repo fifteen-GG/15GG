@@ -198,7 +198,8 @@ export const GameAnalysis = () => {
   ]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
-  const [status, setStatus] = useState<gameState>(0);
+  const [timeString, setTimeString] = useState<number[]>([0]);
+  const [status, setStatus] = useState<gameState>(2);
   const [mode, setMode] = useState<queue_mode>(queue_mode.solo);
   const [date, setDate] = useState<string>('');
   const [length, setLength] = useState<number>(0);
@@ -214,7 +215,7 @@ export const GameAnalysis = () => {
       const data = await webClient.get(`/riot/match/detail/${matchID}`);
       if (data.status === 200) {
         setGameData(data.data);
-        setStatus(data.data[0].status);
+        // setStatus(data.data[0].status);
         setMode(data.data[0].queue_mode);
         setDate(data.data[0].created_at);
       }
@@ -236,6 +237,11 @@ export const GameAnalysis = () => {
       rate.push(Math.floor(50 - 100 * endData[i].blue_team_win_rate));
     }
     setWinningRate(rate);
+    let string: number[] = [0];
+    for (let i = 0; i <= endData.length - 1; i++) {
+      string.push(endData[i].timestamp);
+    }
+    setTimeString(string);
   }, [, endData]);
 
   const { responseMessage } = useSocket(state => {
@@ -287,6 +293,11 @@ export const GameAnalysis = () => {
           );
         });
         setWinningRate(rate);
+        let string: number[] = [0];
+        liveData.match_data.map((value, index) => {
+          string.push(liveData.match_data[index].timestamp);
+        });
+        setTimeString(string);
       }
     }
   }, [liveData]);
@@ -322,11 +333,13 @@ export const GameAnalysis = () => {
             <TimelineGraph
               winningRate={winningRate}
               length={endData.length - 1}
+              time={timeString}
             />
           ) : (
             <TimelineGraph
               winningRate={winningRate}
               length={liveData.match_data.length - 1}
+              time={timeString}
             />
           )}
           {status === gameState.end ? (

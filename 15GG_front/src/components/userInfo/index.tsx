@@ -141,7 +141,7 @@ export const UserInfo = () => {
             dataLength={gamesData.length}
             hasMore={true}
             loader={
-              httpMatchStatusCode === 500 || 404 ? (
+              httpMatchStatusCode === 404 ? (
                 <Loader>기록된 전적이 없습니다</Loader>
               ) : (
                 <Loader>데이터 불러오는 중...</Loader>

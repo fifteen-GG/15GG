@@ -161,7 +161,6 @@ const TimelineGraph = (props: propsType) => {
         } else arr.push('');
       });
       setCntLabel(arr);
-      console.log(cntLabel);
     }
     setIsLoading(false);
     const chart = chartRef.current;

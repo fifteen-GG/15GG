@@ -31,28 +31,6 @@ const TeamStatsEnd = (props: propsType) => {
     {
       team: 'Blue',
       avgGold:
-        props.Participants[5].gold +
-        props.Participants[6].gold +
-        props.Participants[7].gold +
-        props.Participants[8].gold +
-        props.Participants[9].gold,
-      avgLevel:
-        (props.Participants[5].level +
-          props.Participants[6].level +
-          props.Participants[7].level +
-          props.Participants[8].level +
-          props.Participants[9].level) /
-        5,
-      avgKill:
-        props.Participants[5].kills +
-        props.Participants[6].kills +
-        props.Participants[7].kills +
-        props.Participants[8].kills +
-        props.Participants[9].kills,
-    },
-    {
-      team: 'Red',
-      avgGold:
         props.Participants[0].gold +
         props.Participants[1].gold +
         props.Participants[2].gold +
@@ -72,33 +50,33 @@ const TeamStatsEnd = (props: propsType) => {
         props.Participants[3].kills +
         props.Participants[4].kills,
     },
+    {
+      team: 'Red',
+      avgGold:
+        props.Participants[5].gold +
+        props.Participants[6].gold +
+        props.Participants[7].gold +
+        props.Participants[8].gold +
+        props.Participants[9].gold,
+      avgLevel:
+        (props.Participants[5].level +
+          props.Participants[6].level +
+          props.Participants[7].level +
+          props.Participants[8].level +
+          props.Participants[9].level) /
+        5,
+      avgKill:
+        props.Participants[5].kills +
+        props.Participants[6].kills +
+        props.Participants[7].kills +
+        props.Participants[8].kills +
+        props.Participants[9].kills,
+    },
   ]);
   const FetchData = () => {
     setTeamStatsData([
       {
         team: 'Blue',
-        avgGold:
-          props.Participants[5].gold +
-          props.Participants[6].gold +
-          props.Participants[7].gold +
-          props.Participants[8].gold +
-          props.Participants[9].gold,
-        avgLevel:
-          (props.Participants[5].level +
-            props.Participants[6].level +
-            props.Participants[7].level +
-            props.Participants[8].level +
-            props.Participants[9].level) /
-          5,
-        avgKill:
-          props.Participants[5].kills +
-          props.Participants[6].kills +
-          props.Participants[7].kills +
-          props.Participants[8].kills +
-          props.Participants[9].kills,
-      },
-      {
-        team: 'Red',
         avgGold:
           props.Participants[0].gold +
           props.Participants[1].gold +
@@ -118,6 +96,28 @@ const TeamStatsEnd = (props: propsType) => {
           props.Participants[2].kills +
           props.Participants[3].kills +
           props.Participants[4].kills,
+      },
+      {
+        team: 'Red',
+        avgGold:
+          props.Participants[5].gold +
+          props.Participants[6].gold +
+          props.Participants[7].gold +
+          props.Participants[8].gold +
+          props.Participants[9].gold,
+        avgLevel:
+          (props.Participants[5].level +
+            props.Participants[6].level +
+            props.Participants[7].level +
+            props.Participants[8].level +
+            props.Participants[9].level) /
+          5,
+        avgKill:
+          props.Participants[5].kills +
+          props.Participants[6].kills +
+          props.Participants[7].kills +
+          props.Participants[8].kills +
+          props.Participants[9].kills,
       },
     ]);
   };

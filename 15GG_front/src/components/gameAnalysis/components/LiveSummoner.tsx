@@ -18,7 +18,6 @@ import {
   GoldWrapper,
 } from '../styles/liveSummoners.s';
 import type { socketDetail } from '../../types/matchDetails';
-import { formatChampName } from '../gameInfo';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 export interface propsType {

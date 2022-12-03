@@ -426,7 +426,6 @@ async def get_match_info(summoner_name: str, page: str, db: Session = Depends(ge
         response = await get_summoner_basic_info(summoner_name)
         puuid = response['puuid']
         user_match_info = await get_match_list(puuid, page, db)
-        print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시
         return user_match_info
     try:
         user_match_info = []
@@ -457,7 +456,6 @@ async def get_match_info(summoner_name: str, page: str, db: Session = Depends(ge
         puuid = response['puuid']
         user_match_info = await get_match_list(puuid, page, db)
 
-    print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
     return user_match_info
 
 

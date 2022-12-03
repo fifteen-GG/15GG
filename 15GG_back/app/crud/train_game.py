@@ -27,9 +27,7 @@ class CRUDTrainGame(CRUDBase[TrainGame, TrainGameCreate, TrainGameUpdate]):
     def update_is_parsed(self, db: Session, file_title):
 
         file_name = file_title.split('.')[0]
-        print(file_name)
         match_id = file_name.split('_')[1]
-        print(match_id)
         db.query(self.model).filter(self.model.match_id ==
                                     match_id).update({self.model.is_parsed: True})
         db.commit()

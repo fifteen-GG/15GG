@@ -174,8 +174,11 @@ async def get_match_data(websocket: WebSocket, match_id: str):
     It will listen to the brodacast messages of match data
     from the exchange bound to the match_id.
     '''
+    print("1")
     await websocket.accept()
+    print("2")
     try:
+        print("3")
         connection = await aio_pika.connect(settings.AMQP_HOST)
         channel = await connection.channel()
         exchange = await channel.declare_exchange(
@@ -184,6 +187,7 @@ async def get_match_data(websocket: WebSocket, match_id: str):
         await queue.bind(exchange, routing_key=match_id)
 
         while True:
+            print("4")
             consume = queue.consume(functools.partial(
                 on_message, websocket=websocket))
 
@@ -199,6 +203,7 @@ async def get_match_data(websocket: WebSocket, match_id: str):
             for task in done:
                 task.result()
     except WebSocketDisconnect:
+        print("5")
         if websocket.client_state != WebSocketState.DISCONNECTED:
             await websocket.close()
 

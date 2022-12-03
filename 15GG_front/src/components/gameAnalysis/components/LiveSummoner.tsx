@@ -123,7 +123,7 @@ const LiveSummoner = (props: propsType) => {
       <ItemInterface>
         <ItemWrapper>
           {[...Array(7)].map((item, index) => {
-            return <ItemBox className={'item' + index} />;
+            return <ItemBox className={'item' + index} key={index} />;
           })}
         </ItemWrapper>
         <ItemWrapper className={'item'}>

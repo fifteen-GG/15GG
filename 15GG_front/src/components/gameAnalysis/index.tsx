@@ -61,6 +61,7 @@ export const playerData = {
   assists: 0,
   gold: 0,
 };
+
 export const GameAnalysis = () => {
   const [liveData, setLiveData] = useState<SocketData>({
     match_data: [
@@ -150,7 +151,7 @@ export const GameAnalysis = () => {
   const [parse, setParse] = useState<number>(0);
   const [flag, setFlag] = useState<boolean>(false);
   const params = new URLSearchParams(window.location.search);
-  const matchID = params.get('match%ID');
+  const matchID: string | null = params.get('match%ID');
   //for incomplete game data
   useEffect(() => {
     const getGameData = async () => {
@@ -176,8 +177,7 @@ export const GameAnalysis = () => {
   useEffect(() => {
     if (status === gameState.end && flag === false) {
       //result 파일 가져오기
-      let endResult: endData[] = [...endResultData];
-      setEndData(endResult);
+      downloadJson(matchID);
     }
   }, [status]);
 
@@ -207,7 +207,6 @@ export const GameAnalysis = () => {
           let data = JSON.parse(responseMessage);
           setLiveData(data);
         } catch (e) {
-          console.log(liveData.match_data);
           setEndData(liveData.match_data);
           webClient
             .post('/match/update/status', {
@@ -276,6 +275,28 @@ export const GameAnalysis = () => {
 
   const indexSlider = (values: number) => {
     setLength(values);
+  };
+
+  const downloadJson = (match_id: string | null) => {
+    const target = match_id?.split('.')[0].replace('_', '-');
+    const AWS = require('aws-sdk');
+    AWS.config.update({
+      accessKeyId: process.env.AWS_ACCESS_KEY,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    });
+    const s3 = new AWS.S3();
+    s3.getObject(
+      { Bucket: '15gg', Key: `${target}.json` },
+      function (error: any, data: any) {
+        try {
+          const downloadData = JSON.parse(data.Body);
+          const endResult = downloadData['match_data'];
+          setEndData(endResult);
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    );
   };
   return (
     <GameAnalysisContainer>

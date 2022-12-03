@@ -175,11 +175,11 @@ export const GameAnalysis = () => {
   }, []);
 
   useEffect(() => {
-    if (status === gameState.end && flag === false) {
+    if (status === gameState.end && flag === false && matchID) {
       //result 파일 가져오기
       downloadJson(matchID);
     }
-  }, [status]);
+  }, [status, matchID]);
 
   const { responseMessage } = useSocket(state => {
     if (state === SocketStatus.onNewChatReceived) {

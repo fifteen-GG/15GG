@@ -24,6 +24,8 @@ services:
         - DB_NAME=${DB_NAME}
         - RIOT_TOKEN=${RIOT_TOKEN}
         - AMQP_HOST=${AMQP_HOST}
+        - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+        - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     restart: always
     ports:
       - 8000:8000

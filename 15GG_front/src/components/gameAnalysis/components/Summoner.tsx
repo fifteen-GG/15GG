@@ -81,7 +81,7 @@ const Summoner = (props: propsType) => {
             <SummonerName>
               {formatSummonerName(props.summonerInfo.summoner_name)}
             </SummonerName>
-            {props.summonerInfo.tier === '' ? null : (
+            {props.summonerInfo.tier === null ? null : (
               <SummonerTier tier={props.summonerInfo.tier}>
                 {props.summonerInfo.tier.slice(0, 1).toUpperCase() +
                   rankFormat(props.summonerInfo.rank, props.summonerInfo.tier)}

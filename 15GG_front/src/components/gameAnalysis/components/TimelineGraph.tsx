@@ -81,7 +81,7 @@ const options = {
   },
 };
 
-export const data = {
+export const datainit = {
   // labels,
   datasets: [
     {
@@ -151,7 +151,6 @@ const TimelineGraph = (props: propsType) => {
   });
   const [cntLabel, setCntLabel] = useState<string[]>(labels);
   useEffect(() => {
-    console.log(props);
     if (props.length + 1 >= 15) {
       let arr = ['0'];
       let tc = 1;
@@ -164,14 +163,16 @@ const TimelineGraph = (props: propsType) => {
       setCntLabel(arr);
     }
     setIsLoading(false);
+  }, [props]);
+  useEffect(() => {
     const chart = chartRef.current;
     if (!chart) {
       return;
     }
     const chartData = {
-      ...data,
+      ...datainit,
       labels: cntLabel,
-      datasets: data.datasets.map(dataset => ({
+      datasets: datainit.datasets.map(dataset => ({
         ...dataset,
         data: props.winningRate,
         borderColor: createGradient(chart.ctx, chart.chartArea, 'line'),
@@ -182,9 +183,9 @@ const TimelineGraph = (props: propsType) => {
         },
       })),
     };
+    console.log(jsonData);
     setJsonData(chartData);
-  }, [props]);
-  useEffect(() => {}, [jsonData]);
+  }, [cntLabel]);
 
   return (
     <>

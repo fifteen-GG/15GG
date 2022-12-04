@@ -89,43 +89,32 @@ async def analyze(
         response = aio_pika.Message(b'Game ended', content_encoding='UTF-8')
         await exchange.publish(message=response, routing_key=match_id)
         raise WebSocketDisconnect
+
     formatted_data = np.array(
         list(format_live_match_data(new_data).values())).astype(np.float64).reshape(1, 25)
+    formatted_data[:, 0::5] /= 5
+    formatted_data[:, 1::5] /= 10
+    formatted_data[:, 2::5] /= 10
+    formatted_data[:, 3::5] /= 10
+    formatted_data[:, 4::5] /= 5000
 
-    if not windowed_data:
-        windowed_data = np.repeat(
+    if len(windowed_data['data']) == 0:
+        windowed_data['data'] = np.repeat(
             formatted_data,
             40,
             axis=0)
     elif len(result['match_data']) % 8 == 0:
-        windowed_data = np.concatenate(
-            (windowed_data[1:, :], formatted_data), axis=0)
-
-    windowed_data[:, 0::5] /= 5
-    windowed_data[:, 1::5] /= 10
-    windowed_data[:, 2::5] /= 10
-    windowed_data[:, 3::5] /= 10
-    windowed_data[:, 4::5] /= 5000
+        windowed_data['data'] = np.concatenate(
+            (windowed_data['data'][1:, :], formatted_data), axis=0)
 
     new_data['blue_team_win_rate'] = gg_model(
-        torch.FloatTensor(windowed_data.reshape(1, 40, 25)))[:, 1].item()
+        torch.FloatTensor(windowed_data['data'].reshape(1, 40, 25)))[:, 1].item()
+
     result['match_data'].append(new_data)
     response = bytes(json.dumps(result, ensure_ascii=False), 'UTF-8')
     response = aio_pika.Message(
         response, content_encoding='UTF-8')
     await exchange.publish(message=response, routing_key=match_id)
-
-
-async def create_exchange(websocket: WebSocket, connection):
-    data = await websocket.receive_text()
-    channel = connection.channel()
-    channel.exchange_declare(
-        exchange='direct_logs', exchange_type='direct')
-    tmp_queue = channel.queue_declare(queue='', exclusive=True)
-    queue_name = tmp_queue.method.queue
-    channel.queue_bind(exchange='direct_logs',
-                       queue=queue_name, routing_key=data)
-    print('Exchange declared')
 
 
 @router.websocket('/analyze')
@@ -147,7 +136,7 @@ async def analyze_game(websocket: WebSocket):
         exchange = await channel.declare_exchange(
             name='game_logs', type='direct')
         gg_model = torch.jit.load('./app/assets/gg_model_v1.pt')
-        windowed_data = None
+        windowed_data = {'data': np.array([])}
         while True:
             producer_task = asyncio.create_task(
                 analyze(websocket, exchange, match_id, result, gg_model, windowed_data))
@@ -161,7 +150,8 @@ async def analyze_game(websocket: WebSocket):
                 task.result()
 
     except WebSocketDisconnect:
-        # TODO send result file to storage
+        await connection.close()
+        await channel.close()
         if websocket.client_state != WebSocketState.DISCONNECTED:
             await websocket.close()
 
@@ -198,6 +188,9 @@ async def get_match_data(websocket: WebSocket, match_id: str):
             for task in done:
                 task.result()
     except WebSocketDisconnect:
+        await connection.close()
+        await channel.close()
+        await queue.unbind(exchange, routing_key=match_id)
         if websocket.client_state != WebSocketState.DISCONNECTED:
             await websocket.close()
 

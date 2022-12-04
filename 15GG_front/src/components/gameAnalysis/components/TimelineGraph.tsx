@@ -146,11 +146,12 @@ interface propsType {
 const TimelineGraph = (props: propsType) => {
   const chartRef = useRef<ChartJS>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [chartData, setChartData] = useState<ChartData<'line'>>({
+  const [jsonData, setJsonData] = useState<ChartData<'line'>>({
     datasets: [],
   });
   const [cntLabel, setCntLabel] = useState<string[]>(labels);
   useEffect(() => {
+    console.log(props);
     if (props.length + 1 >= 15) {
       let arr = ['0'];
       let tc = 1;
@@ -181,8 +182,9 @@ const TimelineGraph = (props: propsType) => {
         },
       })),
     };
-    setChartData(chartData);
+    setJsonData(chartData);
   }, [props]);
+  useEffect(() => {}, [jsonData]);
 
   return (
     <>
@@ -192,7 +194,7 @@ const TimelineGraph = (props: propsType) => {
             type="line"
             ref={chartRef}
             options={options}
-            data={chartData}
+            data={jsonData}
             width={360}
           />
         </TimelineGraphContainer>

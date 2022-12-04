@@ -81,7 +81,7 @@ const options = {
   },
 };
 
-export const data = {
+export const datainit = {
   // labels,
   datasets: [
     {
@@ -146,7 +146,7 @@ interface propsType {
 const TimelineGraph = (props: propsType) => {
   const chartRef = useRef<ChartJS>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [chartData, setChartData] = useState<ChartData<'line'>>({
+  const [jsonData, setJsonData] = useState<ChartData<'line'>>({
     datasets: [],
   });
   const [cntLabel, setCntLabel] = useState<string[]>(labels);
@@ -163,14 +163,16 @@ const TimelineGraph = (props: propsType) => {
       setCntLabel(arr);
     }
     setIsLoading(false);
+  }, [props]);
+  useEffect(() => {
     const chart = chartRef.current;
     if (!chart) {
       return;
     }
     const chartData = {
-      ...data,
+      ...datainit,
       labels: cntLabel,
-      datasets: data.datasets.map(dataset => ({
+      datasets: datainit.datasets.map(dataset => ({
         ...dataset,
         data: props.winningRate,
         borderColor: createGradient(chart.ctx, chart.chartArea, 'line'),
@@ -181,8 +183,9 @@ const TimelineGraph = (props: propsType) => {
         },
       })),
     };
-    setChartData(chartData);
-  }, [props]);
+    console.log(jsonData);
+    setJsonData(chartData);
+  }, [cntLabel]);
 
   return (
     <>
@@ -192,7 +195,7 @@ const TimelineGraph = (props: propsType) => {
             type="line"
             ref={chartRef}
             options={options}
-            data={chartData}
+            data={jsonData}
             width={360}
           />
         </TimelineGraphContainer>

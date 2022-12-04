@@ -25,11 +25,14 @@ interface propsType {
     assists: number;
     gold: number;
   }[];
+  blueWin: boolean;
+  redWin: boolean;
 }
 const TeamInfoEnd = (props: propsType) => {
   const [teamData, setTeamData] = useState([
     {
       team: 'BLUE TEAM',
+      win: props.blueWin,
       participants: [
         props.Participants[0],
         props.Participants[1],
@@ -40,6 +43,7 @@ const TeamInfoEnd = (props: propsType) => {
     },
     {
       team: 'RED TEAM',
+      win: props.redWin,
       participants: [
         props.Participants[5],
         props.Participants[6],
@@ -54,6 +58,7 @@ const TeamInfoEnd = (props: propsType) => {
     setTeamData([
       {
         team: 'BLUE TEAM',
+        win: props.blueWin,
         participants: [
           props.Participants[0],
           props.Participants[1],
@@ -64,6 +69,7 @@ const TeamInfoEnd = (props: propsType) => {
       },
       {
         team: 'RED TEAM',
+        win: props.redWin,
         participants: [
           props.Participants[5],
           props.Participants[6],
@@ -85,6 +91,11 @@ const TeamInfoEnd = (props: propsType) => {
             <TeamInfoHeader>
               <TeamNameWrapper>
                 <TeamName team={index}>{data.team}</TeamName>
+                {data.win ? (
+                  <TeamName team={index}>WIN</TeamName>
+                ) : (
+                  <TeamName team={index}>LOSE</TeamName>
+                )}
               </TeamNameWrapper>
               <UserInfoColumnWrapper>
                 <UserInfoColumn>SUMMONER</UserInfoColumn>

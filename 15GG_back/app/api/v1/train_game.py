@@ -96,7 +96,6 @@ async def upload_json(result_file: UploadFile, meta_file: UploadFile, db: Sessio
     creds = store.get()
 
     if not creds or creds.invalid:
-        print("make new storage data file ")
         flow = client.flow_from_clientsecrets(
             'client_secret_drive.json', SCOPES)
         creds = tools.run_flow(flow, store, flags) \

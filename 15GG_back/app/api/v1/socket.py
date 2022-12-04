@@ -126,7 +126,6 @@ async def create_exchange(websocket: WebSocket, connection):
     channel.queue_bind(exchange='direct_logs',
                        queue=queue_name, routing_key=data)
     print('Exchange declared')
-    print(data)
 
 
 @router.websocket('/analyze')

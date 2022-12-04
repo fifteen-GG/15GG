@@ -61,6 +61,7 @@ export const playerData = {
   assists: 0,
   gold: 0,
 };
+
 export const GameAnalysis = () => {
   const [liveData, setLiveData] = useState<SocketData>({
     match_data: [
@@ -150,20 +151,21 @@ export const GameAnalysis = () => {
   const [parse, setParse] = useState<number>(0);
   const [flag, setFlag] = useState<boolean>(false);
   const params = new URLSearchParams(window.location.search);
-  const matchID = params.get('match%ID');
+  const matchID: string | null = params.get('match%ID');
   //for incomplete game data
   useEffect(() => {
     const getGameData = async () => {
       setIsLoading(true);
       try {
-        const data = await webClient.get(`/riot/match/detail/${matchID}`);
-        if (data.status === 200) {
-          setGameData(data.data);
-          setStatus(data.data[0].status);
-          setMode(data.data[0].queue_mode);
-          setDate(data.data[0].created_at);
-          setIsLoading(false);
-        }
+        await webClient.get(`/riot/match/detail/${matchID}`).then(response => {
+          if (response.status === 200) {
+            setGameData(response.data);
+            setStatus(response.data[0].status);
+            setMode(response.data[0].queue_mode);
+            setDate(response.data[0].created_at);
+            setIsLoading(false);
+          }
+        });
       } catch (e: any) {
         console.log(e);
       }
@@ -173,12 +175,11 @@ export const GameAnalysis = () => {
   }, []);
 
   useEffect(() => {
-    if (status === gameState.end && flag === false) {
+    if (status === gameState.end && flag === false && matchID) {
       //result 파일 가져오기
-      let endResult: endData[] = [...endResultData];
-      setEndData(endResult);
+      downloadJson(matchID);
     }
-  }, [status]);
+  }, [status, matchID]);
 
   const { responseMessage } = useSocket(state => {
     if (state === SocketStatus.onNewChatReceived) {
@@ -206,7 +207,6 @@ export const GameAnalysis = () => {
           let data = JSON.parse(responseMessage);
           setLiveData(data);
         } catch (e) {
-          console.log(liveData.match_data);
           setEndData(liveData.match_data);
           webClient
             .post('/match/update/status', {
@@ -275,6 +275,29 @@ export const GameAnalysis = () => {
 
   const indexSlider = (values: number) => {
     setLength(values);
+  };
+
+  const downloadJson = (match_id: string | null) => {
+    const target = match_id?.split('.')[0].replace('_', '-');
+    const AWS = require('aws-sdk');
+    AWS.config.update({
+      accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
+      secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+    });
+    const s3 = new AWS.S3();
+    s3.getObject(
+      { Bucket: '15gg', Key: `${target}.json` },
+      function (error: any, data: any) {
+        if (error) console.log(error);
+        try {
+          const downloadData = JSON.parse(data.Body);
+          const endResult = downloadData['match_data'];
+          setEndData(endResult);
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    );
   };
   return (
     <GameAnalysisContainer>

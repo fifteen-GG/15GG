@@ -384,7 +384,10 @@ async def get_summoner_riot(summoner_name, db: Session, mode: str):
                      'assists': None, 'prefer_position': None, 'champions': None}
         set_dictionary(return_summoner_info, none_list,
                        avg_key_list, key_list)
-        crud.summoner.create_summoner(db, return_summoner_info)
+        try:
+            crud.summoner.create_summoner(db, return_summoner_info)
+        except Exception as e:
+            print(e)
         return return_summoner_info
 
     match_average_data = response[1]
@@ -423,7 +426,6 @@ async def get_match_info(summoner_name: str, page: str, db: Session = Depends(ge
         response = await get_summoner_basic_info(summoner_name)
         puuid = response['puuid']
         user_match_info = await get_match_list(puuid, page, db)
-        print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시
         return user_match_info
     try:
         user_match_info = []
@@ -454,7 +456,6 @@ async def get_match_info(summoner_name: str, page: str, db: Session = Depends(ge
         puuid = response['puuid']
         user_match_info = await get_match_list(puuid, page, db)
 
-    print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
     return user_match_info
 
 
@@ -472,8 +473,11 @@ async def get_match_detail(match_id: str, db: Session = Depends(get_db)):
             participants = crud.participant.get_participant_by_match_id(
                 db, match_id)
         except:
-            match_info = await get_match_data(match_id, client)
-            participants = match_info['info']['participants']
+            response = await get_match_data(match_id, client)
+            await create_match_data_list(db, response, None)
+            match_info = crud.match.get_match_info(db, match_id)
+            participants = crud.participant.get_participant_by_match_id(
+                db, match_id)
         red_participants = []
         blue_participants = []
         red_avg = {'golds': 0, 'level': 0, 'kills': 0}
@@ -481,51 +485,23 @@ async def get_match_detail(match_id: str, db: Session = Depends(get_db)):
 
         for participant in participants:
             spells = {'spell1': '', 'spell2': ''}
-            try:
-                summoner_name = participant['summonerName']
-                team_id = participant['teamId']
-                champion_name = participant['championName']
-                champ_level = participant['champLevel']
-                summoner1Id = participant['summoner1Id']
-                summoner2Id = participant['summoner2Id']
-                with open('./app/assets/spell.json', mode='r', encoding='UTF-8') as spellFile:
-                    spell_data_list = json.loads(spellFile.read())['data']
-                    for key, value in spell_data_list.items():
-                        if value['key'] == str(summoner1Id):
-                            spells['spell1'] = value['id']
-                        elif value['key'] == str(summoner2Id):
-                            spells['spell2'] = value['id']
-                        if spells['spell1'] != '' and spells['spell2'] != '':
-                            break
-                perks = {"perk": participant['perks']['styles'][0]['selections'][0]['perk'],
-                         "perkStyle": participant['perks']['styles'][1]['style']}
-                gold_earned = participant['goldEarned']
-                total_damage_dealt_to_champions = participant['totalDamageDealtToChampions']
-                total_damage_taken = participant['totalDamageTaken']
-                items = [participant['item0'], participant['item1'], participant['item2'],
-                         participant['item3'], participant['item4'], participant['item5'], participant['item6']]
-                kills = participant['kills']
-                deaths = participant['deaths']
-                assists = participant['assists']
-                win = participant['win']
-            except:
-                summoner_name = participant.summoner_name
-                team_id = participant.team_id
-                champion_name = participant.champion_name
-                champ_level = participant.champion_level
-                spells['spell1'] = participant.spell1
-                spells['spell2'] = participant.spell2
-                perks = {"perk": participant.perk,
-                         "perkStyle": participant.perk_style}
-                gold_earned = participant.gold_earned
-                total_damage_dealt_to_champions = participant.total_damage_dealt_to_champions
-                total_damage_taken = participant.total_damage_taken
-                items = [participant.item0, participant.item1, participant.item2,
-                         participant.item3, participant.item4, participant.item5, participant.item6]
-                kills = participant.kills
-                deaths = participant.deaths
-                assists = participant.assists
-                win = participant.win
+            summoner_name = participant.summoner_name
+            team_id = participant.team_id
+            champion_name = participant.champion_name
+            champ_level = participant.champion_level
+            spells['spell1'] = participant.spell1
+            spells['spell2'] = participant.spell2
+            perks = {"perk": participant.perk,
+                     "perkStyle": participant.perk_style}
+            gold_earned = participant.gold_earned
+            total_damage_dealt_to_champions = participant.total_damage_dealt_to_champions
+            total_damage_taken = participant.total_damage_taken
+            items = [participant.item0, participant.item1, participant.item2,
+                     participant.item3, participant.item4, participant.item5, participant.item6]
+            kills = participant.kills
+            deaths = participant.deaths
+            assists = participant.assists
+            win = participant.win
 
             if team_id == 100:
                 blue_avg['golds'] += gold_earned
@@ -539,7 +515,6 @@ async def get_match_detail(match_id: str, db: Session = Depends(get_db)):
                 red_avg['level'] += champ_level
                 red_participants.append({'summoner_name': summoner_name, 'champion_name': champion_name, 'rank': participant.rank, 'tier': participant.tier, 'champ_level': champ_level, 'spells': spells, 'perks': perks, 'items': items, 'gold_earned': gold_earned, 'kills': kills,
                                          'deaths': deaths, 'assists': assists, 'total_damage_dealt_to_champions': total_damage_dealt_to_champions, 'total_damage_taken': total_damage_taken, 'win': win})
-
         return [{'match_id': match_info.id, 'queue_mode': match_info.queue_mode, 'status': match_info.status, 'created_at': match_info.created_at}, {'team': 'red', 'win': red_participants[0]['win'], 'team_avg_data': {'golds': red_avg['golds'], 'kills': red_avg['kills'], 'level': red_avg['level']/5}, 'participants': red_participants}, {'team': 'blue', 'win': blue_participants[0]['win'], 'team_avg_data': {'golds': blue_avg['golds'], 'kills': blue_avg['kills'], 'level': blue_avg['level']/5}, 'participants': blue_participants}]
 
 

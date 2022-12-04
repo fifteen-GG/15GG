@@ -26,7 +26,6 @@ interface propsType {
   }[];
 }
 const TeamStatsEnd = (props: propsType) => {
-  console.log(props.Participants);
   const [teamStatsData, setTeamStatsData] = useState([
     {
       team: 'Blue',

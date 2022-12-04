@@ -183,7 +183,6 @@ const TimelineGraph = (props: propsType) => {
         },
       })),
     };
-    console.log(jsonData);
     setJsonData(chartData);
   }, [cntLabel]);
 

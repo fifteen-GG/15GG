@@ -14,7 +14,6 @@ import * as Palette from '../../assets/colorPalette';
 import { useState, useEffect } from 'react';
 import { useSocket, SocketStatus } from './useSocket';
 import { gameState, queue_mode } from '../types/enum';
-import endResultData from '../../assets/sample_live_result.json';
 import {
   teamDetail,
   SocketData,
@@ -66,7 +65,7 @@ export const GameAnalysis = () => {
   const [liveData, setLiveData] = useState<SocketData>({
     match_data: [
       {
-        blue_team_win_rate: 0,
+        blue_team_win_rate: 0.5,
         timestamp: 0,
         player_data: [
           playerData,
@@ -86,7 +85,7 @@ export const GameAnalysis = () => {
   } as unknown as SocketData);
   const [endData, setEndData] = useState<endData[]>([
     {
-      blue_team_win_rate: 0,
+      blue_team_win_rate: 0.5,
       timestamp: 0,
       player_data: [
         playerData,
@@ -102,7 +101,7 @@ export const GameAnalysis = () => {
       ],
     },
     {
-      blue_team_win_rate: 0,
+      blue_team_win_rate: 0.5,
       timestamp: 0,
       player_data: [
         playerData,
@@ -118,7 +117,7 @@ export const GameAnalysis = () => {
       ],
     },
     {
-      blue_team_win_rate: 0,
+      blue_team_win_rate: 0.5,
       timestamp: 0,
       player_data: [
         playerData,
@@ -142,7 +141,7 @@ export const GameAnalysis = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
   const [timeString, setTimeString] = useState<number[]>([0]);
-  const [status, setStatus] = useState<gameState>(1);
+  const [status, setStatus] = useState<gameState>(0);
   const [mode, setMode] = useState<queue_mode>(queue_mode.solo);
   const [date, setDate] = useState<string>('');
   const [length, setLength] = useState<number>(0);

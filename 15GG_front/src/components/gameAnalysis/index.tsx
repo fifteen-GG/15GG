@@ -142,7 +142,7 @@ export const GameAnalysis = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
   const [timeString, setTimeString] = useState<number[]>([0]);
-  const [status, setStatus] = useState<gameState>(0);
+  const [status, setStatus] = useState<gameState>(1);
   const [mode, setMode] = useState<queue_mode>(queue_mode.solo);
   const [date, setDate] = useState<string>('');
   const [length, setLength] = useState<number>(0);
@@ -190,16 +190,7 @@ export const GameAnalysis = () => {
       console.log('onConnectionOpened');
     }
   }, matchID?.replace('_', '-'));
-  // useEffect(() => {
-  //   if (status === gameState.end) {
-  //     let rate: number[] = [0];
-  //     for (let i = 0; i <= endData.length - 1; i++) {
-  //       rate.push(Math.floor(50 - 100 * endData[i].blue_team_win_rate));
-  //     }
-  //     setWinningRate(rate);
-  //     console.log(winningRate);
-  //   }
-  // }, [, setStatus, status]);
+
   useEffect(() => {
     if (status === gameState.live) {
       if (parse) {
@@ -262,7 +253,7 @@ export const GameAnalysis = () => {
     if (status === gameState.end) {
       let rate: number[] = [0];
       for (let i = 0; i <= endData.length - 1; i++) {
-        rate.push(Math.floor(50 - 100 * endData[i].blue_team_win_rate));
+        rate.push(Math.floor(100 * endData[i].blue_team_win_rate - 50));
       }
       setWinningRate(rate);
       let string: number[] = [0];
@@ -351,7 +342,11 @@ export const GameAnalysis = () => {
               }
             />
           ) : status === gameState.end ? (
-            <TeamInfoEnd Participants={endData[length].player_data} />
+            <TeamInfoEnd
+              Participants={endData[length].player_data}
+              blueWin={gameData[2].win}
+              redWin={gameData[1].win}
+            />
           ) : (
             <TeamInfo
               blueWin={gameData[2].win}

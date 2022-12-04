@@ -94,10 +94,16 @@ const Summoner = (props: propsType) => {
             </KDADetails>
             <KDA>
               KDA{' '}
-              {(
-                (props.summonerInfo.kills + props.summonerInfo.assists) /
-                props.summonerInfo.deaths
-              ).toFixed(1)}
+              {props.summonerInfo.deaths === 0 &&
+              props.summonerInfo.kills === 0 &&
+              props.summonerInfo.assists === 0
+                ? '0.0'
+                : props.summonerInfo.deaths === 0
+                ? 'Perfect'
+                : (
+                    (props.summonerInfo.kills + props.summonerInfo.assists) /
+                    props.summonerInfo.deaths
+                  ).toFixed(1)}
             </KDA>
           </KDAWrapper>
         </SummonerInfoWrapper>

@@ -107,7 +107,8 @@ const LiveSummoner = (props: propsType) => {
             <KDA>
               KDA{' '}
               {props.livesummonerInfo.deaths === 0 &&
-              props.livesummonerInfo.kills === 0
+              props.livesummonerInfo.kills === 0 &&
+              props.livesummonerInfo.assists === 0
                 ? '0.0'
                 : props.livesummonerInfo.deaths === 0
                 ? 'Perfect'

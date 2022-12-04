@@ -11,6 +11,8 @@ import {
   TeamsRow as LowerLinePosition,
 } from '../styles/livegame.s';
 import { LiveUser } from './LiveUser';
+import { Navigate, useNavigate } from 'react-router-dom';
+
 interface propsType {
   gameData: gameInfo;
 }
@@ -36,6 +38,7 @@ interface gameData {
 // /riot/match/preview/
 export const LiveGame = (props: propsType) => {
   const [gameData, setGameData] = useState<gameData>();
+  const navigate = useNavigate();
   const getGameData = async () => {
     try {
       const data = await webClient.get(
@@ -52,7 +55,9 @@ export const LiveGame = (props: propsType) => {
     if (props.gameData.id !== undefined) getGameData();
   }, [props.gameData]);
   return (
-    <LiveGameContainer>
+    <LiveGameContainer
+      onClick={() => navigate(`/live?match%ID=${props.gameData.id}`)}
+    >
       <TitleWrapper>
         <AnalysisTypeLabel />
         <GameTitle>

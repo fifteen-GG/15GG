@@ -281,13 +281,14 @@ export const GameAnalysis = () => {
     const target = match_id?.split('.')[0].replace('_', '-');
     const AWS = require('aws-sdk');
     AWS.config.update({
-      accessKeyId: process.env.AWS_ACCESS_KEY,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
+      secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
     });
     const s3 = new AWS.S3();
     s3.getObject(
       { Bucket: '15gg', Key: `${target}.json` },
       function (error: any, data: any) {
+        if (error) console.log(error);
         try {
           const downloadData = JSON.parse(data.Body);
           const endResult = downloadData['match_data'];

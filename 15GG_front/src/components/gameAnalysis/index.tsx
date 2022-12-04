@@ -31,6 +31,7 @@ const GameAnalysisContainer = styled.div`
   @media screen and (max-width: 360px) {
     width: 328px;
   }
+  over-flow-x: hidden;
 `;
 const GameAnalysisWrapper = styled.div`
   display: flex;

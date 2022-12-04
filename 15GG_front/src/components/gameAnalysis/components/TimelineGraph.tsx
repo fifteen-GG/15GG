@@ -152,12 +152,12 @@ const TimelineGraph = (props: propsType) => {
   const [cntLabel, setCntLabel] = useState<string[]>(labels);
   useEffect(() => {
     if (props.length + 1 >= 15) {
-      let arr = ['0'];
-      let tc = 1;
-      props.winningRate.map((data, index) => {
+      let arr = [''];
+      let tc = 0;
+      props.winningRate.map((propsData, index) => {
         if (Math.trunc(props.time[index] / 60) === tc) {
           arr.push(tc as unknown as string);
-          tc += 1;
+          tc += 3;
         } else arr.push('');
       });
       setCntLabel(arr);

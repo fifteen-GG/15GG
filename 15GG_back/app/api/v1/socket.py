@@ -103,7 +103,7 @@ async def analyze(
             formatted_data,
             40,
             axis=0)
-    elif len(result['match_data']) % 8 == 0:
+    elif len(result['match_data']) % 4 == 0:
         windowed_data['data'] = np.concatenate(
             (windowed_data['data'][1:, :], formatted_data), axis=0)
 

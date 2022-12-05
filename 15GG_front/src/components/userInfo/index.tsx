@@ -61,6 +61,8 @@ export const UserInfo = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [httpUserStatusCode, setHttpUserStatusCode] = useState<number>(200);
   const [httpMatchStatusCode, setHttpMatchStatusCode] = useState<number>(200);
+  const [loader, setLoader] = useState<string>('데이터 불러오는 중...');
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const params = new URLSearchParams(window.location.search);
   const id = params.get('ID');
   useEffect(() => {
@@ -68,7 +70,6 @@ export const UserInfo = () => {
   }, []);
   const init = async () => {
     await getMatchData();
-    // getUserData();
     setTimeout(() => {
       getUserData();
     }, 1000);
@@ -92,10 +93,18 @@ export const UserInfo = () => {
       );
 
       const fetchedGames: MatchInfoType[] = [...gamesData, ...match.data];
-      setGamesData(fetchedGames);
-      setPageNum(pageNum + 1);
+      setTimeout(() => {
+        setGamesData(fetchedGames);
+        setPageNum(pageNum + 1);
+        if (match.data.length < 3) {
+          setHasMore(false);
+        }
+      }, 1000);
     } catch (e: any) {
-      setHttpMatchStatusCode(e.response.status);
+      console.log('error!');
+      setLoader(
+        '과도한 요청으로 데이터 로드가 제한됩니다. 잠시후 다시 시도해주세요.',
+      );
     }
   };
   const pageReLoad = () => {
@@ -142,22 +151,11 @@ export const UserInfo = () => {
           <InfiniteScroll
             next={getMatchData}
             dataLength={gamesData.length}
-            hasMore={true}
-            loader={
-              httpMatchStatusCode === 404 ? (
-                <Loader>기록된 전적이 없습니다</Loader>
-              ) : (
-                <Loader>데이터 불러오는 중...</Loader>
-              )
-            }
+            hasMore={hasMore}
+            loader={<Loader>{loader}</Loader>}
           >
             {gamesData.map((game: MatchInfoType, index) => {
-              return (
-                <MatchCard
-                  matchInfo={game}
-                  key={game.champion_name}
-                ></MatchCard>
-              );
+              return <MatchCard matchInfo={game} key={index}></MatchCard>;
             })}
           </InfiniteScroll>
         </>

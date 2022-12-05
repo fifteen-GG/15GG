@@ -1,8 +1,4 @@
-import os
-from ast import And
-from audioop import reverse
 import asyncio
-from curses import pair_content
 import datetime
 import math
 import json
@@ -12,10 +8,7 @@ from app.models.champion import Champion
 from app.models.match import Match
 from app.models.participant import Participant
 import httpx
-from typing import Union
-import operator
 from fastapi import HTTPException, APIRouter, Depends
-from dotenv import dotenv_values
 import time
 from bs4 import BeautifulSoup
 from sqlalchemy.orm import Session
@@ -44,8 +37,7 @@ async def get_summoner_basic_info(summoner_name: str):
             response = await client.get(url, headers=HEADER)
             response.raise_for_status()
         except Exception as e:
-            print(e)
-            raise HTTPException(status_code=404, detail='user not found')
+            raise HTTPException(status_code=404, detail=str(e))
         response = response.json()
     return response
 
@@ -303,6 +295,8 @@ async def get_match_list(puuid: str, page: str, db: Session):
         return_match_data = []
         for match_data in match_data_list:
             response = await create_match_data_list(db, match_data, puuid)
+            if (response['queue_mode'].split(' ')[0] == 'Tutorial'):
+                continue
             return_match_data.append(response)
         # create_match_request = [create_match_data_list(
         #     db, match_data, puuid) for match_data in match_data_list]
@@ -360,7 +354,10 @@ async def get_summoner_riot(summoner_name, db: Session, mode: str):
         'prefer_position': None,
         'champions': None
     }
-    summoner_basic_info = await get_summoner_basic_info(summoner_name)
+    try:
+        summoner_basic_info = await get_summoner_basic_info(summoner_name)
+    except HTTPException as e:
+        raise HTTPException(status_code=404, detail=str(e.detail))
     return_summoner_info['id'] = summoner_basic_info['id']
     return_summoner_info['puuid'] = summoner_basic_info['puuid']
     return_summoner_info['name'] = summoner_basic_info['name']
@@ -417,7 +414,10 @@ async def get_summoner(summoner_name: str, db: Session = Depends(get_db)):
         response = crud.summoner.get_summoner(db, summoner_name)
         return response
     except:
-        return_summoner_info = await get_summoner_riot(summoner_name, db, 'c')
+        try:
+            return_summoner_info = await get_summoner_riot(summoner_name, db, 'c')
+        except HTTPException as e:
+            raise HTTPException(status_code=404, detail=str(e.detail))
         return return_summoner_info
 
 
@@ -430,9 +430,16 @@ async def get_match_info(summoner_name: str, page: str, db: Session = Depends(ge
     try:
         response = crud.summoner.get_summoner(db, summoner_name)
     except:  # 초기진입
-        response = await get_summoner_basic_info(summoner_name)
+        try:
+            response = await get_summoner_basic_info(summoner_name)
+        except HTTPException as e:
+            raise HTTPException(status_code=404, detail=str(e.detail))
         puuid = response['puuid']
-        user_match_info = await get_match_list(puuid, page, db)
+
+        try:
+            user_match_info = await get_match_list(puuid, page, db)
+        except HTTPException as e:
+            raise HTTPException(status_code=404, detail=str(e.detail))
         return user_match_info
     try:
         user_match_info = []

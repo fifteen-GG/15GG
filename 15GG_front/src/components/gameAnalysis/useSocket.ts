@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { gameState } from '../types/enum';
 
 export enum SocketStatus {
   onNewChatReceived = 'onNewChatReceived',
@@ -9,11 +10,12 @@ export enum SocketStatus {
 export const useSocket = (
   onConnectionStateChanged: (state: SocketStatus) => void,
   matchID: any,
+  status: gameState,
 ) => {
   const [responseMessage, setResponseMessage] = useState('');
 
   useEffect(() => {
-    connectStart();
+    if (status === gameState.live) connectStart();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

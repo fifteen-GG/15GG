@@ -68,7 +68,10 @@ export const UserInfo = () => {
   }, []);
   const init = async () => {
     await getMatchData();
-    getUserData();
+    // getUserData();
+    setTimeout(() => {
+      getUserData();
+    }, 1000);
   };
   const getUserData = async () => {
     setIsLoading(true);

@@ -61,7 +61,7 @@ const PreferChampion = (props: propsType) => {
         )}
       </PreferChampionWrapper>
       <PreferChampionMsg>
-        최근 20게임을 바탕으로 분석한 결과이며, 데이터 평균에 따라 달라질 수
+        최근 10게임을 바탕으로 분석한 결과이며, 데이터 평균에 따라 달라질 수
         있습니다.
       </PreferChampionMsg>
     </PreferChampionContainer>

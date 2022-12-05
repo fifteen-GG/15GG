@@ -181,15 +181,19 @@ export const GameAnalysis = () => {
     }
   }, [status, matchID]);
 
-  const { responseMessage } = useSocket(state => {
-    if (state === SocketStatus.onNewChatReceived) {
-      setParse(data => data + 1);
-    } else if (state === SocketStatus.onConnectionFailed) {
-      console.error('onConnectionFailed');
-    } else if (state === SocketStatus.onConnectionOpened) {
-      console.log('onConnectionOpened');
-    }
-  }, matchID?.replace('_', '-'));
+  const { responseMessage } = useSocket(
+    state => {
+      if (state === SocketStatus.onNewChatReceived) {
+        setParse(data => data + 1);
+      } else if (state === SocketStatus.onConnectionFailed) {
+        console.error('onConnectionFailed');
+      } else if (state === SocketStatus.onConnectionOpened) {
+        console.log('onConnectionOpened');
+      }
+    },
+    matchID?.replace('_', '-'),
+    status,
+  );
 
   useEffect(() => {
     if (status === gameState.live) {

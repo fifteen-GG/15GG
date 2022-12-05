@@ -126,9 +126,9 @@ const TimelineBarGraph = (props: propsType) => {
         />
       </GraphWrapper>
       <RateWrapper>
-        <WinningRate>{Math.floor(blueWinningRate * 100)}%</WinningRate>
+        <WinningRate>{(blueWinningRate * 100).toFixed(1)}%</WinningRate>
         <GraphTitle>승률</GraphTitle>
-        <WinningRate>{100 - Math.floor(blueWinningRate * 100)}%</WinningRate>
+        <WinningRate>{(100 - blueWinningRate * 100).toFixed(1)}%</WinningRate>
       </RateWrapper>
     </TimelineBarContainer>
   );

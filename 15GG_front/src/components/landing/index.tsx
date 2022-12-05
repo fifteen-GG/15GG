@@ -110,7 +110,14 @@ export const Landing = () => {
   }, []);
   return (
     <LandingContainer>
-      <BackgroundVideo src={bgVideo} loop autoPlay muted playsInline />
+      <BackgroundVideo
+        src={bgVideo}
+        loop={true}
+        autoPlay={true}
+        muted={true}
+        playsInline={true}
+        controls={false}
+      />
       <LandingWrapper>
         <TitleWrapper>
           <Logo src={logo} onClick={() => navigate('/')} />

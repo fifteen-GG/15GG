@@ -175,17 +175,21 @@ async def get_participant_data(db: Session, participant, queue_mode, match_info,
     created_at = datetime.date.fromtimestamp(time_stamp/1000)
     game_duration = match_info['info']['gameDuration']
     summoner_id = participant['summonerId']
-    tier_dict = await get_summoner_league_info(summoner_id)
+    # tier_dict = await get_summoner_league_info(summoner_id)
     if queue_mode == '5v5 Ranked Flex games':
         try:
-            tier = tier_dict['RANKED_FLEX_SR']['tier']
-            rank = tier_dict['RANKED_FLEX_SR']['rank']
+            # tier = tier_dict['RANKED_FLEX_SR']['tier']
+            tier = None
+            # rank = tier_dict['RANKED_FLEX_SR']['rank']
+            rank = None
         except:
             pass
     else:
         try:
-            tier = tier_dict['RANKED_SOLO_5x5']['tier']
-            rank = tier_dict['RANKED_SOLO_5x5']['rank']
+            # tier = tier_dict['RANKED_SOLO_5x5']['tier']
+            tier = None
+            # rank = tier_dict['RANKED_SOLO_5x5']['rank']
+            rank = None
         except:
             pass
 
@@ -288,7 +292,7 @@ async def create_match_data_list(db: Session, match_info, puuid: str):
 async def get_match_list(puuid: str, page: str, db: Session):
     async with httpx.AsyncClient() as client:
         url = RIOT_API_ROOT_ASIA + '/match/v5/matches/by-puuid/' + \
-            puuid+'/ids?start=' + str((int(page) - 1) * 1) + '&count=1'
+            puuid+'/ids?start=' + str((int(page) - 1) * 3) + '&count=3'
         match_list = await client.get(url, headers=HEADER)
         match_list = match_list.json()
         if (len(match_list) == 0):
@@ -296,10 +300,13 @@ async def get_match_list(puuid: str, page: str, db: Session):
         get_match_data_request = [get_match_data(match_id, client)
                                   for match_id in match_list]
         match_data_list = await asyncio.gather(*get_match_data_request)
-
-        create_match_request = [create_match_data_list(
-            db, match_data, puuid) for match_data in match_data_list]
-        return_match_data = await asyncio.gather(*create_match_request)
+        return_match_data = []
+        for match_data in match_data_list:
+            response = await create_match_data_list(db, match_data, puuid)
+            return_match_data.append(response)
+        # create_match_request = [create_match_data_list(
+        #     db, match_data, puuid) for match_data in match_data_list]
+        # return_match_data = await asyncio.gather(*create_match_request)
         return return_match_data
 
 

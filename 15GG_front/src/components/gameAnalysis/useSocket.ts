@@ -16,8 +16,10 @@ export const useSocket = (
 
   useEffect(() => {
     if (status === gameState.live) connectStart();
+
     else if (status === gameState.end)
       onConnectionStateChanged(SocketStatus.onConnectionFailed);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 

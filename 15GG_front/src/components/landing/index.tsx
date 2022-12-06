@@ -128,6 +128,17 @@ export const Landing = () => {
             <GamesTitle>실시간 분석 중</GamesTitle>
             <CodeButton onClick={() => navigate('/code')}>코드 생성</CodeButton>
           </GamesTitleWrapper>
+          {matchList.length === 0 ? (
+            <div
+              style={{
+                color: 'white',
+                textAlign: 'center',
+                marginTop: '100px',
+              }}
+            >
+              현재 분석 중인 게임이 없습니다.
+            </div>
+          ) : null}
           {matchList.map((data, index) => {
             return <LiveGame key={index} gameData={data} />;
           })}

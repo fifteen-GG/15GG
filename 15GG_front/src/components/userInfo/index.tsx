@@ -99,7 +99,7 @@ export const UserInfo = () => {
         if (match.data.length < 3) {
           setHasMore(false);
         }
-      }, 1000);
+      }, 1500);
     } catch (e: any) {
       console.log('error!');
       setLoader(

@@ -28,6 +28,7 @@ const Loader = styled.div`
   text-align: center;
   font-size: 14px;
   margin-top: 4px;
+  white-space: pre-line;
 `;
 
 export const UserInfo = () => {
@@ -62,8 +63,10 @@ export const UserInfo = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [httpUserStatusCode, setHttpUserStatusCode] = useState<number>(200);
   const [httpMatchStatusCode, setHttpMatchStatusCode] = useState<number>(200);
-  const [loader, setLoader] = useState<string>('데이터 불러오는 중...');
+  // const [loader, setLoader] = useState<string>('데이터 불러오는 중...');
+  const [loader, setLoader] = useState<boolean>(true);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [loadingMessage, setLoadingMessage] = useState<string>('더보기');
   const params = new URLSearchParams(window.location.search);
   const id = params.get('ID');
   useEffect(() => {
@@ -89,6 +92,7 @@ export const UserInfo = () => {
   };
   const getMatchData = async () => {
     try {
+      setLoadingMessage('데이터 로드 중...');
       const match = await webClient.get(
         `/riot/user/match_list/${id}?page=${pageNum}`,
       );
@@ -100,12 +104,13 @@ export const UserInfo = () => {
         if (match.data.length < 3) {
           setHasMore(false);
         }
+        setLoadingMessage('더보기');
       }, 1500);
     } catch (e: any) {
-      console.log('error!');
-      setLoader(
-        '과도한 요청으로 데이터 로드가 제한됩니다. 잠시후 다시 시도해주세요.',
-      );
+      // setLoader(
+      //   '과도한 요청으로 데이터 로드가 제한됩니다. 잠시후 다시 시도해주세요.',
+      // );
+      setLoader(false);
     }
   };
   const pageReLoad = () => {
@@ -158,7 +163,18 @@ export const UserInfo = () => {
           {gamesData.map((game: MatchInfoType, index) => {
             return <MatchCard matchInfo={game} key={index}></MatchCard>;
           })}
-          <MoreBox onClick={getMatchData}>더보기</MoreBox>
+          {hasMore ? (
+            loader ? (
+              <MoreBox onClick={getMatchData}>{loadingMessage}</MoreBox>
+            ) : (
+              <Loader>
+                과도한 요청으로 데이터 로드가 제한됩니다. 잠시후 다시
+                시도해주세요
+              </Loader>
+            )
+          ) : (
+            <MoreBox>플레이한 게임이 존재하지 않습니다.</MoreBox>
+          )}
           {/* </InfiniteScroll> */}
         </>
       )}

@@ -445,8 +445,8 @@ async def get_match_info(summoner_name: str, page: str, db: Session = Depends(ge
         user_match_info = []
         participant_list = crud.participant.get_participant_list(
             db, page, summoner_name)
-        if len(participant_list) == 0:
-            raise Exception('There is no cached game.')
+        if len(participant_list) < 3:
+            raise EOFError
         for participant in participant_list:
             match_info = crud.match.get_match_info(db, participant.match_id)
             try:
@@ -466,7 +466,7 @@ async def get_match_info(summoner_name: str, page: str, db: Session = Depends(ge
                                     'spells': {'spell1': participant.spell1, 'spell2': participant.spell2},
                                     'perks': {'perk': participant.perk, 'perk_style': participant.perk_style}
                                     })
-    except:
+    except EOFError:
         puuid = response['puuid']
         user_match_info = await get_match_list(puuid, page, db)
 

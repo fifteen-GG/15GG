@@ -1,8 +1,4 @@
-import os
-from ast import And
-from audioop import reverse
 import asyncio
-from curses import pair_content
 import datetime
 import math
 import json
@@ -12,10 +8,7 @@ from app.models.champion import Champion
 from app.models.match import Match
 from app.models.participant import Participant
 import httpx
-from typing import Union
-import operator
 from fastapi import HTTPException, APIRouter, Depends
-from dotenv import dotenv_values
 import time
 from bs4 import BeautifulSoup
 from sqlalchemy.orm import Session
@@ -44,8 +37,7 @@ async def get_summoner_basic_info(summoner_name: str):
             response = await client.get(url, headers=HEADER)
             response.raise_for_status()
         except Exception as e:
-            print(e)
-            raise HTTPException(status_code=404, detail='user not found')
+            raise HTTPException(status_code=404, detail=str(e))
         response = response.json()
     return response
 
@@ -175,17 +167,21 @@ async def get_participant_data(db: Session, participant, queue_mode, match_info,
     created_at = datetime.date.fromtimestamp(time_stamp/1000)
     game_duration = match_info['info']['gameDuration']
     summoner_id = participant['summonerId']
-    tier_dict = await get_summoner_league_info(summoner_id)
+    # tier_dict = await get_summoner_league_info(summoner_id)
     if queue_mode == '5v5 Ranked Flex games':
         try:
-            tier = tier_dict['RANKED_FLEX_SR']['tier']
-            rank = tier_dict['RANKED_FLEX_SR']['rank']
+            # tier = tier_dict['RANKED_FLEX_SR']['tier']
+            tier = None
+            # rank = tier_dict['RANKED_FLEX_SR']['rank']
+            rank = None
         except:
             pass
     else:
         try:
-            tier = tier_dict['RANKED_SOLO_5x5']['tier']
-            rank = tier_dict['RANKED_SOLO_5x5']['rank']
+            # tier = tier_dict['RANKED_SOLO_5x5']['tier']
+            tier = None
+            # rank = tier_dict['RANKED_SOLO_5x5']['rank']
+            rank = None
         except:
             pass
 
@@ -288,7 +284,7 @@ async def create_match_data_list(db: Session, match_info, puuid: str):
 async def get_match_list(puuid: str, page: str, db: Session):
     async with httpx.AsyncClient() as client:
         url = RIOT_API_ROOT_ASIA + '/match/v5/matches/by-puuid/' + \
-            puuid+'/ids?start=' + str((int(page) - 1) * 1) + '&count=1'
+            puuid+'/ids?start=' + str((int(page) - 1) * 3) + '&count=3'
         match_list = await client.get(url, headers=HEADER)
         match_list = match_list.json()
         if (len(match_list) == 0):
@@ -296,10 +292,15 @@ async def get_match_list(puuid: str, page: str, db: Session):
         get_match_data_request = [get_match_data(match_id, client)
                                   for match_id in match_list]
         match_data_list = await asyncio.gather(*get_match_data_request)
-
-        create_match_request = [create_match_data_list(
-            db, match_data, puuid) for match_data in match_data_list]
-        return_match_data = await asyncio.gather(*create_match_request)
+        return_match_data = []
+        for match_data in match_data_list:
+            response = await create_match_data_list(db, match_data, puuid)
+            if (response['queue_mode'].split(' ')[0] == 'Tutorial'):
+                continue
+            return_match_data.append(response)
+        # create_match_request = [create_match_data_list(
+        #     db, match_data, puuid) for match_data in match_data_list]
+        # return_match_data = await asyncio.gather(*create_match_request)
         return return_match_data
 
 
@@ -353,7 +354,10 @@ async def get_summoner_riot(summoner_name, db: Session, mode: str):
         'prefer_position': None,
         'champions': None
     }
-    summoner_basic_info = await get_summoner_basic_info(summoner_name)
+    try:
+        summoner_basic_info = await get_summoner_basic_info(summoner_name)
+    except HTTPException as e:
+        raise HTTPException(status_code=404, detail=str(e.detail))
     return_summoner_info['id'] = summoner_basic_info['id']
     return_summoner_info['puuid'] = summoner_basic_info['puuid']
     return_summoner_info['name'] = summoner_basic_info['name']
@@ -410,7 +414,10 @@ async def get_summoner(summoner_name: str, db: Session = Depends(get_db)):
         response = crud.summoner.get_summoner(db, summoner_name)
         return response
     except:
-        return_summoner_info = await get_summoner_riot(summoner_name, db, 'c')
+        try:
+            return_summoner_info = await get_summoner_riot(summoner_name, db, 'c')
+        except HTTPException as e:
+            raise HTTPException(status_code=404, detail=str(e.detail))
         return return_summoner_info
 
 
@@ -423,16 +430,23 @@ async def get_match_info(summoner_name: str, page: str, db: Session = Depends(ge
     try:
         response = crud.summoner.get_summoner(db, summoner_name)
     except:  # 초기진입
-        response = await get_summoner_basic_info(summoner_name)
+        try:
+            response = await get_summoner_basic_info(summoner_name)
+        except HTTPException as e:
+            raise HTTPException(status_code=404, detail=str(e.detail))
         puuid = response['puuid']
-        user_match_info = await get_match_list(puuid, page, db)
+
+        try:
+            user_match_info = await get_match_list(puuid, page, db)
+        except HTTPException as e:
+            raise HTTPException(status_code=404, detail=str(e.detail))
         return user_match_info
     try:
         user_match_info = []
         participant_list = crud.participant.get_participant_list(
             db, page, summoner_name)
-        if len(participant_list) == 0:
-            raise Exception('There is no cached game.')
+        if len(participant_list) < 3:
+            raise EOFError
         for participant in participant_list:
             match_info = crud.match.get_match_info(db, participant.match_id)
             try:
@@ -452,7 +466,7 @@ async def get_match_info(summoner_name: str, page: str, db: Session = Depends(ge
                                     'spells': {'spell1': participant.spell1, 'spell2': participant.spell2},
                                     'perks': {'perk': participant.perk, 'perk_style': participant.perk_style}
                                     })
-    except:
+    except EOFError:
         puuid = response['puuid']
         user_match_info = await get_match_list(puuid, page, db)
 

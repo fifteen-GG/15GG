@@ -15,6 +15,7 @@ import PreferChampion from './components/PreferChampion';
 import LoadingPage from './components/LoadingPage';
 import ErrorPage from './components/ErrorPage';
 import { userInfoFormat } from './userInfo';
+import { MoreBox } from './styles/moreBox.s';
 
 const UserInfoContainer = styled.div`
   width: 100%;
@@ -148,16 +149,17 @@ export const UserInfo = () => {
           />
           <UserGraph userName={summonerInfo.name} />
           <PreferChampion champions={summonerInfo.champions} />
-          <InfiniteScroll
+          {/* <InfiniteScroll
             next={getMatchData}
             dataLength={gamesData.length}
             hasMore={hasMore}
             loader={<Loader>{loader}</Loader>}
-          >
-            {gamesData.map((game: MatchInfoType, index) => {
-              return <MatchCard matchInfo={game} key={index}></MatchCard>;
-            })}
-          </InfiniteScroll>
+          > */}
+          {gamesData.map((game: MatchInfoType, index) => {
+            return <MatchCard matchInfo={game} key={index}></MatchCard>;
+          })}
+          <MoreBox onClick={getMatchData}>더보기</MoreBox>
+          {/* </InfiniteScroll> */}
         </>
       )}
     </UserInfoContainer>

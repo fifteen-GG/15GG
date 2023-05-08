@@ -24,7 +24,9 @@
 </tr>
 <tr>
 <td align="center">Tech Lead</td>
-<td align="center">Project Manager, Design</td>
+<td align="center">Project Manager
+<br>
+Design</td>
 <td align="center">Frontend</td>
 <td align="center">Backend</td>
 <td align="center">Frontend</td>

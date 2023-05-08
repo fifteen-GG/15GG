@@ -16,7 +16,7 @@
 
 <div align="center">
 
-<iframe width="60%" src="https://www.youtube.com/embed/PA12zff1NyU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[시연영상](https://fifteen-GG.github.io/15GG/demo.html)
 
 </div>
 

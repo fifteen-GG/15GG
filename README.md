@@ -22,15 +22,6 @@
 <td align="center"><a href="https://github.com/jeongbinboo"><img src="https://avatars.githubusercontent.com/u/74458913?v=4" width="100px;" alt=""/><br /><sub><b>부정빈</b></sub></a></td>
 <td align="center"><a href="https://github.com/7ngenious"><img src="https://avatars.githubusercontent.com/u/49149866?v=4" width="100px;" alt=""/><br /><sub><b>노동욱</b></sub></a></td>
 </tr>
-<tr>
-<td align="center">Tech Lead</td>
-<td align="center">Project Manager
-<br>
-Design</td>
-<td align="center">Frontend</td>
-<td align="center">Backend</td>
-<td align="center">Frontend</td>
-</tr>
 </table>
 </div>
 

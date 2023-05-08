@@ -16,7 +16,9 @@
 
 <div align="center">
 
-[시연영상](https://fifteen-GG.github.io/15GG/demo.html)
+<a href="https://www.youtube.com/watch?v=PA12zff1NyU">
+    <img src="https://img.youtube.com/vi/PA12zff1NyU/0.jpg" width=70% />
+</a>
 
 </div>
 

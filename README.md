@@ -15,12 +15,12 @@
 ## 시연 영상
 
 <div align="center">
-
 <a href="https://www.youtube.com/watch?v=PA12zff1NyU">
     <img src="https://img.youtube.com/vi/PA12zff1NyU/0.jpg" width=70% />
 </a>
-
 </div>
+<br>
+<br>
 
 ![image](https://user-images.githubusercontent.com/39877377/236750034-4a2fcc87-967c-4d02-bc67-fe9ce76908df.png)
 

@@ -35,7 +35,7 @@
 <br>
 <br>
 
-![image](https://user-images.githubusercontent.com/39877377/236763333-c11c1e8b-61ae-456a-9d75-59579104afc7.png)
+![image](https://user-images.githubusercontent.com/39877377/236763954-3bbba02c-edf5-4530-b110-c3a1e42e1f32.png)
 ![15GG_README 002](https://user-images.githubusercontent.com/39877377/236763377-4b0cf727-e06a-4698-972e-29a6104fa9ec.jpeg)
 ![15GG_README 003](https://user-images.githubusercontent.com/39877377/236763400-3026ac25-5f97-4d90-bfa1-eb9a1a4d7ebb.jpeg)
 ![15GG_README 004](https://user-images.githubusercontent.com/39877377/236763430-a862ef80-bd4e-43f6-8184-16a5986918a7.jpeg)

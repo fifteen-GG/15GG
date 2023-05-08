@@ -12,6 +12,11 @@
 
 15.GG는 League of Legends의 게임 데이터를 실시간으로 파싱하여 AI 모델을 통한 ‘실시간' 승률 예측, 경기 양상에 대한 분석이 가능케 합니다.
 
+## 시연 영상
+
+<div align="center">
+<iframe width="60%" src="https://www.youtube.com/embed/PA12zff1NyU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
 
 ![image](https://user-images.githubusercontent.com/39877377/236750034-4a2fcc87-967c-4d02-bc67-fe9ce76908df.png)
 

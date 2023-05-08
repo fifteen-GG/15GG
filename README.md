@@ -1,9 +1,9 @@
 # 15GG
 
+
 ![image](https://user-images.githubusercontent.com/39877377/236750034-4a2fcc87-967c-4d02-bc67-fe9ce76908df.png)
 
-
-### 1. Services
+### 1. 서비스
 
 ```
 PostgreSQL v14.5
@@ -14,32 +14,33 @@ FastAPI v0.87.0
 React v18.2.0
 ```
 
-### 2. Prerequisites
+### 2. 필요 조건
 
 ```
 Docker v20.10+
 Docker Compose v2.10.2+
 ```
 
-### 3. Set environment variables
+### 3. 환경 변수 설정하기
 
-create a `.env` file at the root directory
+프로젝트 루트 디렉토리에 `.env` 파일 생성하기
 
 ```
-DB_HOST={Hostname of DBMS. Defaults to 127.0.0.1}
-DB_PORT={Post of DBMS. Defaults to 5432}
-DB_USERNAME={Login username for DBMS}
-DB_PASSWORD={Login password for DBMS}
-DB_NAME={Name of database}
-AMQP_HOST={Host of RabbitMQ server}
-RIOT_TOKEN={Access token for Riot API}
+DB_HOST={DBMS 호스트 주소}
+DB_PORT={DBMS 포트}
+DB_USERNAME={DBMS 로그인 username}
+DB_PASSWORD={DBMS 로그인 비밀번호}
+DB_NAME={DB 이름}
+AMQP_HOST={RabbitMQ 서버 호스트 주소}
+RIOT_TOKEN={Riot API 엑세스 토큰}
 
-REACT_APP_GG_API_ROOT={API root for frontend application}
-REACT_APP_GG_WS_ROOT={Websocket root for frontend application}
-REACT_APP_DDRAGON_API_ROOT={API root of DataDragon API. Used for serving static images}
-REACT_APP_OPGG_API_ROOT={API root of OPGG API. Used for serving static images}
+REACT_APP_GG_API_ROOT={프론트 앱을 위한 API 루트 주소}
+REACT_APP_GG_WS_ROOT={프론트 앱을 위한 웹소켓 API 루트 주소}
+REACT_APP_DDRAGON_API_ROOT={DataDragon API 루트 주소. 정적 이미지 서빙 시 사용.}
+REACT_APP_OPGG_API_ROOT={OPGG API 루트 주소. 정적 이미지 서빙 시 사용.}
 ```
-#### Example .env
+
+#### .env 예시
 
 ```
 DB_HOST="db"
@@ -56,37 +57,37 @@ REACT_APP_DDRAGON_API_ROOT="http://ddragon.leagueoflegends.com/cdn/12.22.1/img"
 REACT_APP_OPGG_API_ROOT="https://opgg-static.akamaized.net/images"
 ```
 
-### 4. Launch containers
+### 4. 컨테이너 실행하기
 
 ```
 > docker compose up -d
 ```
 
-### 5. Setting up development environment
+### 5. 개발 환경 설정하기
 
-#### 5-1. Install docker
+#### 5-1. 도커 설치하기
 ```
 > brew install --cask docker
 ```
 
 #### 5-2. Frontend
 
-1. create a `.env` file at the frontend directory
-2. set environment variables
-    1. if you want to run backend app locally
-        - run backend container
+1. 프론트 디렉토리에 `.env` 파일 생성하기
+2. 환경 변수 설정하기
+    1. 백엔드 앱을 로컬에서 실행하고 싶을 때
+        - 백엔드 컨테이너 실행하기
         - `> docker compose up -d`
         - `> docker compose stop gg_frontend`
-        - set `REACT_APP_GG_API_ROOT` to `http://localhost:8000/api/v1`
-        - set `REACT_APP_GG_WS_ROOT` to `ws://localhost:8000/api/v1/socket`
-    2. the .env file in the frontend directory should look like
+        - `REACT_APP_GG_API_ROOT` 를 `http://localhost:8000/api/v1` 로 설정하기
+        - `REACT_APP_GG_WS_ROOT` 를 `ws://localhost:8000/api/v1/socket` 로 설정하기
+    2. 프론트 디렉토리에 있는 `.env` 파일 예시
     ```
     REACT_APP_GG_API_ROOT="http://localhost:8000/api/v1"
     REACT_APP_GG_WS_ROOT="ws://localhost:8000/api/v1/socket"
     REACT_APP_DDRAGON_API_ROOT="http://ddragon.leagueoflegends.com/cdn/12.22.1/img"
     REACT_APP_OPGG_API_ROOT="https://opgg-static.akamaized.net/images"
     ```
-3. run frontend as a development server
+3. 개발용 프론트 서버 실행하기
     ```
     > cd 15GG_front
     > yarn
@@ -95,18 +96,18 @@ REACT_APP_OPGG_API_ROOT="https://opgg-static.akamaized.net/images"
 
 #### 5-3. Backend
 
-1. create a `.env` file at the backend directory
-2. set environment variables
-    1. set `AMQP_HOST` to `amqp://guest:guest@localhost`
-    2. run RabbitMQ container
+1. 백엔드 디렉토리에 `.env` 파일 생성하기
+2. 환경 변수 설정하기
+    1. `AMQP_HOST` 를 `amqp://guest:guest@localhost` 로 설정하기
+    2. RabbitMQ 컨테이너 실행하기
         - `> docker compose up -d rabbitmq`
-    3. if you want to use local DBMS (on your host machine)
-        - set `DB_HOST` to `127.0.0.1`
-    4. *OR* if you want to use the default DBMS (on container)
-        - set `DB_HOST` to `db`
-        - run DB container
+    3. 로컬 DBMS 사용하고 싶을 떄 (내 호스트 머신에 설치된 DBMS)
+        - `DB_HOST` 를 `127.0.0.1` 로 설정하기
+    4. 혹은 기본 DBMS 사용하고 싶을 떄 (컨테이너에서 실행되는 DBMS)
+        - `DB_HOST` 를 `db` 로 설정하기
+        - DB 컨테이너 실행하기
         - `> docker compose up -d db`
-    5. the .env file in the backend directory should look like
+    5. 백엔드 디렉토리에 있는 `.env` 파일 예시
     ```
     DB_HOST="127.0.0.1"
     DB_PORT="5432"
@@ -116,7 +117,7 @@ REACT_APP_OPGG_API_ROOT="https://opgg-static.akamaized.net/images"
     RIOT_TOKEN="RGAPI-e8b2eb5d-0764-4a8a-bec3-45cefff5c75e"
     AMQP_HOST="amqp://guest:guest@localhost"
     ```
-3. run backend as a development server
+3. 개발용 백엔드 서버 실행하기
     ```
     > cd 15GG_back
     > pipenv install
@@ -124,7 +125,7 @@ REACT_APP_OPGG_API_ROOT="https://opgg-static.akamaized.net/images"
     > uvicorn app.main:app --reload
     ```
 
-#### 5-4. Example project directory
+#### 5-4. 프로젝트 디렉토리 예시
 
 ```
 .

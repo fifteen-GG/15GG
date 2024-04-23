@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { gameState } from '../types/enum';
 
 export enum SocketStatus {
   onNewChatReceived = 'onNewChatReceived',
@@ -9,23 +8,20 @@ export enum SocketStatus {
 
 export const useSocket = (
   onConnectionStateChanged: (state: SocketStatus) => void,
-  matchID: any,
-  status: gameState,
+  code: string,
 ) => {
   const [responseMessage, setResponseMessage] = useState('');
 
   useEffect(() => {
-    if (status === gameState.live) connectStart();
-
-    else if (status === gameState.end)
-      onConnectionStateChanged(SocketStatus.onConnectionFailed);
-
+    if (code !== '000000') {
+      connectStart();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+  }, [code]);
 
   const connectStart = () => {
     const ws = new WebSocket(
-      `${process.env.REACT_APP_GG_WS_ROOT}/match/${matchID}`,
+      `${process.env.REACT_APP_GG_WS_ROOT + `/wait/${code}`}`,
     );
     ws.onmessage = e => {
       e.preventDefault();

@@ -22,7 +22,9 @@ oauth2client = "*"
 schedule = "*"
 aioschedule = "*"
 fastapi-utils = "*"
-
+torch = "*"
+numpy = "*"
+boto3 = "*"
 
 [dev-packages]
 autopep8 = "*"

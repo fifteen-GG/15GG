@@ -48,6 +48,15 @@ export const ChampionInfoText = styled.div`
   letter-spacing: normal;
   text-align: left;
 `;
+export const ChampionBox = styled.div`
+  display: flex;
+  margin-right: 6px;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 18px;
+  background: ${Palette.GG_BLACK_100};
+`;
 export const ChampionImg = styled.img`
   display: flex;
   margin-right: 6px;

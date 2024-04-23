@@ -3,7 +3,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import type { MatchInfoType } from '../types/matchInfo';
 import type { SummonerInfoType } from '../types/summonerInfo';
 import styled from 'styled-components';
-import axios from 'axios';
+import webClient from '../../WebClient';
+
 //import components
 import UserRank from './components/UserRank';
 import UserGraph from './components/UserGraph';
@@ -14,7 +15,7 @@ import PreferChampion from './components/PreferChampion';
 import LoadingPage from './components/LoadingPage';
 import ErrorPage from './components/ErrorPage';
 import { userInfoFormat } from './userInfo';
-import { useNavigate } from 'react-router-dom';
+import { MoreBox } from './styles/moreBox.s';
 
 const UserInfoContainer = styled.div`
   width: 100%;
@@ -27,10 +28,10 @@ const Loader = styled.div`
   text-align: center;
   font-size: 14px;
   margin-top: 4px;
+  white-space: pre-line;
 `;
 
 export const UserInfo = () => {
-  const navigate = useNavigate();
   const [gamesData, setGamesData] = useState<MatchInfoType[]>([]);
   const [summonerInfo, setSummonerInfo] = useState<SummonerInfoType>({
     prefer_position: {
@@ -57,54 +58,69 @@ export const UserInfo = () => {
       },
     ],
   } as SummonerInfoType); /*저번 회의때 얘기했던 부분이 여기 초기화를 해두고 champions를 앞에서부터 한개씩 갈아끼우는 느낌으로*/
-  console.log(summonerInfo);
+
   const [pageNum, setPageNum] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [httpStatusCode, setHttpStatusCode] = useState<number>(200);
+  const [httpUserStatusCode, setHttpUserStatusCode] = useState<number>(200);
+  const [httpMatchStatusCode, setHttpMatchStatusCode] = useState<number>(200);
+  // const [loader, setLoader] = useState<string>('데이터 불러오는 중...');
+  const [loader, setLoader] = useState<boolean>(true);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [loadingMessage, setLoadingMessage] = useState<string>('더보기');
   const params = new URLSearchParams(window.location.search);
   const id = params.get('ID');
   useEffect(() => {
-    // getMatchData();
-    // getUserData();
     init();
   }, []);
   const init = async () => {
     await getMatchData();
-    getUserData();
+    setTimeout(() => {
+      getUserData();
+    }, 1000);
   };
   const getUserData = async () => {
     setIsLoading(true);
     try {
-      const value = await axios.get(
-        `${process.env.REACT_APP_GG_API_ROOT}/riot/user/${id}`,
-      );
+      const value = await webClient.get(`/riot/user/${id}`);
       if (value.status === 200) {
         setSummonerInfo(userInfoFormat(value.data));
-        console.log(value.data);
       }
       if (value.data) setIsLoading(false);
     } catch (e: any) {
-      setHttpStatusCode(e.response.status);
+      setHttpUserStatusCode(e.response.status);
     }
   };
   const getMatchData = async () => {
     try {
-      const match = await axios.get(
-        `${process.env.REACT_APP_GG_API_ROOT}/riot/user/match_list/${id}?page=${pageNum}`,
+      setLoadingMessage('데이터 로드 중...');
+      const match = await webClient.get(
+        `/riot/user/match_list/${id}?page=${pageNum}`,
       );
+
       const fetchedGames: MatchInfoType[] = [...gamesData, ...match.data];
-      setGamesData(fetchedGames);
-      setPageNum(pageNum + 1);
+      setTimeout(() => {
+        setGamesData(fetchedGames);
+        setPageNum(pageNum + 1);
+        if (match.data.length < 3) {
+          setHasMore(false);
+        }
+        setLoadingMessage('더보기');
+      }, 1500);
     } catch (e: any) {
-      setHttpStatusCode(e.response.status);
-      console.log(httpStatusCode);
+      // setLoader(
+      //   '과도한 요청으로 데이터 로드가 제한됩니다. 잠시후 다시 시도해주세요.',
+      // );
+      setLoader(false);
     }
   };
   const pageReLoad = () => {
-    axios.post(`${process.env.REACT_APP_GG_API_ROOT}/riot/update/cache/${id}`);
-    window.location.replace(`/user?ID=${id}`);
+    webClient.get(`/riot/update/cache/${id}`).then(response => {
+      if (response.data === 'Updated')
+        window.location.replace(`/user?ID=${id}`);
+    });
+    // window.location.replace(`/user?ID=${id}`);
   };
-  if (httpStatusCode === 404) return <ErrorPage />;
+  if (httpUserStatusCode === 404) return <ErrorPage />;
   // else if (httpStatusCode !== 200 && isLoading) return <ErrorPage />;
   return (
     <UserInfoContainer>
@@ -138,22 +154,28 @@ export const UserInfo = () => {
           />
           <UserGraph userName={summonerInfo.name} />
           <PreferChampion champions={summonerInfo.champions} />
-          <InfiniteScroll
+          {/* <InfiniteScroll
             next={getMatchData}
             dataLength={gamesData.length}
-            hasMore={true}
-            loader={
-              // httpStatusCode !== 200 ? (
-              //   <Loader>기록된 전적이 없습니다</Loader>
-              // ) : (
-              <Loader>데이터 불러오는 중...</Loader>
-              // )
-            }
-          >
-            {gamesData.map((game: MatchInfoType, index) => {
-              return <MatchCard matchInfo={game} key={index}></MatchCard>;
-            })}
-          </InfiniteScroll>
+            hasMore={hasMore}
+            loader={<Loader>{loader}</Loader>}
+          > */}
+          {gamesData.map((game: MatchInfoType, index) => {
+            return <MatchCard matchInfo={game} key={index}></MatchCard>;
+          })}
+          {hasMore ? (
+            loader ? (
+              <MoreBox onClick={getMatchData}>{loadingMessage}</MoreBox>
+            ) : (
+              <Loader>
+                과도한 요청으로 데이터 로드가 제한됩니다. 잠시후 다시
+                시도해주세요
+              </Loader>
+            )
+          ) : (
+            <MoreBox>플레이한 게임이 존재하지 않습니다.</MoreBox>
+          )}
+          {/* </InfiniteScroll> */}
         </>
       )}
     </UserInfoContainer>

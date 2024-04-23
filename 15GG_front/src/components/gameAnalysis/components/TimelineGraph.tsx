@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import type { ChartData, ChartArea } from 'chart.js';
+import type { ChartData, ChartArea, ChartOptions } from 'chart.js';
 import * as Palette from '../../../assets/colorPalette';
 import { TimelineGraphContainer } from '../styles/timelineGraph.s';
 import {
@@ -27,25 +27,28 @@ ChartJS.register(
 );
 
 const labels = [
-  ' ',
-  ' ',
-  ' ',
-  '1',
-  ' ',
-  ' ',
-  ' ',
-  ' ',
-  ' ',
-  ' ',
-  ' ',
-  '2',
-  ' ',
-  ' ',
-  ' ',
-  ' ',
+  '0',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
 ];
 
 const options = {
+  animation: {
+    duration: 0,
+  },
   responsive: true,
   maintainAspectRatio: false,
   events: [],
@@ -55,17 +58,19 @@ const options = {
       position: 'top' as const,
     },
   },
+  showXLabels: 10,
   scales: {
     x: {
       display: true,
       stacked: true,
-      // grid: {
-      //   color: (context: any) => {
-      //     if (context.tick.value % 1 === 0) {
-      //       return '#ffffff';
-      //     } else return 'rgba(255, 255, 255, 0.0)';
-      //   },
-      // },
+      ticks: {
+        autoSkip: false,
+        maxRotation: 0,
+        minRotation: 0,
+      },
+      grid: {
+        color: 'rgba(255, 255, 255, 0.0)',
+      },
     },
     y: {
       display: false,
@@ -75,14 +80,15 @@ const options = {
     },
   },
 };
-export const data = {
-  labels,
+
+export const datainit = {
+  // labels,
   datasets: [
     {
       fill: {
         target: 'origin',
-        above: `${Palette.GG_TIMELINE_RED}`,
-        below: `${Palette.GG_TIMELINE_BLUE}`,
+        above: `${Palette.GG_TIMELINE_BLUE}`,
+        below: `${Palette.GG_TIMELINE_RED}`,
       },
       data: [0],
       // borderColor: createGradient(chart.ctx, chart.chartArea),
@@ -100,29 +106,29 @@ const createGradient = (
   area: ChartArea,
   graphType: string,
 ) => {
-  const graphRed = `${Palette.GG_TIMELINE_RED}`;
   const graphBlue = `${Palette.GG_TIMELINE_BLUE}`;
+  const graphRed = `${Palette.GG_TIMELINE_RED}`;
   const graphNeutral = `${Palette.GG_GRFTITLE}`;
   let gradient;
 
-  area.top = 8;
+  area.top = 5;
   area.bottom = 45;
 
   const lineGradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
-  const redTeamGradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
   const blueTeamGradient = ctx.createLinearGradient(
     0,
     area.bottom,
     0,
     area.top,
   );
+  const redTeamGradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
 
-  lineGradient.addColorStop(0, graphBlue);
-  lineGradient.addColorStop(1, graphRed);
-  redTeamGradient.addColorStop(0, graphNeutral);
-  redTeamGradient.addColorStop(1, graphRed);
-  blueTeamGradient.addColorStop(0, graphBlue);
-  blueTeamGradient.addColorStop(1, graphNeutral);
+  lineGradient.addColorStop(1, graphBlue);
+  lineGradient.addColorStop(0, graphRed);
+  blueTeamGradient.addColorStop(1, graphBlue);
+  blueTeamGradient.addColorStop(0, graphNeutral);
+  redTeamGradient.addColorStop(1, graphNeutral);
+  redTeamGradient.addColorStop(0, graphRed);
 
   graphType === 'line'
     ? (gradient = lineGradient)
@@ -134,61 +140,66 @@ const createGradient = (
 };
 interface propsType {
   winningRate: number[];
-  time: number;
+  length: number;
+  time: number[];
 }
 const TimelineGraph = (props: propsType) => {
   const chartRef = useRef<ChartJS>(null);
-  const [chartData, setChartData] = useState<ChartData<'line'>>({
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [jsonData, setJsonData] = useState<ChartData<'line'>>({
     datasets: [],
   });
-  // const [winningRate, setWinningRate] = useState<number[]>([]);
-  // console.log(Math.round(50 - 100 * props.winRate));
   const [cntLabel, setCntLabel] = useState<string[]>(labels);
-  const [timeCount, setTimeCount] = useState<number>(3);
-  const [count, setCount] = useState<number>(0);
   useEffect(() => {
-    console.log(props.winningRate);
-    setCount(data => data + 1);
-    console.log(Math.floor(props.time / 60));
-    if (count >= 15) {
-      if (Math.floor((props.time + 8) / 60) === timeCount) {
-        setCntLabel([...cntLabel, timeCount as unknown as string]);
-        setTimeCount(timeCount + 1);
-      } else setCntLabel([...cntLabel, '' as unknown as string]);
+    if (props.length + 1 >= 15) {
+      let arr = [''];
+      let tc = 0;
+      props.winningRate.map((propsData, index) => {
+        if (Math.trunc(props.time[index] / 60) === tc) {
+          arr.push(tc as unknown as string);
+          tc += 3;
+        } else arr.push('');
+      });
+      setCntLabel(arr);
     }
+    setIsLoading(false);
+  }, [props]);
+  useEffect(() => {
     const chart = chartRef.current;
     if (!chart) {
       return;
     }
     const chartData = {
-      ...data,
+      ...datainit,
       labels: cntLabel,
-      datasets: data.datasets.map(dataset => ({
+      datasets: datainit.datasets.map(dataset => ({
         ...dataset,
         data: props.winningRate,
         borderColor: createGradient(chart.ctx, chart.chartArea, 'line'),
         fill: {
           target: 'origin',
-          above: createGradient(chart.ctx, chart.chartArea, 'red'),
-          below: createGradient(chart.ctx, chart.chartArea, 'blue'),
+          above: createGradient(chart.ctx, chart.chartArea, 'blue'),
+          below: createGradient(chart.ctx, chart.chartArea, 'red'),
         },
       })),
     };
-    console.log(count);
-    setChartData(chartData);
-  }, [props.winningRate, setCount]);
+    setJsonData(chartData);
+  }, [cntLabel]);
 
   return (
-    <TimelineGraphContainer>
-      <Chart
-        type="line"
-        ref={chartRef}
-        options={options}
-        data={chartData}
-        // height={84}
-        width={360}
-      />
-    </TimelineGraphContainer>
+    <>
+      {isLoading ? null : (
+        <TimelineGraphContainer>
+          <Chart
+            type="line"
+            ref={chartRef}
+            options={options}
+            data={jsonData}
+            width={360}
+          />
+        </TimelineGraphContainer>
+      )}
+    </>
   );
 };
 

@@ -10,26 +10,29 @@ import {
 } from '../styles/teamInfo.s';
 import { useEffect, useState } from 'react';
 import LiveSummoner from './LiveSummoner';
-import type { socketDetail } from '../../types/matchDetails';
+import type { socketDetail, item } from '../../types/matchDetails';
 
 interface propsType {
-  Participants: [
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-  ];
+  Participants: {
+    summonerName: string;
+    championName: string;
+    isDead: boolean;
+    level: number;
+    items: item[];
+    team: string;
+    kills: number;
+    deaths: number;
+    assists: number;
+    gold: number;
+  }[];
+  blueWin: boolean;
+  redWin: boolean;
 }
-const TeamInfoLive = (props: propsType) => {
+const TeamInfoEnd = (props: propsType) => {
   const [teamData, setTeamData] = useState([
     {
       team: 'BLUE TEAM',
+      win: props.blueWin,
       participants: [
         props.Participants[0],
         props.Participants[1],
@@ -40,6 +43,7 @@ const TeamInfoLive = (props: propsType) => {
     },
     {
       team: 'RED TEAM',
+      win: props.redWin,
       participants: [
         props.Participants[5],
         props.Participants[6],
@@ -49,10 +53,12 @@ const TeamInfoLive = (props: propsType) => {
       ],
     },
   ]);
+
   const fetchPropsData = () => {
     setTeamData([
       {
         team: 'BLUE TEAM',
+        win: props.blueWin,
         participants: [
           props.Participants[0],
           props.Participants[1],
@@ -63,6 +69,7 @@ const TeamInfoLive = (props: propsType) => {
       },
       {
         team: 'RED TEAM',
+        win: props.redWin,
         participants: [
           props.Participants[5],
           props.Participants[6],
@@ -84,6 +91,11 @@ const TeamInfoLive = (props: propsType) => {
             <TeamInfoHeader>
               <TeamNameWrapper>
                 <TeamName team={index}>{data.team}</TeamName>
+                {data.win ? (
+                  <TeamName team={index}>WIN</TeamName>
+                ) : (
+                  <TeamName team={index}>LOSE</TeamName>
+                )}
               </TeamNameWrapper>
               <UserInfoColumnWrapper>
                 <UserInfoColumn>SUMMONER</UserInfoColumn>
@@ -107,4 +119,4 @@ const TeamInfoLive = (props: propsType) => {
   );
 };
 
-export default TeamInfoLive;
+export default TeamInfoEnd;

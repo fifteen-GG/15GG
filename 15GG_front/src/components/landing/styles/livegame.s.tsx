@@ -13,6 +13,7 @@ export const LiveGameContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 6px 0 0 0;
+  cursor: pointer;
 `;
 
 export const TitleWrapper = styled.div`

@@ -1,5 +1,6 @@
 import {
   SummonerContainer,
+  IsDeadCover,
   SummonerInterface,
   ChampionBox,
   ChampionImg,
@@ -17,19 +18,37 @@ import {
   GoldWrapper,
 } from '../styles/liveSummoners.s';
 import type { socketDetail } from '../../types/matchDetails';
-import { formatChampName } from '../gameInfo';
-
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 export interface propsType {
   livesummonerInfo: socketDetail;
 }
 const LiveSummoner = (props: propsType) => {
+  const [championName, setChampionname] = useState(String);
   const formatSummonerName = (name: string) => {
     if (name.length > 8) return name.slice(0, 8) + '...';
     else return name;
   };
+  const getChampionName = () => {
+    axios
+      .get(
+        'https://ddragon.leagueoflegends.com/cdn/12.22.1/data/ko_KR/champion.json',
+      )
+      .then(res => {
+        Object.entries(res.data.data).map((data: any) => {
+          if (data[1].name === props.livesummonerInfo.championName) {
+            setChampionname(data[0]);
+          }
+        });
+      });
+  };
+  useEffect(() => {
+    getChampionName();
+  }, [props.livesummonerInfo.championName]);
 
   return (
     <SummonerContainer>
+      {props.livesummonerInfo.isDead ? <IsDeadCover /> : null}
       <SummonerInterface>
         {props.livesummonerInfo.championName === '0' ? (
           <ChampionBox />
@@ -37,9 +56,7 @@ const LiveSummoner = (props: propsType) => {
           <ChampionImg
             src={
               process.env.REACT_APP_DDRAGON_API_ROOT +
-              `/champion/${formatChampName(
-                props.livesummonerInfo.championName,
-              )}.png`
+              `/champion/${championName}.png`
             }
           />
         )}
@@ -90,7 +107,8 @@ const LiveSummoner = (props: propsType) => {
             <KDA>
               KDA{' '}
               {props.livesummonerInfo.deaths === 0 &&
-              props.livesummonerInfo.kills === 0
+              props.livesummonerInfo.kills === 0 &&
+              props.livesummonerInfo.assists === 0
                 ? '0.0'
                 : props.livesummonerInfo.deaths === 0
                 ? 'Perfect'
@@ -106,7 +124,7 @@ const LiveSummoner = (props: propsType) => {
       <ItemInterface>
         <ItemWrapper>
           {[...Array(7)].map((item, index) => {
-            return <ItemBox className={'item' + index} />;
+            return <ItemBox className={'item' + index} key={index} />;
           })}
         </ItemWrapper>
         <ItemWrapper className={'item'}>

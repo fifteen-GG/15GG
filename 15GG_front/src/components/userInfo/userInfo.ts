@@ -89,7 +89,6 @@ export const userInfoFormat = (data: SummonerInitialType) => {
   }
   if (data.prefer_position) {
     formattedData.prefer_position = data.prefer_position;
-    // formattedData.position_rate = Object.values(data.prefer_position);
   }
   if (data.champions) {
     formattedData.champions.map((champion, index: number) => {

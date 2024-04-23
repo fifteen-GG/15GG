@@ -7,7 +7,6 @@ import levelRed from '../svg/level_red.svg';
 import goldBlue from '../svg/gold_blue.svg';
 import killBlue from '../svg/kills_blue.svg';
 import levelBlue from '../svg/level_blue.svg';
-import { deflate } from 'zlib';
 
 export const TeamStatsContainer = styled.div`
   display: flex;
@@ -17,8 +16,8 @@ export const TeamStatsContainer = styled.div`
 `;
 
 enum TeamNameEnum {
-  RED = 'Red',
   BLUE = 'Blue',
+  RED = 'Red',
 }
 export const TeamStatWrapper = styled.div`
   display: flex;
@@ -31,22 +30,22 @@ export const TeamStatWrapper = styled.div`
   }
 `;
 export enum pngType {
-  goldRed = 'goldRed',
-  killRed = 'killRed',
-  levelRed = 'levelRed',
   goldBlue = 'goldBlue',
   killBlue = 'killBlue',
   levelBlue = 'levelBlue',
+  goldRed = 'goldRed',
+  killRed = 'killRed',
+  levelRed = 'levelRed',
 }
 const gg_svg: {
   [key in pngType]: string;
 } = {
-  goldRed: goldRed,
-  killRed: killRed,
-  levelRed: levelRed,
   goldBlue: goldBlue,
   killBlue: killBlue,
   levelBlue: levelBlue,
+  goldRed: goldRed,
+  killRed: killRed,
+  levelRed: levelRed,
 };
 
 export const Icon = styled.div<{ team: pngType }>`

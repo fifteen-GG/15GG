@@ -4,14 +4,38 @@ import random
 import functools
 import aio_pika
 import aio_pika.abc
+import torch
+import numpy as np
 from fastapi import APIRouter, WebSocket
 from starlette.websockets import WebSocketDisconnect, WebSocketState
 
 from app import crud
 from app.database.session import SessionLocal
 from app.core import settings
+import os
+import boto3
+from app.core.config import settings
+import time
 
 router = APIRouter()
+
+
+def s3_connection():
+    try:
+        s3 = boto3.client(
+            service_name="s3",
+            region_name="ap-northeast-2",
+            aws_access_key_id=settings.AWS_ACCESS_KEY,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        )
+    except Exception as e:
+        print(e)
+    else:
+        print("s3 bucket connected!")
+        return s3
+
+
+s3 = s3_connection()
 
 
 async def block_io(websocket: WebSocket):
@@ -20,34 +44,77 @@ async def block_io(websocket: WebSocket):
 
 async def on_message(message: aio_pika.IncomingMessage, websocket: WebSocket):
     async with message.process():
-        await websocket.send_json(json.loads(
-            message.body.decode('UTF-8').replace("'", "\"")))
+        if message.body == b'Game ended':
+            await websocket.send_text('Game ended')
+            await websocket.close()
+        else:
+            await websocket.send_json(json.loads(
+                message.body.decode('UTF-8').replace("'", "\"")))
+
+
+def format_live_match_data(raw_data):
+    match_data = {}
+
+    lanes = {
+        'top': 0,
+        'jungle': 1,
+        'middle': 2,
+        'bottom': 3,
+        'utility': 4
+    }
+    columns = ['level', 'kills', 'deaths', 'assists', 'gold']
+
+    for lane in lanes:
+        for column in columns:
+            match_data[f'{lane}_{column}_diff'] = raw_data['player_data'][lanes[lane]
+                                                                          ][column] - raw_data['player_data'][lanes[lane] + 5][column]
+    return match_data
 
 
 async def analyze(
         websocket: WebSocket, exchange: aio_pika.Exchange,
-        match_id: str, result: dict):
-    new_data: dict = await websocket.receive_json()
-    # TODO: Caculate win rate from AI model
-    new_data['blue_team_win_rate'] = round(random.uniform(0, 1), 3)
+        match_id: str, result: dict,
+        gg_model, windowed_data):
+    try:
+        new_data: dict = await websocket.receive_json()
+    except:
+        with open(f'./{match_id}.json', 'w', encoding='utf-8') as file:
+            json.dump(result, file, indent="\t")
+        try:
+            s3.upload_file(f"./{match_id}.json", "15gg", f"{match_id}.json")
+        except Exception as e:
+            print(e)
+        os.remove(f'./{match_id}.json')
+
+        response = aio_pika.Message(b'Game ended', content_encoding='UTF-8')
+        await exchange.publish(message=response, routing_key=match_id)
+        raise WebSocketDisconnect
+
+    formatted_data = np.array(
+        list(format_live_match_data(new_data).values())).astype(np.float64).reshape(1, 25)
+    formatted_data[:, 0::5] /= 5
+    formatted_data[:, 1::5] /= 10
+    formatted_data[:, 2::5] /= 10
+    formatted_data[:, 3::5] /= 10
+    formatted_data[:, 4::5] /= 5000
+
+    if len(windowed_data['data']) == 0:
+        windowed_data['data'] = np.repeat(
+            formatted_data,
+            40,
+            axis=0)
+    elif len(result['match_data']) % 4 == 0:
+        windowed_data['data'] = np.concatenate(
+            (windowed_data['data'][1:, :], formatted_data), axis=0)
+
+    new_data['blue_team_win_rate'] = gg_model(
+        torch.FloatTensor(windowed_data['data'].reshape(1, 40, 25)))[:, 1].item()
+
     result['match_data'].append(new_data)
     response = bytes(json.dumps(result, ensure_ascii=False), 'UTF-8')
     response = aio_pika.Message(
         response, content_encoding='UTF-8')
     await exchange.publish(message=response, routing_key=match_id)
-
-
-async def create_exchange(websocket: WebSocket, connection):
-    data = await websocket.receive_text()
-    channel = connection.channel()
-    channel.exchange_declare(
-        exchange='direct_logs', exchange_type='direct')
-    tmp_queue = channel.queue_declare(queue='', exclusive=True)
-    queue_name = tmp_queue.method.queue
-    channel.queue_bind(exchange='direct_logs',
-                       queue=queue_name, routing_key=data)
-    print('Exchange declared')
-    print(data)
 
 
 @router.websocket('/analyze')
@@ -68,10 +135,11 @@ async def analyze_game(websocket: WebSocket):
         channel = await connection.channel()
         exchange = await channel.declare_exchange(
             name='game_logs', type='direct')
-        print(f'Exchange {match_id} declared')
+        gg_model = torch.jit.load('./app/assets/gg_model_v1.pt')
+        windowed_data = {'data': np.array([])}
         while True:
             producer_task = asyncio.create_task(
-                analyze(websocket, exchange, match_id, result))
+                analyze(websocket, exchange, match_id, result, gg_model, windowed_data))
             done, pending = await asyncio.wait(
                 {producer_task},
                 return_when=asyncio.FIRST_COMPLETED,
@@ -80,7 +148,10 @@ async def analyze_game(websocket: WebSocket):
                 task.cancel()
             for task in done:
                 task.result()
+
     except WebSocketDisconnect:
+        await connection.close()
+        await channel.close()
         if websocket.client_state != WebSocketState.DISCONNECTED:
             await websocket.close()
 
@@ -117,6 +188,9 @@ async def get_match_data(websocket: WebSocket, match_id: str):
             for task in done:
                 task.result()
     except WebSocketDisconnect:
+        await connection.close()
+        await channel.close()
+        await queue.unbind(exchange, routing_key=match_id)
         if websocket.client_state != WebSocketState.DISCONNECTED:
             await websocket.close()
 

@@ -1,7 +1,9 @@
+import { gameState, queue_mode } from './enum';
 export interface summonerDetail {
   summoner_name: string;
   champion_name: string;
   rank: string;
+  tier: string;
   champ_level: number;
   spells: {
     spell1: string;
@@ -20,9 +22,16 @@ export interface summonerDetail {
   total_damage_take: number;
   win: Boolean;
 }
+export interface matchDetail {
+  created_at: string;
+  match_id: string;
+  queue_mode: queue_mode;
+  status: gameState;
+}
 
 export interface teamDetail {
   team: string;
+  win: boolean;
   team_avg_data: teamAvgData;
   participants: [
     summonerDetail,
@@ -41,19 +50,9 @@ export interface teamAvgData {
 export interface socketDetail {
   summonerName: string;
   championName: string;
-  rank: string;
-  spells: {
-    spell1: string;
-    spell2: string;
-  };
-  perks: {
-    perk: number;
-    perkStyle: number;
-  };
   isDead: boolean;
   level: number;
   team: string;
-  champLevel: number;
   items: item[];
   kills: number;
   deaths: number;
@@ -61,20 +60,11 @@ export interface socketDetail {
   gold: number;
 }
 export interface SocketData {
-  blue_team_win_rate: number;
-  timestamp: number;
-  player_data: [
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-    socketDetail,
-  ];
+  match_data: matchData[];
+  match_id: string;
+}
+export interface SocketData {
+  match_data: matchData[];
 }
 export type Participants = [
   socketDetail,
@@ -88,7 +78,39 @@ export type Participants = [
   socketDetail,
   socketDetail,
 ];
-interface item {
+export interface matchData {
+  timestamp: number;
+  player_data: [
+    socketDetail,
+    socketDetail,
+    socketDetail,
+    socketDetail,
+    socketDetail,
+    socketDetail,
+    socketDetail,
+    socketDetail,
+    socketDetail,
+    socketDetail,
+  ];
+  blue_team_win_rate: number;
+}
+export interface endData {
+  timestamp: number;
+  blue_team_win_rate: number;
+  player_data: {
+    summonerName: string;
+    championName: string;
+    isDead: boolean;
+    level: number;
+    items: item[];
+    team: string;
+    kills: number;
+    deaths: number;
+    assists: number;
+    gold: number;
+  }[];
+}
+export interface item {
   itemID: number;
   count: number;
 }

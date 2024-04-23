@@ -22,14 +22,14 @@ const GameInfo = (props: propsType) => {
     } else if (queueMode === queue_mode.blind) {
       return '일반게임';
     } else if (queueMode === queue_mode.aram) {
-      return '칼바람나락';
+      return '무작위 총력전';
     } else if (queueMode === queue_mode.urf) {
       return 'U.R.F.';
     } else {
       return '사용자설정';
     }
   };
-  const formatAnalysisStatus = (status: string) => {
+  const formatAnalysisStatus = (status: gameState) => {
     if (status === gameState.live) return '실시간';
     else if (status === gameState.end) return '분석완료';
     else return '미분석';

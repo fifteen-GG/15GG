@@ -34,9 +34,9 @@ enum queue_mode {
   urf = 'Pick URF games',
 }
 export enum gameState {
-  live = 'live',
-  end = 'complete',
-  none = 'incomplete',
+  none,
+  live,
+  end,
 }
 interface propsType {
   matchInfo: MatchInfoType;
@@ -59,28 +59,21 @@ const MatchCard = (props: propsType) => {
     }
   };
 
-  const formatAnalysisStatus = (status: string) => {
+  const formatAnalysisStatus = (status: gameState) => {
     if (status === gameState.live) return '실시간 분석';
     else if (status === gameState.end) return '분석완료';
     else return '미분석';
   };
   ///status, win, reated_at, game_duration, queue_mode
   return (
-    <MatchCardContainer
-      onClick={() =>
-        navigate(`/live?match%ID=${props.matchInfo.match_id}`, {
-          state: {
-            status: 'incomplete',
-            mode: props.matchInfo.queue_mode,
-            date: props.matchInfo.created_at,
-          },
-        })
-      }
-    >
+    <MatchCardContainer>
       <AnalysisStatus status={props.matchInfo.status}>
         {formatAnalysisStatus(props.matchInfo.status)}
       </AnalysisStatus>
-      <MatchInfoWrapper win={props.matchInfo.win}>
+      <MatchInfoWrapper
+        onClick={() => navigate(`/live?match%ID=${props.matchInfo.match_id}`)}
+        win={props.matchInfo.win}
+      >
         <MatchMainInfo>
           <MatchResult>{props.matchInfo.win ? '승리' : '패배'}</MatchResult>
           <MatchDate>
@@ -149,7 +142,7 @@ const MatchCard = (props: propsType) => {
           <ItemWrapper>
             {props.matchInfo.items.map((item: number, index: number) => {
               return item === 0 ? (
-                <ItemBox />
+                <ItemBox key={index} />
               ) : (
                 <ItemImg
                   className={'item' + index}

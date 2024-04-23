@@ -7,6 +7,7 @@ import {
   ChampionInfo,
   ChampionAltInfo,
   ChampionInfoText,
+  ChampionBox,
   ChampionImg,
   ChampionInfoContent,
   ChampionInfoSubTitle,
@@ -30,7 +31,13 @@ const PreferChampion = (props: propsType) => {
               props.champions?.map((champion, index: number) => {
                 return (
                   <ChampionInfoWrapper key={index}>
-                    <ChampionImg src={props.champions[index]?.champion_name} />
+                    {props.champions[index]?.champion_name === '0' ? (
+                      <ChampionBox />
+                    ) : (
+                      <ChampionImg
+                        src={props.champions[index]?.champion_name}
+                      />
+                    )}
                     <ChampionInfoText>
                       <ChampionInfoTitle>
                         {props.champions[index]?.counts}
@@ -54,7 +61,7 @@ const PreferChampion = (props: propsType) => {
         )}
       </PreferChampionWrapper>
       <PreferChampionMsg>
-        최근 20게임을 바탕으로 분석한 결과이며, 데이터 평균에 따라 달라질 수
+        최근 10게임을 바탕으로 분석한 결과이며, 데이터 평균에 따라 달라질 수
         있습니다.
       </PreferChampionMsg>
     </PreferChampionContainer>

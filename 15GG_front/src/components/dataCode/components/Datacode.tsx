@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useTimer } from 'use-timer';
+import webClient from '../../../WebClient';
 import {
   DataCodeContainer,
   DataCodeWrapper,
@@ -9,8 +10,11 @@ import {
   FooterContent,
   RefreshButton,
 } from '../styles/datacode.s';
+import { useSocket, SocketStatus } from '../useSocket';
+import { useNavigate } from 'react-router-dom';
 
 export const Datacode = () => {
+  const navigate = useNavigate();
   const [code, setCode] = useState<string[]>(['0', '0', '0', '0', '0', '0']);
   const [codeExpired, setCodeExpired] = useState<number>(0);
   const [refresh, setRefresh] = useState<number>(0);
@@ -23,25 +27,34 @@ export const Datacode = () => {
 
   const getNewCode = async () => {
     try {
-      const value = await axios.get(
-        `${process.env.REACT_APP_GG_API_ROOT}/code`,
-      );
-      console.log(value);
+      const value = await webClient.get('/code');
+
       if (value.status === 200) {
         setCode(value.data.value.split(''));
+        // 소켓 열기
       }
     } catch (e) {
       console.log(e);
     }
   };
+  const { responseMessage } = useSocket(state => {
+    if (state === SocketStatus.onNewChatReceived) {
+      console.log('onNewMessageReceived');
+    } else if (state === SocketStatus.onConnectionFailed) {
+      console.error('onConnectionFailed');
+    } else if (state === SocketStatus.onConnectionOpened) {
+      console.log('onConnectionOpened');
+    }
+  }, code.join(''));
+
+  useEffect(() => {
+    if (responseMessage) navigate(`/live?match%ID=${responseMessage}`);
+  }, [responseMessage, code]);
 
   // for development environment
   const validateCode = async (code: string) => {
     try {
-      const value = await axios.get(
-        `${process.env.REACT_APP_GG_API_ROOT}/code/validate?value=${code}`,
-      );
-      console.log(value);
+      const value = await webClient.get(`/code/validate?value=${code}`);
     } catch (e) {
       console.log(e);
     }

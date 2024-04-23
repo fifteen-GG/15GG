@@ -28,6 +28,9 @@ ChartJS.register(
   Legend,
 );
 export const options = {
+  animation: {
+    duration: 1000,
+  },
   indexAxis: 'y' as const,
   maintainAspectRatio: false,
   events: [],
@@ -75,8 +78,7 @@ interface propsType {
 
 const TimelineBarGraph = (props: propsType) => {
   const chartRef = useRef<ChartJS>(null);
-  const [blueWinningRate, setBlueWinningRate] = useState<number>(0);
-  console.log(50 - 100 * props.winRate);
+  const [blueWinningRate, setBlueWinningRate] = useState<number>(0.5);
   const [chartData, setChartData] = useState<ChartData<'bar'>>({
     datasets: [],
   });
@@ -94,16 +96,16 @@ const TimelineBarGraph = (props: propsType) => {
       datasets: [
         {
           label: 'Dataset 1',
-          data: [100 - props.winRate * 100],
-          borderColor: `${Palette.GG_TIMELINE_BARGRAPH_RED}`,
-          backgroundColor: `${Palette.GG_TIMELINE_BARGRAPH_RED}`,
+          data: [props.winRate * 100],
+          borderColor: `${Palette.GG_TIMELINE_BARGRAPH_BORDER_BLUE}`,
+          backgroundColor: `${Palette.GG_TIMELINE_BARGRAPH_BLUE}`,
           borderWidth: 0,
         },
         {
           label: 'Dataset 2',
-          data: [100],
-          borderColor: `${Palette.GG_TIMELINE_BARGRAPH_BORDER_BLUE}`,
-          backgroundColor: `${Palette.GG_TIMELINE_BARGRAPH_BLUE}`,
+          data: [100 - props.winRate * 100],
+          borderColor: `${Palette.GG_TIMELINE_BARGRAPH_RED}`,
+          backgroundColor: `${Palette.GG_TIMELINE_BARGRAPH_RED}`,
           borderWidth: 0,
         },
       ],
@@ -124,9 +126,9 @@ const TimelineBarGraph = (props: propsType) => {
         />
       </GraphWrapper>
       <RateWrapper>
-        <WinningRate>{Math.round(100 - blueWinningRate * 100)}%</WinningRate>
+        <WinningRate>{(blueWinningRate * 100).toFixed(1)}%</WinningRate>
         <GraphTitle>승률</GraphTitle>
-        <WinningRate>{Math.round(blueWinningRate * 100)}%</WinningRate>
+        <WinningRate>{(100 - blueWinningRate * 100).toFixed(1)}%</WinningRate>
       </RateWrapper>
     </TimelineBarContainer>
   );

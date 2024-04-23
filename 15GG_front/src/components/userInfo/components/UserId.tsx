@@ -7,7 +7,6 @@ import {
   Level,
   PageReLoad,
 } from '../styles/userId.s';
-import axios from 'axios';
 
 interface propsType {
   pageReLoad: () => void;
@@ -17,11 +16,6 @@ interface propsType {
   level: Number;
 }
 const UserId = (props: propsType) => {
-  // const postUserData = async () => {
-  //   axios.post(
-  //     `${process.env.REACT_APP_GG_API_ROOT}/riot/update/cache/${props.summonerName}`,
-  //   );
-  // };
   return (
     <UserIdContainer>
       <UserIcon

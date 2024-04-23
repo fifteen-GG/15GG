@@ -12,7 +12,6 @@ import {
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker';
-import { SummonerInfoType } from '../../types/summonerInfo';
 
 import {
   UserGraphContainer,
@@ -50,6 +49,8 @@ const options = {
   events: [],
   scales: {
     r: {
+      suggestedMin: 0,
+      suggestedMax: 10,
       angleLines: {
         color: Palette.GG_RADAR,
       },
@@ -85,14 +86,14 @@ export const data = {
   datasets: [
     {
       label: '',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 10 })),
+      data: [7, 7, 7, 7, 7, 7],
       backgroundColor: Palette.GG_RADARDATABGC,
       borderColor: Palette.GG_RADARDATA,
       borderWidth: 1,
     },
     {
       label: 'Average',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 10 })),
+      data: [4, 4, 4, 4, 4, 4],
       backgroundColor: Palette.GG_RADARAVGBGC,
       borderColor: Palette.GG_GREY_70,
       borderWidth: 1,

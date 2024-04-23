@@ -31,6 +31,11 @@ class CRUDSummoner(CRUDBase[Summoner, SummonerCreate, SummonerUpdate]):
         for champion in champion_list:
             return_champion_list.append({'champion_name': champion.champion_name,
                                         'counts': champion.counts, 'kills': champion.kills, 'deaths': champion.deaths, 'assists': champion.assists, 'wins': champion.wins})
+        if summoner_info.prefer_position == None and summoner_info.prefer_position_rate == None:
+            prefer_position = None
+        else:
+            prefer_position = {
+                summoner_info.prefer_position: summoner_info.prefer_position_rate}
         return_summoner_info = {
             'id': summoner_info.id,
             'puuid': summoner_info.puuid,
@@ -43,7 +48,7 @@ class CRUDSummoner(CRUDBase[Summoner, SummonerCreate, SummonerUpdate]):
             'kills_avg': summoner_info.kills_avg,
             'deaths_avg': summoner_info.deaths_avg,
             'assists_avg': summoner_info.assists_avg,
-            'prefer_position': {summoner_info.prefer_position: summoner_info.prefer_position_rate},
+            'prefer_position': prefer_position,
             'champions': return_champion_list
         }
 
@@ -51,10 +56,12 @@ class CRUDSummoner(CRUDBase[Summoner, SummonerCreate, SummonerUpdate]):
 
     def create_summoner(self, db: Session, summoner_info):
         if summoner_info['prefer_position'] == None:
-            summoner_info['prefer_position'] = {None: None}
-        prefer_position = list(summoner_info['prefer_position'].keys())[0]
-        prefer_position_rate = list(
-            summoner_info['prefer_position'].values())[0]
+            prefer_position = None
+            prefer_position_rate = None
+        else:
+            prefer_position = list(summoner_info['prefer_position'].keys())[0]
+            prefer_position_rate = list(
+                summoner_info['prefer_position'].values())[0]
 
         summoner = Summoner(id=summoner_info['id'], puuid=summoner_info['puuid'], name=summoner_info['name'],
                             level=summoner_info['level'], profile_icon_id=summoner_info['profile_icon_id'], kda_avg=summoner_info['kda_avg'], kills_avg=summoner_info['kills_avg'], deaths_avg=summoner_info['deaths_avg'], assists_avg=summoner_info['assists_avg'], prefer_position=prefer_position, prefer_position_rate=prefer_position_rate)

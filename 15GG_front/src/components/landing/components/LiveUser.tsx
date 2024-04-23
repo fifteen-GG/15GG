@@ -28,11 +28,19 @@ export const LiveUser = (props: propsType) => {
               }
             />
           </ImageWrapper>
-          <UserName style={{ marginLeft: '2px' }}>{props.name}</UserName>
+          <UserName style={{ marginLeft: '2px' }}>
+            {props.name.length > 3
+              ? props.name.slice(0, 3) + '...'
+              : props.name}
+          </UserName>
         </UserInfoWrapper>
       ) : (
         <UserInfoWrapper style={{ justifyContent: 'flex-end' }}>
-          <UserName style={{ marginRight: '2px' }}>{props.name}</UserName>
+          <UserName style={{ marginRight: '2px' }}>
+            {props.name.length > 3
+              ? props.name.slice(0, 3) + '...'
+              : props.name}
+          </UserName>
           <ImageWrapper>
             <UserChampion
               src={

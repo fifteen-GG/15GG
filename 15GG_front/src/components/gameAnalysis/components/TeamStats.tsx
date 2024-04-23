@@ -11,19 +11,18 @@ import {
 import type { teamAvgData } from '../../types/matchDetails';
 import { pngType } from '../styles/teamStats.s';
 interface propsType {
-  redTeam: teamAvgData;
   blueTeam: teamAvgData;
+  redTeam: teamAvgData;
 }
 const TeamStats = (props: propsType) => {
   const [teamStatsData, useTeamStatsData] = useState([
-    { team: 'Red', avgStat: props.redTeam },
     { team: 'Blue', avgStat: props.blueTeam },
+    { team: 'Red', avgStat: props.redTeam },
   ]);
-  console.log(teamStatsData);
   const FetchData = () => {
     useTeamStatsData([
-      { team: 'Red', avgStat: props.redTeam },
       { team: 'Blue', avgStat: props.blueTeam },
+      { team: 'Red', avgStat: props.redTeam },
     ]);
   };
   useEffect(() => {

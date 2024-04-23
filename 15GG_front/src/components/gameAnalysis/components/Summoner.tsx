@@ -28,6 +28,16 @@ const Summoner = (props: propsType) => {
     if (name.length > 8) return name.slice(0, 8) + '...';
     else return name;
   };
+  const rankFormat = (rank: string, tier: string) => {
+    let Verification = 'MASTERGRANDMASTERCHALLENGERUnranked';
+    const romeNum = ['I', 'II', 'III', 'IV'];
+    if (Verification.includes(tier)) return '';
+    let Rank = 1;
+    romeNum.map((data, index) => {
+      if (data === rank) Rank = index + 1;
+    });
+    return Rank;
+  };
   return (
     <SummonerContainer>
       <SummonerInterface>
@@ -71,9 +81,10 @@ const Summoner = (props: propsType) => {
             <SummonerName>
               {formatSummonerName(props.summonerInfo.summoner_name)}
             </SummonerName>
-            {props.summonerInfo.rank === '' ? null : (
-              <SummonerTier rank={props.summonerInfo.rank}>
-                {props.summonerInfo.rank.slice(0, 1).toUpperCase()}
+            {props.summonerInfo.tier === null ? null : (
+              <SummonerTier tier={props.summonerInfo.tier}>
+                {props.summonerInfo.tier?.slice(0, 1).toUpperCase() +
+                  rankFormat(props.summonerInfo.rank, props.summonerInfo.tier)}
               </SummonerTier>
             )}
           </SummonerInfo>
@@ -83,10 +94,16 @@ const Summoner = (props: propsType) => {
             </KDADetails>
             <KDA>
               KDA{' '}
-              {(
-                (props.summonerInfo.kills + props.summonerInfo.assists) /
-                props.summonerInfo.deaths
-              ).toFixed(1)}
+              {props.summonerInfo.deaths === 0 &&
+              props.summonerInfo.kills === 0 &&
+              props.summonerInfo.assists === 0
+                ? '0.0'
+                : props.summonerInfo.deaths === 0
+                ? 'Perfect'
+                : (
+                    (props.summonerInfo.kills + props.summonerInfo.assists) /
+                    props.summonerInfo.deaths
+                  ).toFixed(1)}
             </KDA>
           </KDAWrapper>
         </SummonerInfoWrapper>
@@ -95,7 +112,7 @@ const Summoner = (props: propsType) => {
         <ItemWrapper>
           {props.summonerInfo.items.map((item: number, index) => {
             return item === 0 ? (
-              <ItemBox />
+              <ItemBox key={index} />
             ) : (
               <ItemImg
                 className={'item' + index}
@@ -107,12 +124,6 @@ const Summoner = (props: propsType) => {
             );
           })}
         </ItemWrapper>
-        {/* props.summonerInfo.totalDamageDealtToChampions > 1000
-          ? `${
-              (props.summonerInfo.totalDamageDealtToChampions / 1000).toString()
-                .toLocaleString
-            }`
-          :  */}
         {props.summonerInfo.total_damage_dealt_to_champions.toLocaleString()} ·{' '}
         {parseInt((props.summonerInfo.gold_earned / 1000).toString())}K
       </ItemInterface>
